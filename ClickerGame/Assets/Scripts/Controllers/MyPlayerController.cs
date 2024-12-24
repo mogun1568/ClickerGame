@@ -1,15 +1,36 @@
 using UnityEngine;
 
-public class MyPlayerController : MonoBehaviour
+public class MyPlayerController : CreatureController
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private string enemyTag = "Enemy";
+    //[SerializeField]
+    private float attackDis = 1.5f;
+    private bool flag = false;
+
+    private void Update()
     {
-        
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
+        flag = false;
+
+        foreach (GameObject enemy in enemies)
+        {
+            float disToEnemy = enemy.transform.position.x - transform.position.x;
+            //Debug.Log(disToEnemy); 
+
+            if (disToEnemy <= attackDis)
+            {
+                flag = true;
+                Managers.Game.CanMove = false;
+                Attack(enemy);
+                break;
+            }
+        }
+
+        if (!flag)
+            Managers.Game.CanMove = true;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Attack(GameObject enemy)
     {
         
     }

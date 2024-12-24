@@ -10,7 +10,9 @@ public class ParallaxBackground : MonoBehaviour
     [SerializeField]
     private float moveSpeed;                                // 이동 속도
     [SerializeField]
-    private Vector3 moveDirection = new Vector3(-1, 0, 0);  // 이동 방향
+    private float moveDirX = -1;  // 이동 방향
+
+    private Tween scrollTween;
 
     private void Start()
     {
@@ -20,10 +22,10 @@ public class ParallaxBackground : MonoBehaviour
     private void StartScrolling()
     {
         // 끝점 계산
-        Vector3 endPosition = transform.position + moveDirection * scrollAmount;
+        float endPosX = transform.position.x + moveDirX * scrollAmount;
 
-        // DOTween으로 반복 동작 설정
-        transform.DOMove(endPosition, scrollAmount / moveSpeed)
+        // DOTween으로 트윈 생성
+        scrollTween = transform.DOMoveX(endPosX, scrollAmount / moveSpeed)
             .SetEase(Ease.Linear) // 일정 속도로 이동
             .SetLoops(-1, LoopType.Restart) // 무한 반복
             .OnStepComplete(() =>
@@ -31,5 +33,21 @@ public class ParallaxBackground : MonoBehaviour
                 // 위치 재설정
                 transform.position = target.position;
             });
+
+        // 처음에는 정지 상태로 시작
+        scrollTween.Pause();
+    }
+
+    private void Update()
+    {
+        // CanMove 상태에 따라 트윈 재생 또는 일시 정지
+        if (Managers.Game.CanMove)
+        {
+            if (!scrollTween.IsPlaying()) scrollTween.Play();
+        }
+        else
+        {
+            if (scrollTween.IsPlaying()) scrollTween.Pause();
+        }
     }
 }
