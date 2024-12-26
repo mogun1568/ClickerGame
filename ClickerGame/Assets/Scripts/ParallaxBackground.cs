@@ -38,10 +38,26 @@ public class ParallaxBackground : MonoBehaviour
         scrollTween.Pause();
     }
 
+    // 감속 기능(추후 추가)
+    /*private void StartDeceleration()
+    {
+        // 끝점 계산
+        float endPosX = transform.position.x + moveDirX * moveSpeed;
+
+        // DOTween으로 트윈 생성
+        scrollTween = transform.DOMoveX(endPosX, 1f)
+            .SetEase(Ease.InSine)
+            .OnComplete(() =>
+            {
+                // 위치 재설정
+                //transform.position = target.position;
+            });
+    }*/
+
     private void Update()
     {
         // CanMove 상태에 따라 트윈 재생 또는 일시 정지
-        if (Managers.Game.CanMove)
+        if (Managers.Game.MyPlayer.State == Define.State.Run)
         {
             if (!scrollTween.IsPlaying()) scrollTween.Play();
         }

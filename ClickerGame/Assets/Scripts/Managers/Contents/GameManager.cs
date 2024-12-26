@@ -2,5 +2,6 @@ using UnityEngine;
 
 public class GameManager
 {
-    public bool CanMove = true;
+    public MyPlayerController MyPlayer { get; set; }
+    public int _enemyCount;
 }

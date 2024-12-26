@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class StatInfo
 {
-    public double HP { get; set; }
-    public double ATK { get; set; }
-    public double DEF { get; set; }
-    public double AttackSpeed { get; set; }
-    public double AttackCountDown { get; set; }
+    public float HP { get; set; }
+    public float ATK { get; set; }
+    public float DEF { get; set; }
+    public float Range { get; set; }
+    public float AttackSpeed { get; set; }
+    public float AttackCountDown { get; set; }
 }
 
 public class CreatureController : MonoBehaviour
@@ -27,7 +28,7 @@ public class CreatureController : MonoBehaviour
 
     protected Animator _animator;
 
-    void Start()
+    void OnEnable()
     {
         Init();
     }
@@ -35,5 +36,25 @@ public class CreatureController : MonoBehaviour
     protected virtual void Init()
     {
         _animator = GetComponent<Animator>();
+    }
+
+    protected virtual void Attack(GameObject go, float damage)
+    {
+        //Debug.Log("Attack!");
+        go.GetComponent<CreatureController>().TakeDamage(damage);
+    }
+
+    protected virtual void TakeDamage(float damage)
+    {
+        Stat.HP -= damage;
+        Debug.Log(Stat.HP);
+
+        if (Stat.HP <= 0)
+            Die();
+    }
+
+    protected virtual void Die()
+    {
+        
     }
 }

@@ -38,6 +38,7 @@ public class Define
 
     public enum State
     {
+        Idle,
         Run,
         Attack,
         Damaged,
