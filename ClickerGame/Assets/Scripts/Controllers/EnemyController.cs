@@ -13,6 +13,8 @@ public class EnemyController : CreatureController
     {
         base.Init();
 
+        transform.position = new Vector3(7, 1.9f, -1);
+
         State = Define.State.Idle;
 
         Stat.HP = 20;
@@ -36,6 +38,7 @@ public class EnemyController : CreatureController
     protected override void Die()
     {
         base.Die();
+        Managers.Game._enemyCount--;
         Managers.Resource.Destroy(this.gameObject);
     }
 }
