@@ -7,6 +7,8 @@ public class MyPlayerController : CreatureController
 
     protected override void Init()
     {
+        base.Init();
+
         Managers.Game.MyPlayer = this;
 
         Stat.HP = 100;
@@ -16,7 +18,7 @@ public class MyPlayerController : CreatureController
         Stat.AttackSpeed = 1;
         Stat.AttackCountDown = 1;
 
-        InvokeRepeating("UpdateTarget", 0f, 0.5f);
+        InvokeRepeating("UpdateTarget", 0f, 0.1f);
     }
 
     private void UpdateTarget()
@@ -42,18 +44,22 @@ public class MyPlayerController : CreatureController
             _target = null;
     }
 
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
+
         if (_target == null)
         {
-            State = Define.State.Run;
+            State = Define.State.Moving;
             return;
         }
           
-        State = Define.State.Attack;
+        State = Define.State.Attacking;
 
         if (Stat.AttackCountDown <= 0f)
         {
+            State = Define.State.Idle;
+            State = Define.State.Attacking;
             Attack(_target, Stat.ATK);
             Stat.AttackCountDown = 1f / Stat.AttackSpeed;
         }

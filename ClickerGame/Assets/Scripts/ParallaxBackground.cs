@@ -57,7 +57,7 @@ public class ParallaxBackground : MonoBehaviour
     private void Update()
     {
         // CanMove 상태에 따라 트윈 재생 또는 일시 정지
-        if (Managers.Game.MyPlayer.State == Define.State.Run)
+        if (Managers.Game.MyPlayer.State == Define.State.Moving)
         {
             if (!scrollTween.IsPlaying()) scrollTween.Play();
         }
