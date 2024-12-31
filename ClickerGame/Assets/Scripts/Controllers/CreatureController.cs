@@ -28,6 +28,8 @@ public class CreatureController : MonoBehaviour
     }
 
     protected Animator _animator;
+    protected string _targetTag;
+    protected GameObject _target;
 
     private void OnEnable()
     {
@@ -38,6 +40,29 @@ public class CreatureController : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         UpdateAnimation();
+    }
+
+    private void UpdateTarget()
+    {
+        GameObject[] targets = GameObject.FindGameObjectsWithTag(_targetTag);
+        GameObject nearestTarget = null;
+
+        foreach (GameObject enemy in targets)
+        {
+            float disToEnemy = enemy.transform.position.x - transform.position.x;
+            //Debug.Log(disToEnemy); 
+
+            if (disToEnemy <= Stat.Range)
+            {
+                nearestTarget = enemy;
+                break;
+            }
+        }
+
+        if (nearestTarget != null)
+            _target = nearestTarget;
+        else
+            _target = null;
     }
 
     protected virtual void Update()
@@ -104,7 +129,15 @@ public class CreatureController : MonoBehaviour
 
     protected virtual void UpdateAttacking()
     {
+        if (Stat.AttackCountDown <= 0f)
+        {
+            State = Define.State.Idle;
+            State = Define.State.Attacking;
+            Attack(_target, Stat.ATK);
+            Stat.AttackCountDown = 1f / Stat.AttackSpeed;
+        }
 
+        Stat.AttackCountDown -= Time.deltaTime;
     }
 
     protected virtual void UpdateDamaged()
