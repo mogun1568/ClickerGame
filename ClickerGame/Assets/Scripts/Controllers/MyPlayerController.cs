@@ -13,7 +13,7 @@ public class MyPlayerController : CreatureController
         Stat.DEF = 50;
         Stat.Range = 1.5f;
         Stat.AttackSpeed = 1;
-        Stat.AttackCountDown = 1;
+        Stat.AttackCountDown = 0;
 
         _targetTag = "Enemy";
 
@@ -28,7 +28,16 @@ public class MyPlayerController : CreatureController
             return;
         }
 
-        State = Define.State.Attacking;
+        State = Define.State.Idle;
+
+        Debug.Log(1);
+        if (Stat.AttackCountDown <= 0)
+        {
+            State = Define.State.Attacking;
+            Stat.AttackCountDown = 1 / Stat.AttackSpeed;
+        }
+
+        Stat.AttackCountDown -= Time.deltaTime;
 
         base.Update();
     }

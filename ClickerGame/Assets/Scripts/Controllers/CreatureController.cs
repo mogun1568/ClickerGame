@@ -13,11 +13,19 @@ public class StatInfo
 
 public class CreatureController : MonoBehaviour
 {
-    Define.State _state = Define.State.Moving;
+    Define.State _state = Define.State.Idle;
     public Define.State State
     {
         get { return _state; }
-        set { _state = value; UpdateAnimation(); }
+        set
+        {
+            if (_state == value)
+                return;
+
+            _state = value;
+            Debug.Log(State);
+            UpdateAnimation();
+        }
     }
 
     StatInfo _stat = new StatInfo();
@@ -100,26 +108,32 @@ public class CreatureController : MonoBehaviour
         switch (State)
         {
             case Define.State.Idle:
-                _animator.Play("Idle");
+                //_animator.Play("Idle");
+                _animator.SetBool("IsIdle", true);
+                _animator.SetBool("IsAttack", false);
                 break;
             case Define.State.Moving:
-                _animator.Play("Run");
+                //_animator.Play("Run");
+                _animator.SetBool("IsIdle", false);
                 break;
             case Define.State.Attacking:
-                _animator.Play("Attack");
+                //_animator.Play("Attack");
+                _animator.SetBool("IsAttack", true);
                 break;
             case Define.State.Hurt:
-                _animator.Play("Hurt");
+                //_animator.Play("Hurt");
+                _animator.SetTrigger("HurtTrigger");
                 break;
             case Define.State.Dead:
-                _animator.Play("Die");
+                //_animator.Play("Die");
+                _animator.SetTrigger("DieTrigger");
                 break;
         }
     }
 
     protected virtual void UpdateIdle()
     {
-
+        
     }
 
     protected virtual void UpdateMoving()
@@ -129,15 +143,8 @@ public class CreatureController : MonoBehaviour
 
     protected virtual void UpdateAttacking()
     {
-        if (Stat.AttackCountDown <= 0f)
-        {
-            State = Define.State.Idle;
-            State = Define.State.Attacking;
-            Attack(_target, Stat.ATK);
-            Stat.AttackCountDown = 1f / Stat.AttackSpeed;
-        }
-
-        Stat.AttackCountDown -= Time.deltaTime;
+        //Debug.Log("Attack!");
+        _target.GetComponent<CreatureController>().Hurt(Stat.ATK);
     }
 
     protected virtual void UpdateDamaged()
@@ -159,7 +166,7 @@ public class CreatureController : MonoBehaviour
     protected virtual void Hurt(float damage)
     {
         Stat.HP -= damage;
-        Debug.Log(Stat.HP);
+        //Debug.Log(Stat.HP);
 
         if (Stat.HP <= 0)
             Die();
