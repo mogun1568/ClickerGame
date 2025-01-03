@@ -8,6 +8,8 @@ public class MyPlayerController : CreatureController
 
         Managers.Game.MyPlayer = this;
 
+        State = Define.State.Moving;
+
         Stat.HP = 100;
         Stat.ATK = 10;
         Stat.DEF = 50;
@@ -22,6 +24,8 @@ public class MyPlayerController : CreatureController
 
     protected override void Update()
     {
+        base.Update();
+
         if (_target == null)
         {
             State = Define.State.Moving;
@@ -30,7 +34,6 @@ public class MyPlayerController : CreatureController
 
         State = Define.State.Idle;
 
-        Debug.Log(1);
         if (Stat.AttackCountDown <= 0)
         {
             State = Define.State.Attacking;
@@ -38,7 +41,5 @@ public class MyPlayerController : CreatureController
         }
 
         Stat.AttackCountDown -= Time.deltaTime;
-
-        base.Update();
     }
 }

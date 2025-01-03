@@ -19,11 +19,10 @@ public class CreatureController : MonoBehaviour
         get { return _state; }
         set
         {
-            if (_state == value)
+            if (_state == value || _state == Define.State.Dead)
                 return;
 
             _state = value;
-            Debug.Log(State);
             UpdateAnimation();
         }
     }
@@ -38,6 +37,7 @@ public class CreatureController : MonoBehaviour
     protected Animator _animator;
     protected string _targetTag;
     protected GameObject _target;
+    private bool DeadFlag;
 
     private void OnEnable()
     {
@@ -46,23 +46,31 @@ public class CreatureController : MonoBehaviour
 
     protected virtual void Init()
     {
+        _state = Define.State.Idle;
         _animator = GetComponent<Animator>();
+        DeadFlag = false;
         UpdateAnimation();
     }
 
     private void UpdateTarget()
     {
+        if (State == Define.State.Dead)
+            return;
+
         GameObject[] targets = GameObject.FindGameObjectsWithTag(_targetTag);
         GameObject nearestTarget = null;
 
-        foreach (GameObject enemy in targets)
+        foreach (GameObject target in targets)
         {
-            float disToEnemy = enemy.transform.position.x - transform.position.x;
+            if (target.GetComponent<CreatureController>().State == Define.State.Dead)
+                continue;
+
+            float disToTarget = Mathf.Abs(target.transform.position.x - transform.position.x);
             //Debug.Log(disToEnemy); 
 
-            if (disToEnemy <= Stat.Range)
+            if (disToTarget <= Stat.Range)
             {
-                nearestTarget = enemy;
+                nearestTarget = target;
                 break;
             }
         }
@@ -75,6 +83,17 @@ public class CreatureController : MonoBehaviour
 
     protected virtual void Update()
     {
+        if (State == Define.State.Dead)
+        {
+            if (!DeadFlag)
+            {
+                DeadFlag = true;
+                UpdateController();
+            }
+
+            return;
+        }
+        
         UpdateController();
     }
 
@@ -92,7 +111,7 @@ public class CreatureController : MonoBehaviour
                 UpdateAttacking();
                 break;
             case Define.State.Hurt:
-                UpdateAttacking();
+                UpdateHurt();
                 break;
             case Define.State.Dead:
                 UpdateDead();
@@ -126,7 +145,7 @@ public class CreatureController : MonoBehaviour
                 break;
             case Define.State.Dead:
                 //_animator.Play("Die");
-                _animator.SetTrigger("DieTrigger");
+                _animator.SetTrigger("DeathTrigger");
                 break;
         }
     }
@@ -147,7 +166,7 @@ public class CreatureController : MonoBehaviour
         _target.GetComponent<CreatureController>().Hurt(Stat.ATK);
     }
 
-    protected virtual void UpdateDamaged()
+    protected virtual void UpdateHurt()
     {
 
     }
@@ -157,23 +176,14 @@ public class CreatureController : MonoBehaviour
         
     }
 
-    protected virtual void Attack(GameObject go, float damage)
-    {
-        //Debug.Log("Attack!");
-        go.GetComponent<CreatureController>().Hurt(damage);
-    }
-
     protected virtual void Hurt(float damage)
     {
         Stat.HP -= damage;
-        //Debug.Log(Stat.HP);
+        //Debug.Log($"{gameObject.tag}, {Stat.HP}");
 
         if (Stat.HP <= 0)
-            Die();
-    }
-
-    protected virtual void Die()
-    {
-        
+            State = Define.State.Dead;
+        else
+            State = Define.State.Hurt;
     }
 }
