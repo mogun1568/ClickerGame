@@ -39,9 +39,9 @@ public class Define
     public enum State
     {
         Idle,
-        Moving,
-        Attacking,
+        Run,
+        Attack,
         Hurt,
-        Dead
+        Death
     }
 }

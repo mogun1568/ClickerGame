@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyWave : MonoBehaviour
 {
     //private int _enemyCount;
-    private int _waveCount = 3;
+    private int _waveCount = 1;
 
     private void Update()
     {

@@ -8,6 +8,8 @@ public class EnemyController : CreatureController
     private float _endPosX = -0.5f;
     [SerializeField]
     private float _MoveSpeed = 2.5f;
+    private bool _completeMove;
+    private Tween deadMoveTween;
 
     protected override void Init()
     {
@@ -15,56 +17,72 @@ public class EnemyController : CreatureController
 
         transform.position = new Vector3(7, 1.9f, -1);
 
-        Stat.HP = 10;
-        Stat.ATK = 10;
+        Stat.HP = 50;
+        Stat.ATK = 0;
         Stat.DEF = 0;
         Stat.Range = 1.5f;
         Stat.AttackSpeed = 1;
-        Stat.AttackCountDown = 0;
-
-        Move();
+        Stat.AttackCountDown = 0; 
 
         _targetTag = "Player";
+        _completeMove = false;
+        deadMoveTween = null;
 
-        InvokeRepeating("UpdateTarget", 0f, 0.1f);
+        Move();
     }
 
-
-    // 사실 상 Move() 완료 후에 하는 작업이라 Update문일 필요 없음, 수정 예정
     protected override void Update()
     {
-        base.Update();
-
-        if (_target == null)
-        {
-            State = Define.State.Idle;
+        if (!_completeMove)
             return;
-        }
 
-        State = Define.State.Idle;
-
-        if (Stat.AttackCountDown <= 0)
+        if (State == Define.State.Death)
         {
-            State = Define.State.Attacking;
-            Stat.AttackCountDown = 1 / Stat.AttackSpeed;
+            if (Managers.Game.MyPlayer.State == Define.State.Run)
+            {
+                if (!deadMoveTween.IsPlaying()) deadMoveTween.Play();
+            }
+            else
+            {
+                if (deadMoveTween.IsPlaying()) deadMoveTween.Pause();
+            }
         }
 
-        Stat.AttackCountDown -= Time.deltaTime;
+        base.Update();
     }
 
     private void Move()
     {
+        _endPosX = -0.5f;
         float duration = (transform.position.x - _endPosX) / _MoveSpeed;
 
         transform.DOMoveX(_endPosX, duration)
-            .SetEase(Ease.Linear);
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+            {
+                // 이동 완료 시 호출
+                InvokeRepeating("UpdateTarget", 0f, 0.1f);
+                _completeMove = true;
+            });
     }
 
-    protected override void UpdateDead()
+    private void DeadMove()
     {
-        base.UpdateDead();
+        _endPosX = -7;
+        float duration = (transform.position.x - _endPosX) / _MoveSpeed;
+
+        deadMoveTween = transform.DOMoveX(_endPosX, duration)
+            .SetEase(Ease.Linear)
+            .SetAutoKill(false)   // 자동 삭제 방지 (Pause 이후 다시 사용하려면 필요)
+            .Pause();
+    }
+
+    protected override void UpdateDie()
+    {
+        base.UpdateDie();
         Managers.Game._enemyCount--;
         //Debug.Log(Managers.Game._enemyCount);
+        DeadMove();
         StartCoroutine(DeadAnim(1));
     }
 

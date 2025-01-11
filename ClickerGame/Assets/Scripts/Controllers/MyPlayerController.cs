@@ -8,7 +8,7 @@ public class MyPlayerController : CreatureController
 
         Managers.Game.MyPlayer = this;
 
-        State = Define.State.Moving;
+        //State = Define.State.Run;
 
         Stat.HP = 100;
         Stat.ATK = 10;
@@ -20,26 +20,5 @@ public class MyPlayerController : CreatureController
         _targetTag = "Enemy";
 
         InvokeRepeating("UpdateTarget", 0f, 0.1f);
-    }
-
-    protected override void Update()
-    {
-        base.Update();
-
-        if (_target == null)
-        {
-            State = Define.State.Moving;
-            return;
-        }
-
-        State = Define.State.Idle;
-
-        if (Stat.AttackCountDown <= 0)
-        {
-            State = Define.State.Attacking;
-            Stat.AttackCountDown = 1 / Stat.AttackSpeed;
-        }
-
-        Stat.AttackCountDown -= Time.deltaTime;
     }
 }
