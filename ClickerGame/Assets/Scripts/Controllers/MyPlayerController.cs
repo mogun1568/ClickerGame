@@ -6,16 +6,15 @@ public class MyPlayerController : CreatureController
     {
         base.Init();
 
+        transform.position = new Vector3(-2, 1.9f, -1);
+
         Managers.Game.MyPlayer = this;
 
         //State = Define.State.Run;
 
-        Stat.HP = 100;
-        Stat.ATK = 10;
-        Stat.DEF = 50;
+        Stat.UpdateStat(Managers.Data.MyPlayerStatDict);
+        Stat.AttackCountdown = 0;
         Stat.Range = 1.5f;
-        Stat.AttackSpeed = 1;
-        Stat.AttackCountDown = 0;
 
         _targetTag = "Enemy";
 

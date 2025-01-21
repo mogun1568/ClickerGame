@@ -20,9 +20,9 @@ public class EnemyController : CreatureController
         Stat.HP = 50;
         Stat.ATK = 0;
         Stat.DEF = 0;
-        Stat.Range = 1.5f;
         Stat.AttackSpeed = 1;
-        Stat.AttackCountDown = 0; 
+        Stat.AttackCountdown = 0;
+        Stat.Range = 1.5f;
 
         _targetTag = "Player";
         _completeMove = false;

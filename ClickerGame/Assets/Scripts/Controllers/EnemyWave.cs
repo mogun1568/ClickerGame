@@ -7,6 +7,11 @@ public class EnemyWave : MonoBehaviour
     //private int _enemyCount;
     private int _waveCount = 1;
 
+    private void Start()
+    {
+        Managers.Resource.Instantiate($"Player/HeroKnight");
+    }
+
     private void Update()
     {
         if (Managers.Game._enemyCount > 0)

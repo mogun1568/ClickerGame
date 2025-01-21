@@ -3,16 +3,6 @@ using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 using static UnityEngine.Rendering.DebugUI;
 
-public class StatInfo
-{
-    public float HP { get; set; }
-    public float ATK { get; set; }
-    public float DEF { get; set; }
-    public float Range { get; set; }
-    public float AttackSpeed { get; set; }
-    public float AttackCountDown { get; set; }
-}
-
 public class CreatureController : MonoBehaviour
 {
     Define.State _state;
@@ -84,8 +74,8 @@ public class CreatureController : MonoBehaviour
         return true;
     }
 
-    StatInfo _stat = new StatInfo();
-    public StatInfo Stat
+    private Stat _stat = new Stat();
+    public Stat Stat
     {
         get { return _stat; }
         set { _stat = value; }
@@ -157,8 +147,8 @@ public class CreatureController : MonoBehaviour
         {
             if (gameObject.tag == "Player")
             {
-                if (Stat.AttackCountDown != 0) 
-                    Stat.AttackCountDown = 0;
+                if (Stat.AttackCountdown != 0) 
+                    Stat.AttackCountdown = 0;
                 State = Define.State.Run;
             }
             else
@@ -169,13 +159,13 @@ public class CreatureController : MonoBehaviour
 
         State = Define.State.Idle;
 
-        if (Stat.AttackCountDown <= 0)
+        if (Stat.AttackCountdown <= 0)
         {
             State = Define.State.Attack;
-            Stat.AttackCountDown = 1 / Stat.AttackSpeed;
+            Stat.AttackCountdown = 1 / Stat.AttackSpeed;
         }
 
-        Stat.AttackCountDown -= Time.deltaTime;
+        Stat.AttackCountdown -= Time.deltaTime;
 
         //UpdateController();
     }
