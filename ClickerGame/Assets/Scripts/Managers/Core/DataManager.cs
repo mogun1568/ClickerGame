@@ -12,12 +12,12 @@ public interface ILoader<Key, Value>
 public class DataManager
 {
     public Dictionary<string, Data.Stat> MyPlayerStatDict { get; private set; } = new Dictionary<string, Data.Stat>();
-    public Dictionary<string, Data.Enemy> EnemyStatDict { get; private set; } = new Dictionary<string, Data.Enemy>();
+    public Dictionary<string, Data.Enemy> EnemyDict { get; private set; } = new Dictionary<string, Data.Enemy>();
 
     public void Init()
     {
-        MyPlayerStatDict = LoadJson<Data.StatData, string, Data.Stat>("PlayerStatData").MakeDict();
-        //EnemyStatDict = LoadJson<Data.EnemyData, string, Data.Enemy>("EnemyStatData").MakeDict();
+        MyPlayerStatDict = LoadJson<Data.StatData, string, Data.Stat>("MyPlayerStatData").MakeDict();
+        EnemyDict = LoadJson<Data.EnemyData, string, Data.Enemy>("EnemyData").MakeDict();
     }
 
     // 이 부분 잘 모르겠음

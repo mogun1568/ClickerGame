@@ -15,6 +15,7 @@ namespace Data
         public float statValue;
         public float statIncreaseValue;
         public float statPeice;
+        public float statIncreasePeice;
     }
 
     [Serializable]
@@ -40,6 +41,12 @@ namespace Data
     {
         public string enemyType;
         public string enemyName;
+        public float enemyHP;
+        public float enemyATK;
+        public float enemyDEF;
+        public float enemyAttackSpeed;
+        public float enemyRange;
+        public float enemyCoin;
     }
 
     [Serializable]

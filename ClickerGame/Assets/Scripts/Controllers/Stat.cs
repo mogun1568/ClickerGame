@@ -15,7 +15,6 @@ public class Stat
     public float IncreaseAttackSpeed { get; set; }
 
     public float AttackCountdown { get; set; }
-    public float IncreaseAttackCountdown { get; set; }
 
     public float Range { get; set; }
     public float IncreaseRange { get; set; }
@@ -26,13 +25,25 @@ public class Stat
         IncreaseHP = _statDict["HP"].statIncreaseValue;
 
         ATK = _statDict["ATK"].statValue;
-        IncreaseATK = _statDict["HP"].statIncreaseValue;
+        IncreaseATK = _statDict["ATK"].statIncreaseValue;
 
         DEF = _statDict["DEF"].statValue;
-        IncreaseDEF = _statDict["HP"].statIncreaseValue;
+        IncreaseDEF = _statDict["DEF"].statIncreaseValue;
 
         AttackSpeed = _statDict["AttackSpeed"].statValue;
-        IncreaseAttackSpeed = _statDict["HP"].statIncreaseValue;
+        IncreaseAttackSpeed = _statDict["AttackSpeed"].statIncreaseValue;
+
+        Range = _statDict["Range"].statValue;
+        IncreaseRange = _statDict["Range"].statIncreaseValue;
+    }
+
+    public void UpdateEnemy(Data.Enemy enemyInfo)
+    {
+        HP = enemyInfo.enemyHP;
+        ATK = enemyInfo.enemyATK;
+        DEF = enemyInfo.enemyDEF;
+        AttackSpeed = enemyInfo.enemyAttackSpeed;
+        Range = enemyInfo.enemyRange;
     }
 
 

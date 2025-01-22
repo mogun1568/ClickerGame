@@ -14,7 +14,6 @@ public class MyPlayerController : CreatureController
 
         Stat.UpdateStat(Managers.Data.MyPlayerStatDict);
         Stat.AttackCountdown = 0;
-        Stat.Range = 1.5f;
 
         _targetTag = "Enemy";
 

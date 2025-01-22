@@ -32,10 +32,8 @@ public class ParallaxBackground : MonoBehaviour
             {
                 // 위치 재설정
                 transform.position = target.position;
-            });
-
-        // 처음에는 정지 상태로 시작
-        scrollTween.Pause();
+            })
+            .Pause();
     }
 
     // 감속 기능(추후 추가)

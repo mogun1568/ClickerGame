@@ -40,6 +40,10 @@ public class StatLevelUpButton : UI_Base
                 Managers.Game.MyPlayer.Stat.AttackSpeed += Managers.Game.MyPlayer.Stat.IncreaseAttackSpeed;
                 Debug.Log($"AttackSpeed -> {Managers.Game.MyPlayer.Stat.AttackSpeed}");
                 break;
+            case "Range":
+                Managers.Game.MyPlayer.Stat.Range += Managers.Game.MyPlayer.Stat.IncreaseRange;
+                Debug.Log($"Range -> {Managers.Game.MyPlayer.Stat.Range}");
+                break;
         }
     }
 
