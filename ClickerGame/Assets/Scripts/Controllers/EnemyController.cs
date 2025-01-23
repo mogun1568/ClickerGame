@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyController : CreatureController
@@ -7,9 +8,10 @@ public class EnemyController : CreatureController
     [SerializeField]
     private float _endPosX = -0.5f;
     [SerializeField]
-    private float _MoveSpeed = 2.5f;
+    private float _moveSpeed = 2.5f;
     private Tween MoveTween;
     private Tween deadMoveTween;
+    private Data.Enemy _enemyStat;
 
     protected override void Init()
     {
@@ -22,7 +24,8 @@ public class EnemyController : CreatureController
         if (goName.EndsWith("(Clone)"))
             goName = goName.Substring(0, goName.Length - 7).Trim();
 
-        Stat.UpdateEnemy(Managers.Data.EnemyDict[goName]);
+        _enemyStat = Managers.Data.EnemyDict[goName];
+        UpdateStat();
         Stat.AttackCountdown = 0;
 
         _targetTag = "Player";
@@ -30,6 +33,15 @@ public class EnemyController : CreatureController
         deadMoveTween = null;
 
         Move();
+    }
+
+    protected override void UpdateStat()
+    {
+        Stat.HP = _enemyStat.enemyHP;
+        Stat.ATK = _enemyStat.enemyATK;
+        Stat.DEF = _enemyStat.enemyDEF;
+        Stat.AttackSpeed = _enemyStat.enemyAttackSpeed;
+        Stat.Range = _enemyStat.enemyRange;
     }
 
     protected override void Update()
@@ -64,7 +76,7 @@ public class EnemyController : CreatureController
     private void Move()
     {
         _endPosX = -0.5f;
-        float duration = (transform.position.x - _endPosX) / _MoveSpeed;
+        float duration = (transform.position.x - _endPosX) / _moveSpeed;
 
         MoveTween = transform.DOMoveX(_endPosX, duration)
             .SetEase(Ease.Linear)
@@ -85,7 +97,7 @@ public class EnemyController : CreatureController
         }
 
         _endPosX = -7;
-        float duration = (transform.position.x - _endPosX) / _MoveSpeed;
+        float duration = (transform.position.x - _endPosX) / _moveSpeed;
 
         deadMoveTween = transform.DOMoveX(_endPosX, duration)
             .SetEase(Ease.Linear)

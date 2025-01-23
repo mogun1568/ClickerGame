@@ -81,6 +81,11 @@ public class CreatureController : MonoBehaviour
         set { _stat = value; }
     }
 
+    protected virtual void UpdateStat()
+    {
+
+    }
+
     protected Animator _animator;
     AnimatorStateInfo _curAnimInfo;
 

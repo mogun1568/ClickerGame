@@ -27,8 +27,8 @@ public class DataManager
         return JsonUtility.FromJson<Loader>(textAsset.text);
     }
 
-    // 수정 필요
-    public void SaveJson<Loader, Key, Value>(Loader data, string path) where Loader : ILoader<Key, Value>
+    // SaveJson<Loader, Key, Value>(Loader data, string path)
+    public void SaveJson<T>(T data, string path)
     {
         // 객체를 JSON 문자열로 변환
         string jsonString = JsonUtility.ToJson(data, true);

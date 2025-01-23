@@ -45,6 +45,8 @@ public class StatLevelUpButton : UI_Base
                 Debug.Log($"Range -> {Managers.Game.MyPlayer.Stat.Range}");
                 break;
         }
+
+        Managers.Game.MyPlayer.UpdateDict();
     }
 
     public override void Init()

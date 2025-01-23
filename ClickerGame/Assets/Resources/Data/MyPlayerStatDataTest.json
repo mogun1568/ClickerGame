@@ -15,7 +15,7 @@
             "statIcon": "HPIcon",
             "statLevel": 1,
             "staName": "체력",
-            "statValue": 100.0,
+            "statValue": 120.0,
             "statIncreaseValue": 10.0,
             "statPeice": 1.0,
             "statIncreasePeice": 1.0
@@ -46,7 +46,7 @@
             "statLevel": 1,
             "staName": "공격 속도",
             "statValue": 1.0,
-            "statIncreaseValue": 0.01,
+            "statIncreaseValue": 0.009999999776482582,
             "statPeice": 10.0,
             "statIncreasePeice": 1.0
         },
@@ -56,7 +56,7 @@
             "statLevel": 1,
             "staName": "공격 범위",
             "statValue": 1.5,
-            "statIncreaseValue": 0.01,
+            "statIncreaseValue": 0.009999999776482582,
             "statPeice": 10.0,
             "statIncreasePeice": 1.0
         }
