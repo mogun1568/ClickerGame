@@ -2,9 +2,10 @@ using System.Collections.Generic;
 
 public class Stat
 {
+    public float MaxHP { get; set; }
+    public float IncreaseMaxHP { get; set; }
     public float HP { get; set; }
-    public float IncreaseHP { get; set; }
-
+    
     public float ATK { get; set; }
     public float IncreaseATK { get; set; }
 

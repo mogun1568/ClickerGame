@@ -41,7 +41,7 @@ namespace Data
     {
         public string enemyType;
         public string enemyName;
-        public float enemyHP;
+        public float enemyMaxHP;
         public float enemyATK;
         public float enemyDEF;
         public float enemyAttackSpeed;

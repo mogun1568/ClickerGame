@@ -1,64 +1,74 @@
 {
-    "stats": [
-        {
-            "statType": "Coin",
-            "statIcon": "",
-            "statLevel": 0,
-            "staName": "",
-            "statValue": 0.0,
-            "statIncreaseValue": 0.0,
-            "statPeice": 0.0,
-            "statIncreasePeice": 0.0
-        },
-        {
-            "statType": "HP",
-            "statIcon": "HPIcon",
-            "statLevel": 1,
-            "staName": "체력",
-            "statValue": 100.0,
-            "statIncreaseValue": 10.0,
-            "statPeice": 1.0,
-            "statIncreasePeice": 1.0
-        },
-        {
-            "statType": "ATK",
-            "statIcon": "ATKIcon",
-            "statLevel": 1,
-            "staName": "공격력",
-            "statValue": 10.0,
-            "statIncreaseValue": 0.5,
-            "statPeice": 5.0,
-            "statIncreasePeice": 1.0
-        },
-        {
-            "statType": "DEF",
-            "statIcon": "DEFIcon",
-            "statLevel": 1,
-            "staName": "방어력",
-            "statValue": 1.0,
-            "statIncreaseValue": 0.5,
-            "statPeice": 5.0,
-            "statIncreasePeice": 1.0
-        },
-        {
-            "statType": "AttackSpeed",
-            "statIcon": "AttackSpeedIcon",
-            "statLevel": 1,
-            "staName": "공격 속도",
-            "statValue": 1.0,
-            "statIncreaseValue": 0.01,
-            "statPeice": 10.0,
-            "statIncreasePeice": 1.0
-        },
-        {
-            "statType": "Range",
-            "statIcon": "RangeIcon",
-            "statLevel": 1,
-            "staName": "공격 범위",
-            "statValue": 1.5,
-            "statIncreaseValue": 0.01,
-            "statPeice": 10.0,
-            "statIncreasePeice": 1.0
-        }
-    ]
+  "stats": [
+    {
+      "statType": "Coin",
+      "statIcon": "",
+      "statLevel": 0,
+      "staName": "",
+      "statValue": 0.0,
+      "statIncreaseValue": 0.0,
+      "statPeice": 0.0,
+      "statIncreasePeice": 0.0
+    },
+    {
+      "statType": "MaxHP",
+      "statIcon": "HPIcon",
+      "statLevel": 1,
+      "staName": "최대 체력",
+      "statValue": 100.0,
+      "statIncreaseValue": 10.0,
+      "statPeice": 1.0,
+      "statIncreasePeice": 1.0
+    },
+    {
+      "statType": "HP",
+      "statIcon": "HPIcon",
+      "statLevel": 0,
+      "staName": "체력",
+      "statValue": 100.0,
+      "statIncreaseValue": 0.0,
+      "statPeice": 0.0,
+      "statIncreasePeice": 0.0
+    },
+    {
+      "statType": "ATK",
+      "statIcon": "ATKIcon",
+      "statLevel": 1,
+      "staName": "공격력",
+      "statValue": 10.0,
+      "statIncreaseValue": 0.5,
+      "statPeice": 5.0,
+      "statIncreasePeice": 1.0
+    },
+    {
+      "statType": "DEF",
+      "statIcon": "DEFIcon",
+      "statLevel": 1,
+      "staName": "방어력",
+      "statValue": 1.0,
+      "statIncreaseValue": 0.5,
+      "statPeice": 5.0,
+      "statIncreasePeice": 1.0
+    },
+    {
+      "statType": "AttackSpeed",
+      "statIcon": "AttackSpeedIcon",
+      "statLevel": 1,
+      "staName": "공격 속도",
+      "statValue": 1.0,
+      "statIncreaseValue": 0.01,
+      "statPeice": 10.0,
+      "statIncreasePeice": 1.0
+    },
+    {
+      "statType": "Range",
+      "statIcon": "RangeIcon",
+      "statLevel": 1,
+      "staName": "공격 범위",
+      "statValue": 1.5,
+      "statIncreaseValue": 0.01,
+      "statPeice": 10.0,
+      "statIncreasePeice": 1.0
+    }
+  ]
 }

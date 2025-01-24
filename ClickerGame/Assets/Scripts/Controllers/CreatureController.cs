@@ -18,7 +18,7 @@ public class CreatureController : MonoBehaviour
                 return;
 
             _state = value;
-            //if (gameObject.tag != "Player") Debug.Log(_state);
+            //if (gameObject.tag == "Player") Debug.Log(_state);
             UpdateAnimation();
             UpdateController();
         }
@@ -54,7 +54,7 @@ public class CreatureController : MonoBehaviour
             // 플레이어는 피해 코드가 Attack 쪽에서 실행됨으로 상태가 Hurt로 바뀌지 않아도 된다.
             // 현재는 Attack의 시작과 동시에 피해 코드가 실행되지만
             // 프레임에 맞춰 수정하면 칼에 맞는 프레임 전에는 피해 코드가 실행되지 않을 것이다.
-            if (gameObject.tag != "Player" || state == Define.State.Hurt)
+            if (gameObject.tag != "Player" && state == Define.State.Hurt)
                 return true;
 
             if (!CheckAnim())
@@ -66,6 +66,7 @@ public class CreatureController : MonoBehaviour
 
     private bool CheckAnim()
     {
+        //Debug.Log($"{gameObject.tag}, {_curAnimInfo.normalizedTime}");
         if (!_curAnimInfo.IsName(_state.ToString()))
             return false;
         if (_curAnimInfo.normalizedTime < 1.0f) // 루프가 아닌 경우에만
@@ -75,10 +76,20 @@ public class CreatureController : MonoBehaviour
     }
 
     private Stat _stat = new Stat();
-    public Stat Stat
+    public Stat StatInfo
     {
         get { return _stat; }
         set { _stat = value; }
+    }
+
+    public virtual float AttackSpeed
+    {
+        get { return StatInfo.AttackSpeed; }
+        set
+        {
+            StatInfo.AttackSpeed = value;
+            _animator.SetFloat("AttackSpeed", value);
+        }
     }
 
     protected virtual void UpdateStat()
@@ -126,7 +137,7 @@ public class CreatureController : MonoBehaviour
 
             float disToTarget = Mathf.Abs(target.transform.position.x - transform.position.x);
 
-            if (disToTarget <= Stat.Range)
+            if (disToTarget <= StatInfo.Range)
             {
                 nearestTarget = target;
                 break;
@@ -152,8 +163,8 @@ public class CreatureController : MonoBehaviour
         {
             if (gameObject.tag == "Player")
             {
-                if (Stat.AttackCountdown != 0) 
-                    Stat.AttackCountdown = 0;
+                if (StatInfo.AttackCountdown != 0) 
+                    StatInfo.AttackCountdown = 0;
                 State = Define.State.Run;
             }
             else
@@ -164,13 +175,13 @@ public class CreatureController : MonoBehaviour
 
         State = Define.State.Idle;
 
-        if (Stat.AttackCountdown <= 0)
+        if (StatInfo.AttackCountdown <= 0)
         {
             State = Define.State.Attack;
-            Stat.AttackCountdown = 1 / Stat.AttackSpeed;
+            StatInfo.AttackCountdown = 1 / StatInfo.AttackSpeed;
         }
 
-        Stat.AttackCountdown -= Time.deltaTime;
+        StatInfo.AttackCountdown -= Time.deltaTime;
 
         //UpdateController();
     }
@@ -247,7 +258,7 @@ public class CreatureController : MonoBehaviour
     protected virtual void UpdateAttacking()
     {
         //Debug.Log("Attack!");
-        _target.GetComponent<CreatureController>().Hurt(Stat.ATK);
+        _target.GetComponent<CreatureController>().Hurt(StatInfo.ATK);
     }
 
     protected virtual void UpdateHurt()
@@ -262,10 +273,10 @@ public class CreatureController : MonoBehaviour
 
     protected virtual void Hurt(float damage)
     {
-        Stat.HP -= damage;
+        StatInfo.HP -= damage;
         //Debug.Log($"{gameObject.tag}, {Stat.HP}");
 
-        if (Stat.HP <= 0)
+        if (StatInfo.HP <= 0)
             State = Define.State.Death;
         else
             State = Define.State.Hurt;

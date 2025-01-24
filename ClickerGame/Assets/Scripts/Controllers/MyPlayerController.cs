@@ -19,7 +19,7 @@ public class MyPlayerController : CreatureController
 
         _statDict = Managers.Data.MyPlayerStatDict;
         UpdateStat();
-        Stat.AttackCountdown = 0;
+        StatInfo.AttackCountdown = 0;
 
         _targetTag = "Enemy";
 
@@ -28,29 +28,31 @@ public class MyPlayerController : CreatureController
 
     protected override void UpdateStat()
     {
-        Stat.HP = _statDict["HP"].statValue;
-        Stat.IncreaseHP = _statDict["HP"].statIncreaseValue;
+        StatInfo.MaxHP = _statDict["MaxHP"].statValue;
+        StatInfo.IncreaseMaxHP = _statDict["MaxHP"].statIncreaseValue;
+        StatInfo.HP = _statDict["HP"].statValue;
 
-        Stat.ATK = _statDict["ATK"].statValue;
-        Stat.IncreaseATK = _statDict["ATK"].statIncreaseValue;
+        StatInfo.ATK = _statDict["ATK"].statValue;
+        StatInfo.IncreaseATK = _statDict["ATK"].statIncreaseValue;
 
-        Stat.DEF = _statDict["DEF"].statValue;
-        Stat.IncreaseDEF = _statDict["DEF"].statIncreaseValue;
+        StatInfo.DEF = _statDict["DEF"].statValue;
+        StatInfo.IncreaseDEF = _statDict["DEF"].statIncreaseValue;
 
-        Stat.AttackSpeed = _statDict["AttackSpeed"].statValue;
-        Stat.IncreaseAttackSpeed = _statDict["AttackSpeed"].statIncreaseValue;
+        AttackSpeed = _statDict["AttackSpeed"].statValue;
+        StatInfo.IncreaseAttackSpeed = _statDict["AttackSpeed"].statIncreaseValue;
 
-        Stat.Range = _statDict["Range"].statValue;
-        Stat.IncreaseRange = _statDict["Range"].statIncreaseValue;
+        StatInfo.Range = _statDict["Range"].statValue;
+        StatInfo.IncreaseRange = _statDict["Range"].statIncreaseValue;
     }
 
     public void UpdateDict()
     {
-        _statDict["HP"].statValue = Stat.HP;
-        _statDict["ATK"].statValue = Stat.ATK;
-        _statDict["DEF"].statValue = Stat.DEF;
-        _statDict["AttackSpeed"].statValue = Stat.AttackSpeed;
-        _statDict["Range"].statValue = Stat.Range;
+        _statDict["MaxHP"].statValue = StatInfo.MaxHP;
+        _statDict["HP"].statValue = StatInfo.HP;
+        _statDict["ATK"].statValue = StatInfo.ATK;
+        _statDict["DEF"].statValue = StatInfo.DEF;
+        _statDict["AttackSpeed"].statValue = AttackSpeed;
+        _statDict["Range"].statValue = StatInfo.Range;
 
         Data.StatData statData = new Data.StatData
         {

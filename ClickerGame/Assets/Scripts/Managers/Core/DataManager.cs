@@ -40,6 +40,6 @@ public class DataManager
         // JSON 파일로 저장
         File.WriteAllText(filePath, jsonString);
 
-        Debug.Log($"JSON 저장 완료: {filePath}");
+        //Debug.Log($"JSON 저장 완료: {filePath}");
     }
 }

@@ -19959,7 +19959,7 @@ GameObject:
   - component: {fileID: 3126523512740624718}
   - component: {fileID: 6705259076323048300}
   m_Layer: 5
-  m_Name: HP
+  m_Name: MaxHP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -26,7 +26,7 @@ public class EnemyController : CreatureController
 
         _enemyStat = Managers.Data.EnemyDict[goName];
         UpdateStat();
-        Stat.AttackCountdown = 0;
+        StatInfo.AttackCountdown = 0;
 
         _targetTag = "Player";
         MoveTween = null;
@@ -37,11 +37,11 @@ public class EnemyController : CreatureController
 
     protected override void UpdateStat()
     {
-        Stat.HP = _enemyStat.enemyHP;
-        Stat.ATK = _enemyStat.enemyATK;
-        Stat.DEF = _enemyStat.enemyDEF;
-        Stat.AttackSpeed = _enemyStat.enemyAttackSpeed;
-        Stat.Range = _enemyStat.enemyRange;
+        StatInfo.HP = _enemyStat.enemyMaxHP;
+        StatInfo.ATK = _enemyStat.enemyATK;
+        StatInfo.DEF = _enemyStat.enemyDEF;
+        AttackSpeed = _enemyStat.enemyAttackSpeed;
+        StatInfo.Range = _enemyStat.enemyRange;
     }
 
     protected override void Update()
