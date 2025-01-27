@@ -1,7 +1,6 @@
+using System.Collections;
 using UnityEditor;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
-using static UnityEngine.Rendering.DebugUI;
 
 public class CreatureController : MonoBehaviour
 {
@@ -16,6 +15,9 @@ public class CreatureController : MonoBehaviour
 
             if (!CheckState(value))
                 return;
+
+            if (_AttackCoroutine != null)
+                StopCoroutine(_AttackCoroutine);
 
             _state = value;
             //if (gameObject.tag == "Player") Debug.Log(_state);
@@ -97,8 +99,14 @@ public class CreatureController : MonoBehaviour
 
     }
 
+    public virtual void UpdateDict()
+    {
+
+    }
+
     protected Animator _animator;
-    AnimatorStateInfo _curAnimInfo;
+    protected AnimatorStateInfo _curAnimInfo;
+    protected Coroutine _AttackCoroutine;
 
     protected string _targetTag;
     protected GameObject _target;
@@ -258,7 +266,6 @@ public class CreatureController : MonoBehaviour
     protected virtual void UpdateAttacking()
     {
         //Debug.Log("Attack!");
-        _target.GetComponent<CreatureController>().Hurt(StatInfo.ATK);
     }
 
     protected virtual void UpdateHurt()
@@ -271,10 +278,27 @@ public class CreatureController : MonoBehaviour
         DeadFlag = true;
     }
 
+    protected virtual IEnumerator CheckAnimationTime(float targetNormalizedTime, float amount)
+    {
+        yield return new WaitUntil(() =>
+        {
+            return _curAnimInfo.IsName(_state.ToString()) && _curAnimInfo.normalizedTime % 1 >= targetNormalizedTime;
+        });
+
+        if (_target != null)
+        {
+            //Debug.Log($"{gameObject.tag}, {_curAnimInfo.normalizedTime % 1}");
+            _target.GetComponent<CreatureController>().Hurt(amount);
+        }
+    }
+
     protected virtual void Hurt(float damage)
     {
         StatInfo.HP -= damage;
-        //Debug.Log($"{gameObject.tag}, {Stat.HP}");
+        StatInfo.HP = Mathf.Max(StatInfo.HP, 0);
+        //Debug.Log($"{gameObject.tag}, {StatInfo.HP}");
+
+        UpdateDict();
 
         if (StatInfo.HP <= 0)
             State = Define.State.Death;

@@ -2,6 +2,8 @@ using System.Collections.Generic;
 
 public class Stat
 {
+    public int Coin { get; set; }
+
     public float MaxHP { get; set; }
     public float IncreaseMaxHP { get; set; }
     public float HP { get; set; }

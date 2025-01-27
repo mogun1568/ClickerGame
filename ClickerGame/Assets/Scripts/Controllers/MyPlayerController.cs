@@ -28,6 +28,8 @@ public class MyPlayerController : CreatureController
 
     protected override void UpdateStat()
     {
+        StatInfo.Coin = (int)_statDict["Coin"].statValue;
+
         StatInfo.MaxHP = _statDict["MaxHP"].statValue;
         StatInfo.IncreaseMaxHP = _statDict["MaxHP"].statIncreaseValue;
         StatInfo.HP = _statDict["HP"].statValue;
@@ -45,8 +47,11 @@ public class MyPlayerController : CreatureController
         StatInfo.IncreaseRange = _statDict["Range"].statIncreaseValue;
     }
 
-    public void UpdateDict()
+    public override void UpdateDict()
     {
+        base.UpdateDict();
+
+        _statDict["Coin"].statValue = StatInfo.Coin;
         _statDict["MaxHP"].statValue = StatInfo.MaxHP;
         _statDict["HP"].statValue = StatInfo.HP;
         _statDict["ATK"].statValue = StatInfo.ATK;
@@ -75,10 +80,9 @@ public class MyPlayerController : CreatureController
         Managers.Data.SaveJson(enemyData, "EnemyDataTest");
     }
 
-    protected override void UpdateHurt()
+    protected override void UpdateAttacking()
     {
         base.UpdateHurt();
-
-        UpdateDict();
+        _AttackCoroutine = StartCoroutine(CheckAnimationTime(0.167f, StatInfo.ATK));
     }
 }

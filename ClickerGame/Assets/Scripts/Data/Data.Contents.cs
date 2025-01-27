@@ -46,7 +46,7 @@ namespace Data
         public float enemyDEF;
         public float enemyAttackSpeed;
         public float enemyRange;
-        public float enemyCoin;
+        public int enemyCoin;
     }
 
     [Serializable]

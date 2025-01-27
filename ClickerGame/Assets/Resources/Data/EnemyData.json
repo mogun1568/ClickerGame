@@ -9,7 +9,7 @@
         "enemyDEF": 0.0,
         "enemyAttackSpeed": 1.0,
         "enemyRange": 1.5,
-        "enemyCoin": 1.0
+        "enemyCoin": 1
       }
     ]
 }

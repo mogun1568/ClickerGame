@@ -42,6 +42,7 @@ public class EnemyController : CreatureController
         StatInfo.DEF = _enemyStat.enemyDEF;
         AttackSpeed = _enemyStat.enemyAttackSpeed;
         StatInfo.Range = _enemyStat.enemyRange;
+        StatInfo.Coin = _enemyStat.enemyCoin;
     }
 
     protected override void Update()
@@ -104,11 +105,23 @@ public class EnemyController : CreatureController
             .Pause();
     }
 
+    protected override void UpdateAttacking()
+    {
+        base.UpdateHurt();
+        _AttackCoroutine = StartCoroutine(CheckAnimationTime(0.5f, StatInfo.ATK));
+    }
+
     protected override void UpdateDie()
     {
         base.UpdateDie();
+
         Managers.Game._enemyCount--;
         //Debug.Log(Managers.Game._enemyCount);
+
+        Managers.Game.MyPlayer.StatInfo.Coin += StatInfo.Coin;
+        Managers.Game.MyPlayer.UpdateDict();
+        Debug.Log(Managers.Game.MyPlayer.StatInfo.Coin);
+
         DeadMove();
         StartCoroutine(DeadAnim(1));
     }
