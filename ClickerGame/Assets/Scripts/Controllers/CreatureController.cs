@@ -84,6 +84,29 @@ public class CreatureController : MonoBehaviour
         set { _stat = value; }
     }
 
+    public virtual float MaxHP
+    {
+        get { return StatInfo.MaxHP; }
+        set
+        {
+            float previousMaxHP = StatInfo.MaxHP;
+            StatInfo.MaxHP = value;
+
+            float increaseAmount = value - previousMaxHP;
+            HP += increaseAmount;
+        }
+    }
+
+    public virtual float HP
+    {
+        get { return StatInfo.HP; }
+        set
+        {
+            StatInfo.HP = value;
+            StatInfo.HP = Mathf.Min(value, StatInfo.MaxHP);
+        }
+    }
+
     public virtual float AttackSpeed
     {
         get { return StatInfo.AttackSpeed; }

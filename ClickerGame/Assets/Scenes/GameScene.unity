@@ -590,7 +590,7 @@ GameObject:
   - component: {fileID: 260510741}
   - component: {fileID: 260510740}
   m_Layer: 5
-  m_Name: Text_Increase
+  m_Name: Text_StatIncreaseValue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -939,7 +939,7 @@ GameObject:
   - component: {fileID: 317193120}
   - component: {fileID: 317193119}
   m_Layer: 5
-  m_Name: Text_Price
+  m_Name: Text_StatPrice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1075,7 +1075,7 @@ GameObject:
   - component: {fileID: 346910003}
   - component: {fileID: 346910002}
   m_Layer: 5
-  m_Name: Text_Price
+  m_Name: Text_StatPrice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2317,7 +2317,7 @@ GameObject:
   - component: {fileID: 719673834}
   - component: {fileID: 719673833}
   m_Layer: 5
-  m_Name: Text_Price
+  m_Name: Text_StatPrice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2664,7 +2664,7 @@ GameObject:
   - component: {fileID: 824813554}
   - component: {fileID: 824813553}
   m_Layer: 5
-  m_Name: Text_Price
+  m_Name: Text_StatPrice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3768,7 +3768,7 @@ GameObject:
   - component: {fileID: 1139593896}
   - component: {fileID: 1139593895}
   m_Layer: 5
-  m_Name: Text_Increase
+  m_Name: Text_StatIncreaseValue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4040,7 +4040,7 @@ GameObject:
   - component: {fileID: 1176482862}
   - component: {fileID: 1176482861}
   m_Layer: 5
-  m_Name: Text_Increase
+  m_Name: Text_StatIncreaseValue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6723,7 +6723,7 @@ GameObject:
   - component: {fileID: 2002924619}
   - component: {fileID: 2002924618}
   m_Layer: 5
-  m_Name: Text_Price
+  m_Name: Text_StatPrice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6859,7 +6859,7 @@ GameObject:
   - component: {fileID: 2113440207}
   - component: {fileID: 2113440206}
   m_Layer: 5
-  m_Name: Text_Increase
+  m_Name: Text_StatIncreaseValue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8791,7 +8791,7 @@ GameObject:
   - component: {fileID: 8577800307166782909}
   - component: {fileID: 750429020484634127}
   m_Layer: 5
-  m_Name: Text_Increase
+  m_Name: Text_StatIncreaseValue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

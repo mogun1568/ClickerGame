@@ -4,71 +4,71 @@
             "statType": "Coin",
             "statIcon": "",
             "statLevel": 0,
-            "staName": "",
+            "statName": "",
             "statValue": 5.0,
             "statIncreaseValue": 0.0,
-            "statPeice": 0.0,
-            "statIncreasePeice": 0.0
+            "statPrice": 0,
+            "statIncreasePrice": 0
         },
         {
             "statType": "MaxHP",
             "statIcon": "HPIcon",
-            "statLevel": 1,
-            "staName": "최대 체력",
-            "statValue": 100.0,
+            "statLevel": 2,
+            "statName": "최대 체력",
+            "statValue": 110.0,
             "statIncreaseValue": 10.0,
-            "statPeice": 1.0,
-            "statIncreasePeice": 1.0
+            "statPrice": 2,
+            "statIncreasePrice": 1
         },
         {
             "statType": "HP",
             "statIcon": "HPIcon",
             "statLevel": 0,
-            "staName": "체력",
-            "statValue": 100.0,
+            "statName": "체력",
+            "statValue": 110.0,
             "statIncreaseValue": 0.0,
-            "statPeice": 0.0,
-            "statIncreasePeice": 0.0
+            "statPrice": 0,
+            "statIncreasePrice": 0
         },
         {
             "statType": "ATK",
             "statIcon": "ATKIcon",
-            "statLevel": 1,
-            "staName": "공격력",
-            "statValue": 10.0,
+            "statLevel": 2,
+            "statName": "공격력",
+            "statValue": 10.5,
             "statIncreaseValue": 0.5,
-            "statPeice": 5.0,
-            "statIncreasePeice": 1.0
+            "statPrice": 6,
+            "statIncreasePrice": 1
         },
         {
             "statType": "DEF",
             "statIcon": "DEFIcon",
             "statLevel": 1,
-            "staName": "방어력",
+            "statName": "방어력",
             "statValue": 1.0,
             "statIncreaseValue": 0.5,
-            "statPeice": 5.0,
-            "statIncreasePeice": 1.0
+            "statPrice": 5,
+            "statIncreasePrice": 1
         },
         {
             "statType": "AttackSpeed",
             "statIcon": "AttackSpeedIcon",
-            "statLevel": 1,
-            "staName": "공격 속도",
-            "statValue": 1.0,
+            "statLevel": 2,
+            "statName": "공격 속도",
+            "statValue": 1.0099999904632569,
             "statIncreaseValue": 0.009999999776482582,
-            "statPeice": 10.0,
-            "statIncreasePeice": 1.0
+            "statPrice": 11,
+            "statIncreasePrice": 1
         },
         {
             "statType": "Range",
             "statIcon": "RangeIcon",
-            "statLevel": 1,
-            "staName": "공격 범위",
-            "statValue": 1.5,
+            "statLevel": 2,
+            "statName": "공격 범위",
+            "statValue": 1.5099999904632569,
             "statIncreaseValue": 0.009999999776482582,
-            "statPeice": 10.0,
-            "statIncreasePeice": 1.0
+            "statPrice": 11,
+            "statIncreasePrice": 1
         }
     ]
 }

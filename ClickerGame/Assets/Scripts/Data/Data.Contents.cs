@@ -11,11 +11,11 @@ namespace Data
         public string statType;
         public string statIcon;
         public int statLevel;
-        public string staName;
+        public string statName;
         public float statValue;
         public float statIncreaseValue;
-        public float statPeice;
-        public float statIncreasePeice;
+        public int statPrice;
+        public int statIncreasePrice;
     }
 
     [Serializable]

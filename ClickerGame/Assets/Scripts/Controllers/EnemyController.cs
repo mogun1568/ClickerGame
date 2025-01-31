@@ -37,7 +37,8 @@ public class EnemyController : CreatureController
 
     protected override void UpdateStat()
     {
-        StatInfo.HP = _enemyStat.enemyMaxHP;
+        MaxHP = _enemyStat.enemyMaxHP;
+        HP = _enemyStat.enemyMaxHP;
         StatInfo.ATK = _enemyStat.enemyATK;
         StatInfo.DEF = _enemyStat.enemyDEF;
         AttackSpeed = _enemyStat.enemyAttackSpeed;

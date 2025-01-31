@@ -29,22 +29,12 @@ public class MyPlayerController : CreatureController
     protected override void UpdateStat()
     {
         StatInfo.Coin = (int)_statDict["Coin"].statValue;
-
-        StatInfo.MaxHP = _statDict["MaxHP"].statValue;
-        StatInfo.IncreaseMaxHP = _statDict["MaxHP"].statIncreaseValue;
-        StatInfo.HP = _statDict["HP"].statValue;
-
+        MaxHP = _statDict["MaxHP"].statValue;
+        HP = _statDict["HP"].statValue;
         StatInfo.ATK = _statDict["ATK"].statValue;
-        StatInfo.IncreaseATK = _statDict["ATK"].statIncreaseValue;
-
         StatInfo.DEF = _statDict["DEF"].statValue;
-        StatInfo.IncreaseDEF = _statDict["DEF"].statIncreaseValue;
-
         AttackSpeed = _statDict["AttackSpeed"].statValue;
-        StatInfo.IncreaseAttackSpeed = _statDict["AttackSpeed"].statIncreaseValue;
-
         StatInfo.Range = _statDict["Range"].statValue;
-        StatInfo.IncreaseRange = _statDict["Range"].statIncreaseValue;
     }
 
     public override void UpdateDict()
@@ -52,8 +42,8 @@ public class MyPlayerController : CreatureController
         base.UpdateDict();
 
         _statDict["Coin"].statValue = StatInfo.Coin;
-        _statDict["MaxHP"].statValue = StatInfo.MaxHP;
-        _statDict["HP"].statValue = StatInfo.HP;
+        _statDict["MaxHP"].statValue = MaxHP;
+        _statDict["HP"].statValue = HP;
         _statDict["ATK"].statValue = StatInfo.ATK;
         _statDict["DEF"].statValue = StatInfo.DEF;
         _statDict["AttackSpeed"].statValue = AttackSpeed;
