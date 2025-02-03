@@ -49,7 +49,7 @@ public class StatLevelUpButton : UI_Base
         //Image icon = GetImage((int)Images.Icon_Stat);
         //icon.sprite = Managers.Resource.Load<Sprite>($"Icon/{}");
         GetText((int)Texts.Text_StatName).text = _statDict[_statName].statName.ToString();
-        GetText((int)Texts.Text_StatIncreaseValue).text = _statDict[_statName].statIncreaseValue.ToString();
+        GetText((int)Texts.Text_StatIncreaseValue).text = "+" + _statDict[_statName].statIncreaseValue.ToString();
         HUDUpdate();
     }
 

@@ -5,7 +5,7 @@
             "statIcon": "",
             "statLevel": 0,
             "statName": "",
-            "statValue": 5.0,
+            "statValue": 10.0,
             "statIncreaseValue": 0.0,
             "statPrice": 0,
             "statIncreasePrice": 0
@@ -13,11 +13,11 @@
         {
             "statType": "MaxHP",
             "statIcon": "HPIcon",
-            "statLevel": 2,
+            "statLevel": 1,
             "statName": "최대 체력",
-            "statValue": 110.0,
+            "statValue": 100.0,
             "statIncreaseValue": 10.0,
-            "statPrice": 2,
+            "statPrice": 1,
             "statIncreasePrice": 1
         },
         {
@@ -25,7 +25,7 @@
             "statIcon": "HPIcon",
             "statLevel": 0,
             "statName": "체력",
-            "statValue": 110.0,
+            "statValue": 100.0,
             "statIncreaseValue": 0.0,
             "statPrice": 0,
             "statIncreasePrice": 0
@@ -33,11 +33,11 @@
         {
             "statType": "ATK",
             "statIcon": "ATKIcon",
-            "statLevel": 2,
+            "statLevel": 1,
             "statName": "공격력",
-            "statValue": 10.5,
+            "statValue": 10.0,
             "statIncreaseValue": 0.5,
-            "statPrice": 6,
+            "statPrice": 5,
             "statIncreasePrice": 1
         },
         {
@@ -53,21 +53,21 @@
         {
             "statType": "AttackSpeed",
             "statIcon": "AttackSpeedIcon",
-            "statLevel": 2,
+            "statLevel": 1,
             "statName": "공격 속도",
-            "statValue": 1.0099999904632569,
+            "statValue": 1.0,
             "statIncreaseValue": 0.009999999776482582,
-            "statPrice": 11,
+            "statPrice": 10,
             "statIncreasePrice": 1
         },
         {
             "statType": "Range",
             "statIcon": "RangeIcon",
-            "statLevel": 2,
+            "statLevel": 1,
             "statName": "공격 범위",
-            "statValue": 1.5099999904632569,
+            "statValue": 1.5,
             "statIncreaseValue": 0.009999999776482582,
-            "statPrice": 11,
+            "statPrice": 10,
             "statIncreasePrice": 1
         }
     ]
