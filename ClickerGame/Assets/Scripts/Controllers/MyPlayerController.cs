@@ -11,8 +11,6 @@ public class MyPlayerController : CreatureController
     {
         base.Init();
 
-        transform.position = new Vector3(-2, 1.9f, -1);
-
         Managers.Game.MyPlayer = this;
 
         //State = Define.State.Run;
@@ -24,6 +22,15 @@ public class MyPlayerController : CreatureController
         _targetTag = "Enemy";
 
         InvokeRepeating("UpdateTarget", 0f, 0.1f);
+    }
+
+    protected override void TargetIsNull()
+    {
+        base.TargetIsNull();
+
+        if (StatInfo.AttackCountdown != 0)
+            StatInfo.AttackCountdown = 0;
+        State = Define.State.Run;
     }
 
     protected override void UpdateStat()
@@ -53,7 +60,6 @@ public class MyPlayerController : CreatureController
         {
             stats = new List<Data.Stat>(Managers.Data.MyPlayerStatDict.Values)
         };
-
         Managers.Data.SaveJson(statData, "MyPlayerStatDataTest");
     }
 
@@ -61,12 +67,13 @@ public class MyPlayerController : CreatureController
     // 다른 스크립로 이동할 수도
     private void UpdateEnemyDict()
     {
+        // 몬스터 체력이나 공격력을 플레이어의 스탯에 따라 변화하게 할 지
+        // 아니면 시간? 라운드? 등에 따라 다르게 할 지 고민 중
 
         Data.EnemyData enemyData = new Data.EnemyData
         {
             enemys = new List<Data.Enemy>(Managers.Data.EnemyDict.Values)
         };
-
         Managers.Data.SaveJson(enemyData, "EnemyDataTest");
     }
 

@@ -192,15 +192,7 @@ public class CreatureController : MonoBehaviour
 
         if (_target == null)
         {
-            if (gameObject.tag == "Player")
-            {
-                if (StatInfo.AttackCountdown != 0) 
-                    StatInfo.AttackCountdown = 0;
-                State = Define.State.Run;
-            }
-            else
-                State = Define.State.Idle;
-
+            TargetIsNull();
             return;
         }
 
@@ -215,6 +207,11 @@ public class CreatureController : MonoBehaviour
         StatInfo.AttackCountdown -= Time.deltaTime;
 
         //UpdateController();
+    }
+
+    protected virtual void TargetIsNull()
+    {
+
     }
 
     protected virtual void UpdateController()
@@ -298,6 +295,11 @@ public class CreatureController : MonoBehaviour
 
     protected virtual void UpdateDie()
     {
+        //_animator = null;
+        _AttackCoroutine = null;
+
+        _targetTag = null;
+        _target = null;
         DeadFlag = true;
     }
 

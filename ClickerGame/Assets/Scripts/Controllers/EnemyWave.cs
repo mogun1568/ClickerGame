@@ -5,11 +5,11 @@ using UnityEngine;
 public class EnemyWave : MonoBehaviour
 {
     //private int _enemyCount;
-    private int _waveCount = 1;
+    private int _waveCount = 3;
 
     private void Start()
     {
-        Managers.Resource.Instantiate($"Player/HeroKnight");
+        Managers.Resource.Instantiate($"Player/HeroKnight", new Vector3(-2, 1.9f, -1));
     }
 
     private void Update()
@@ -31,7 +31,7 @@ public class EnemyWave : MonoBehaviour
 
     void SpawnEnemy()
     {
-        Managers.Resource.Instantiate($"Enemy/HeavyBandit");
+        Managers.Resource.Instantiate($"Enemy/HeavyBandit", new Vector3(7, 1.9f, -1));
         Managers.Game._enemyCount++;
     }
 }

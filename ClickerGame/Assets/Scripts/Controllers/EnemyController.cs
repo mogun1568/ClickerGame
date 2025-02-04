@@ -17,8 +17,6 @@ public class EnemyController : CreatureController
     {
         base.Init();
 
-        transform.position = new Vector3(7, 1.9f, -1);
-
         // (Clone)을 수정하기 전에 호출됨
         string goName = gameObject.name;
         if (goName.EndsWith("(Clone)"))
@@ -64,7 +62,7 @@ public class EnemyController : CreatureController
 
         if (MoveTween != null)
         {
-            if (State != Define.State.Idle)
+            if (State == Define.State.Hurt)
             {
                 if (MoveTween.IsPlaying()) MoveTween.Pause();
             }
@@ -73,6 +71,16 @@ public class EnemyController : CreatureController
                 if (!MoveTween.IsPlaying()) MoveTween.Play();
             }
         }
+    }
+
+    protected override void TargetIsNull()
+    {
+        base.TargetIsNull();
+
+        if (Managers.Game.MyPlayer.State == Define.State.Run)
+            State = Define.State.Idle;
+        else
+            State = Define.State.Run;
     }
 
     private void Move()
@@ -124,7 +132,7 @@ public class EnemyController : CreatureController
         Debug.Log(Managers.Game.MyPlayer.StatInfo.Coin);
 
         DeadMove();
-        StartCoroutine(DeadAnim(1));
+        StartCoroutine(DeadAnim(1.1f));
     }
 
     IEnumerator DeadAnim(float delay)

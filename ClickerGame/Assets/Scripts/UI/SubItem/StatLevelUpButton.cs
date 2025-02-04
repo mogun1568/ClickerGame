@@ -56,37 +56,51 @@ public class StatLevelUpButton : UI_Base
 
     private void StatUpdate()
     {
+        if (!CheckCoin())
+            return;
+
         switch (_statName)
         {
             case "MaxHP":
                 Managers.Game.MyPlayer.MaxHP += _statIncreaseValue;
-                DetailStatUpdate();
+                //DetailStatUpdate();
                 Debug.Log($"MaxHP -> {Managers.Game.MyPlayer.StatInfo.MaxHP}");
                 Debug.Log($"HP -> {Managers.Game.MyPlayer.StatInfo.HP}");
                 break;
             case "ATK":
                 Managers.Game.MyPlayer.StatInfo.ATK += _statIncreaseValue;
-                DetailStatUpdate();
+                //DetailStatUpdate();
                 Debug.Log($"ATK -> {Managers.Game.MyPlayer.StatInfo.ATK}");
                 break;
             case "DEF":
                 Managers.Game.MyPlayer.StatInfo.DEF += _statIncreaseValue;
-                DetailStatUpdate();
+                //DetailStatUpdate();
                 Debug.Log($"DEF -> {Managers.Game.MyPlayer.StatInfo.DEF}");
                 break;
             case "AttackSpeed":
                 Managers.Game.MyPlayer.AttackSpeed += _statIncreaseValue;
-                DetailStatUpdate();
+                //DetailStatUpdate();
                 Debug.Log($"AttackSpeed -> {Managers.Game.MyPlayer.AttackSpeed}");
                 break;
             case "Range":
                 Managers.Game.MyPlayer.StatInfo.Range += _statIncreaseValue;
-                DetailStatUpdate();
+                //DetailStatUpdate();
                 Debug.Log($"Range -> {Managers.Game.MyPlayer.StatInfo.Range}");
                 break;
         }
 
         Managers.Game.MyPlayer.UpdateDict();
+        DetailStatUpdate();
+    }
+
+    private bool CheckCoin()
+    {
+        if (_statDict[_statName].statPrice > Managers.Game.MyPlayer.StatInfo.Coin)
+            return false;
+
+        Managers.Game.MyPlayer.StatInfo.Coin -= _statDict[_statName].statPrice;
+
+        return true;
     }
 
     private void DetailStatUpdate()
