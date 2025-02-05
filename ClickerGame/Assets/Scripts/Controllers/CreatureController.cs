@@ -93,18 +93,14 @@ public class CreatureController : MonoBehaviour
             StatInfo.MaxHP = value;
 
             float increaseAmount = value - previousMaxHP;
-            HP += increaseAmount;
+            HP = Mathf.Min(HP + increaseAmount, StatInfo.MaxHP);
         }
     }
 
     public virtual float HP
     {
         get { return StatInfo.HP; }
-        set
-        {
-            StatInfo.HP = value;
-            StatInfo.HP = Mathf.Min(value, StatInfo.MaxHP);
-        }
+        set { StatInfo.HP = value; }
     }
 
     public virtual float AttackSpeed
@@ -112,8 +108,8 @@ public class CreatureController : MonoBehaviour
         get { return StatInfo.AttackSpeed; }
         set
         {
-            StatInfo.AttackSpeed = value;
-            _animator.SetFloat("AttackSpeed", value);
+            StatInfo.AttackSpeed = Mathf.Round(value * 100f) / 100f;
+            _animator.SetFloat("AttackSpeed", StatInfo.AttackSpeed);
         }
     }
 

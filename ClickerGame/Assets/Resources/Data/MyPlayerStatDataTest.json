@@ -5,7 +5,7 @@
             "statIcon": "",
             "statLevel": 0,
             "statName": "",
-            "statValue": 30.0,
+            "statValue": 4914.0,
             "statIncreaseValue": 0.0,
             "statPrice": 0,
             "statIncreasePrice": 0
@@ -53,21 +53,21 @@
         {
             "statType": "AttackSpeed",
             "statIcon": "AttackSpeedIcon",
-            "statLevel": 1,
+            "statLevel": 75,
             "statName": "공격 속도",
-            "statValue": 1.0,
+            "statValue": 1.7400000095367432,
             "statIncreaseValue": 0.009999999776482582,
-            "statPrice": 10,
+            "statPrice": 84,
             "statIncreasePrice": 1
         },
         {
             "statType": "Range",
             "statIcon": "RangeIcon",
-            "statLevel": 1,
+            "statLevel": 52,
             "statName": "공격 범위",
-            "statValue": 1.5,
+            "statValue": 2.009999990463257,
             "statIncreaseValue": 0.009999999776482582,
-            "statPrice": 10,
+            "statPrice": 61,
             "statIncreasePrice": 1
         }
     ]

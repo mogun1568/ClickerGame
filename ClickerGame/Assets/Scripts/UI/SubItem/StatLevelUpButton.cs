@@ -63,28 +63,24 @@ public class StatLevelUpButton : UI_Base
         {
             case "MaxHP":
                 Managers.Game.MyPlayer.MaxHP += _statIncreaseValue;
-                //DetailStatUpdate();
                 Debug.Log($"MaxHP -> {Managers.Game.MyPlayer.StatInfo.MaxHP}");
                 Debug.Log($"HP -> {Managers.Game.MyPlayer.StatInfo.HP}");
                 break;
             case "ATK":
                 Managers.Game.MyPlayer.StatInfo.ATK += _statIncreaseValue;
-                //DetailStatUpdate();
                 Debug.Log($"ATK -> {Managers.Game.MyPlayer.StatInfo.ATK}");
                 break;
             case "DEF":
                 Managers.Game.MyPlayer.StatInfo.DEF += _statIncreaseValue;
-                //DetailStatUpdate();
                 Debug.Log($"DEF -> {Managers.Game.MyPlayer.StatInfo.DEF}");
                 break;
             case "AttackSpeed":
                 Managers.Game.MyPlayer.AttackSpeed += _statIncreaseValue;
-                //DetailStatUpdate();
                 Debug.Log($"AttackSpeed -> {Managers.Game.MyPlayer.AttackSpeed}");
                 break;
             case "Range":
-                Managers.Game.MyPlayer.StatInfo.Range += _statIncreaseValue;
-                //DetailStatUpdate();
+                //Managers.Game.MyPlayer.StatInfo.Range += _statIncreaseValue;
+                Managers.Game.MyPlayer.StatInfo.Range = Mathf.Round((Managers.Game.MyPlayer.StatInfo.Range + _statIncreaseValue) * 100f) / 100f;
                 Debug.Log($"Range -> {Managers.Game.MyPlayer.StatInfo.Range}");
                 break;
         }
