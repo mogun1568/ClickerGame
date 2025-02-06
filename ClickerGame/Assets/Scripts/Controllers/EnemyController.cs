@@ -5,10 +5,6 @@ using UnityEngine;
 
 public class EnemyController : CreatureController
 {
-    [SerializeField]
-    private float _endPosX = -0.5f;
-    [SerializeField]
-    private float _moveSpeed = 2.5f;
     private Tween MoveTween;
     private Tween deadMoveTween;
     private Data.Enemy _enemyStat;
@@ -27,10 +23,11 @@ public class EnemyController : CreatureController
         StatInfo.AttackCountdown = 0;
 
         _targetTag = "Player";
+        StopAllCoroutines();
         MoveTween = null;
         deadMoveTween = null;
 
-        Move();
+        Move(-0.5f, _moveSpeed);
     }
 
     protected override void UpdateStat()
@@ -77,18 +74,17 @@ public class EnemyController : CreatureController
     {
         base.TargetIsNull();
 
-        if (Managers.Game.MyPlayer.State == Define.State.Run)
+        if (Managers.Game.MyPlayer.State == Define.State.Run || Managers.Game.MyPlayer.State == Define.State.Death)
             State = Define.State.Idle;
         else
             State = Define.State.Run;
     }
 
-    private void Move()
+    protected override void Move(float endPosX, float moveSpeed)
     {
-        _endPosX = -0.5f;
-        float duration = (transform.position.x - _endPosX) / _moveSpeed;
+        float duration = Mathf.Abs(transform.position.x - endPosX) / moveSpeed;
 
-        MoveTween = transform.DOMoveX(_endPosX, duration)
+        MoveTween = transform.DOMoveX(endPosX, duration)
             .SetEase(Ease.Linear)
             .OnComplete(() =>
             {
@@ -98,7 +94,7 @@ public class EnemyController : CreatureController
             });
     }
 
-    private void DeadMove()
+    private void DeadMove(float endPosX, float moveSpeed)
     {
         if (MoveTween != null)
         {
@@ -106,10 +102,9 @@ public class EnemyController : CreatureController
             MoveTween = null;
         }
 
-        _endPosX = -7;
-        float duration = (transform.position.x - _endPosX) / _moveSpeed;
+        float duration = (transform.position.x - endPosX) / moveSpeed;
 
-        deadMoveTween = transform.DOMoveX(_endPosX, duration)
+        deadMoveTween = transform.DOMoveX(endPosX, duration)
             .SetEase(Ease.Linear)
             .Pause();
     }
@@ -124,20 +119,14 @@ public class EnemyController : CreatureController
     {
         base.UpdateDie();
 
-        Managers.Game._enemyCount--;
+        Managers.Game.Wave._enemyCount--;
         //Debug.Log(Managers.Game._enemyCount);
 
         Managers.Game.MyPlayer.StatInfo.Coin += StatInfo.Coin;
         Managers.Game.MyPlayer.UpdateDict();
         Debug.Log(Managers.Game.MyPlayer.StatInfo.Coin);
 
-        DeadMove();
-        StartCoroutine(DeadAnim(1.1f));
-    }
-
-    IEnumerator DeadAnim(float delay)
-    {
-        yield return new WaitForSeconds(delay); // 지정한 시간만큼 대기
-        Managers.Resource.Destroy(gameObject);
+        DeadMove(-7f, _moveSpeed);
+        //StartCoroutine(DeadAnim(1.1f));
     }
 }

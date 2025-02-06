@@ -5,7 +5,7 @@
             "statIcon": "",
             "statLevel": 0,
             "statName": "",
-            "statValue": 4914.0,
+            "statValue": 643.0,
             "statIncreaseValue": 0.0,
             "statPrice": 0,
             "statIncreasePrice": 0
@@ -25,10 +25,20 @@
             "statIcon": "HPIcon",
             "statLevel": 0,
             "statName": "체력",
-            "statValue": 100.0,
+            "statValue": 10.0,
             "statIncreaseValue": 0.0,
             "statPrice": 0,
             "statIncreasePrice": 0
+        },
+        {
+            "statType": "Regeneration",
+            "statIcon": "RegenerationIcon",
+            "statLevel": 1,
+            "statName": "자연 회복",
+            "statValue": 10.0,
+            "statIncreaseValue": 1.0,
+            "statPrice": 1,
+            "statIncreasePrice": 10
         },
         {
             "statType": "ATK",
@@ -53,21 +63,21 @@
         {
             "statType": "AttackSpeed",
             "statIcon": "AttackSpeedIcon",
-            "statLevel": 75,
+            "statLevel": 1,
             "statName": "공격 속도",
-            "statValue": 1.7400000095367432,
+            "statValue": 1.0,
             "statIncreaseValue": 0.009999999776482582,
-            "statPrice": 84,
+            "statPrice": 10,
             "statIncreasePrice": 1
         },
         {
             "statType": "Range",
             "statIcon": "RangeIcon",
-            "statLevel": 52,
+            "statLevel": 1,
             "statName": "공격 범위",
-            "statValue": 2.009999990463257,
+            "statValue": 1.5,
             "statIncreaseValue": 0.009999999776482582,
-            "statPrice": 61,
+            "statPrice": 10,
             "statIncreasePrice": 1
         }
     ]

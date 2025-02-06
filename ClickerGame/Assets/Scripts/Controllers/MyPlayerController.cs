@@ -1,4 +1,6 @@
 using Data;
+using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
@@ -6,6 +8,13 @@ using UnityEngine;
 public class MyPlayerController : CreatureController
 {
     private Dictionary<string, Data.Stat> _statDict;
+    public bool isMove;
+
+    public float Regeneration
+    {
+        get { return _statDict["Regeneration"].statValue; }
+        set { _statDict["Regeneration"].statValue = value; }
+    }
 
     protected override void Init()
     {
@@ -17,11 +26,24 @@ public class MyPlayerController : CreatureController
 
         _statDict = Managers.Data.MyPlayerStatDict;
         UpdateStat();
+        HP = MaxHP;
+        UpdateDict();
         StatInfo.AttackCountdown = 0;
 
         _targetTag = "Enemy";
 
-        InvokeRepeating("UpdateTarget", 0f, 0.1f);
+        if (transform.position.x == -2)
+        {
+            isMove = false;
+            InvokeRepeating("UpdateTarget", 0f, 0.1f);
+        }
+        else
+        {
+            isMove = true;
+            Move(-2f, _moveSpeed);
+        }
+
+        InvokeRepeating("Regenerate", 1f, 1f);
     }
 
     protected override void TargetIsNull()
@@ -33,11 +55,26 @@ public class MyPlayerController : CreatureController
         State = Define.State.Run;
     }
 
+    protected override void Move(float endPosX, float moveSpeed)
+    {
+        float duration = Mathf.Abs(transform.position.x - endPosX) / moveSpeed;
+
+        transform.DOMoveX(endPosX, duration)
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+            {
+                // 이동 완료 시 호출
+                isMove = false;
+                InvokeRepeating("UpdateTarget", 0f, 0.1f);
+            });
+    }
+
     protected override void UpdateStat()
     {
         StatInfo.Coin = (int)_statDict["Coin"].statValue;
         MaxHP = _statDict["MaxHP"].statValue;
         HP = _statDict["HP"].statValue;
+        Regeneration = _statDict["Regeneration"].statValue;
         StatInfo.ATK = _statDict["ATK"].statValue;
         StatInfo.DEF = _statDict["DEF"].statValue;
         AttackSpeed = _statDict["AttackSpeed"].statValue;
@@ -51,6 +88,7 @@ public class MyPlayerController : CreatureController
         _statDict["Coin"].statValue = StatInfo.Coin;
         _statDict["MaxHP"].statValue = MaxHP;
         _statDict["HP"].statValue = HP;
+        _statDict["Regeneration"].statValue = Regeneration;
         _statDict["ATK"].statValue = StatInfo.ATK;
         _statDict["DEF"].statValue = StatInfo.DEF;
         _statDict["AttackSpeed"].statValue = AttackSpeed;
@@ -77,9 +115,33 @@ public class MyPlayerController : CreatureController
         Managers.Data.SaveJson(enemyData, "EnemyDataTest");
     }
 
+    public void Regenerate()
+    {
+        if (HP + Regeneration > MaxHP)
+            return;
+
+        HP += Regeneration;
+    }
+
     protected override void UpdateAttacking()
     {
         base.UpdateHurt();
         _AttackCoroutine = StartCoroutine(CheckAnimationTime(0.167f, StatInfo.ATK));
+    }
+
+    protected override void UpdateDie()
+    {
+        base.UpdateDie();
+
+        CancelInvoke("Regenerate");
+        StatInfo.Coin /= 2;
+        UpdateDict();
+    }
+
+    protected override IEnumerator DeadAnim(float delay)
+    {
+        yield return new WaitForSeconds(delay); // 지정한 시간만큼 대기
+        Managers.Game.Wave.RespawnPlayer();
+        Managers.Resource.Destroy(gameObject);
     }
 }

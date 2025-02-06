@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
@@ -131,6 +132,9 @@ public class CreatureController : MonoBehaviour
     protected GameObject _target;
     private bool DeadFlag;
 
+    [SerializeField]
+    protected float _moveSpeed = 2.5f;
+
     private void OnEnable()
     {
         Init();
@@ -147,6 +151,11 @@ public class CreatureController : MonoBehaviour
         _animator = GetComponent<Animator>();
         DeadFlag = false;
         UpdateAnimation();
+    }
+
+    protected virtual void Move(float endPosX, float moveSpeed)
+    {
+
     }
 
     private void UpdateTarget()
@@ -297,6 +306,8 @@ public class CreatureController : MonoBehaviour
         _targetTag = null;
         _target = null;
         DeadFlag = true;
+
+        StartCoroutine(DeadAnim(1.1f));
     }
 
     protected virtual IEnumerator CheckAnimationTime(float targetNormalizedTime, float amount)
@@ -325,5 +336,11 @@ public class CreatureController : MonoBehaviour
             State = Define.State.Death;
         else
             State = Define.State.Hurt;
+    }
+
+    protected virtual IEnumerator DeadAnim(float delay)
+    {
+        yield return new WaitForSeconds(delay); // 지정한 시간만큼 대기
+        Managers.Resource.Destroy(gameObject);
     }
 }

@@ -31,6 +31,16 @@
       "statIncreasePrice": 0
     },
     {
+      "statType": "Regeneration",
+      "statIcon": "RegenerationIcon",
+      "statLevel": 1,
+      "statName": "자연 회복",
+      "statValue": 10.0,
+      "statIncreaseValue": 1.0,
+      "statPrice": 1,
+      "statIncreasePrice": 10
+    },
+    {
       "statType": "ATK",
       "statIcon": "ATKIcon",
       "statLevel": 1,
