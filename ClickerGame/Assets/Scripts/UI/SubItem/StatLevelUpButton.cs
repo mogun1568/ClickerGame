@@ -38,7 +38,7 @@ public class StatLevelUpButton : UI_Base
         Bind<Image>(typeof(Images));
         Bind<TextMeshProUGUI>(typeof(Texts));
 
-        BindEvent(GetButton((int)Buttons.LevelUp_Button).gameObject, (PointerEventData data) => { StatUpdate(); }, Define.UIEvent.Click);
+        BindEvent(GetObject((int)Buttons.LevelUp_Button), (PointerEventData data) => { StatUpdate(); }, Define.UIEvent.Click);
 
         _statDict = Managers.Data.MyPlayerStatDict;
         _statName = gameObject.name;
@@ -52,7 +52,6 @@ public class StatLevelUpButton : UI_Base
         GetText((int)Texts.Text_StatIncreaseValue).text = "+" + _statDict[_statName].statIncreaseValue.ToString();
         HUDUpdate();
     }
-
 
     private void StatUpdate()
     {

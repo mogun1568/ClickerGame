@@ -23,6 +23,8 @@ public class Define
     {
         Click,
         Drag,
+        BeginDrag,
+        EndDrag,
     }
 
     public enum MouseEvent
