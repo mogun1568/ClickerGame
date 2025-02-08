@@ -5,7 +5,7 @@
             "statIcon": "",
             "statLevel": 0,
             "statName": "",
-            "statValue": 10030.0,
+            "statValue": 10024.0,
             "statIncreaseValue": 0.0,
             "statPrice": 0,
             "statIncreasePrice": 0
@@ -13,11 +13,11 @@
         {
             "statType": "MaxHP",
             "statIcon": "HPIcon",
-            "statLevel": 1,
+            "statLevel": 4,
             "statName": "최대 체력",
-            "statValue": 100.0,
+            "statValue": 130.0,
             "statIncreaseValue": 10.0,
-            "statPrice": 1,
+            "statPrice": 4,
             "statIncreasePrice": 1
         },
         {
@@ -25,7 +25,7 @@
             "statIcon": "HPIcon",
             "statLevel": 0,
             "statName": "체력",
-            "statValue": 80.0,
+            "statValue": 110.0,
             "statIncreaseValue": 0.0,
             "statPrice": 0,
             "statIncreasePrice": 0

@@ -38,7 +38,8 @@ public class StatLevelUpButton : UI_Base
         Bind<Image>(typeof(Images));
         Bind<TextMeshProUGUI>(typeof(Texts));
 
-        BindEvent(GetObject((int)Buttons.LevelUp_Button), (PointerEventData data) => { StatUpdate(); }, Define.UIEvent.Click);
+        // Bind를 Button을로 했기 때문에 GetObject로 안됨
+        BindEvent(GetButton((int)Buttons.LevelUp_Button).gameObject, (PointerEventData data) => { StatUpdate(); }, Define.UIEvent.Click);
 
         _statDict = Managers.Data.MyPlayerStatDict;
         _statName = gameObject.name;
