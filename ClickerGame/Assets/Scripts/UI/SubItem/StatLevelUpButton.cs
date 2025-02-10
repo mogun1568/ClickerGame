@@ -63,8 +63,12 @@ public class StatLevelUpButton : UI_Base
         {
             case "MaxHP":
                 Managers.Game.MyPlayer.MaxHP += _statIncreaseValue;
-                Debug.Log($"MaxHP -> {Managers.Game.MyPlayer.StatInfo.MaxHP}");
-                Debug.Log($"HP -> {Managers.Game.MyPlayer.StatInfo.HP}");
+                Debug.Log($"MaxHP -> {Managers.Game.MyPlayer.MaxHP}");
+                Debug.Log($"HP -> {Managers.Game.MyPlayer.HP}");
+                break;
+            case "Regeneration":
+                Managers.Game.MyPlayer.Regeneration += _statIncreaseValue;
+                Debug.Log($"Regeneration -> {Managers.Game.MyPlayer.Regeneration}");
                 break;
             case "ATK":
                 Managers.Game.MyPlayer.StatInfo.ATK += _statIncreaseValue;
