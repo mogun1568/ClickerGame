@@ -9,8 +9,12 @@ public class Managers : MonoBehaviour
 
     #region Contents
     GameManager _game = new GameManager();
+    FirebaseManager _firebase = new FirebaseManager();
+    FirebaseDataManager _firebaseData = new FirebaseDataManager();
 
     public static GameManager Game { get { return Instance._game; } }
+    public static FirebaseManager Firebase { get { return Instance._firebase; } }
+    public static FirebaseDataManager FirebaseData { get { return Instance._firebaseData; } }
     #endregion
 
     #region Core
@@ -58,6 +62,8 @@ public class Managers : MonoBehaviour
             s_instance._data.Init();
             s_instance._pool.Init();
             s_instance._sound.Init();
+            s_instance._firebase.Init();
+            //s_instance._firebaseData.Init();
         }
     }
 

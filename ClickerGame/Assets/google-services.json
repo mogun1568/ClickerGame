@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "839520731329",
+    "firebase_url": "https://forwork-mogun3329-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "forwork-mogun3329",
+    "storage_bucket": "forwork-mogun3329.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:839520731329:android:36a55224b184132cc89440",
+        "android_client_info": {
+          "package_name": "com.Mogun.Forwork"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "839520731329-rthfbuin183fna8glp1m32io3i1erdp7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.Mogun.Forwork",
+            "certificate_hash": "3723bc93137c6002f12cd673a4f6b6b00d921800"
+          }
+        },
+        {
+          "client_id": "839520731329-9t0mcgm87ljmc8ham68p36eijk5713m7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAq5vSSTtYrx6sC_VKkNEiRi-BnKOP5FiY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "839520731329-9t0mcgm87ljmc8ham68p36eijk5713m7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
