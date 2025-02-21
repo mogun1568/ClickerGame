@@ -25,7 +25,7 @@ public class ResourceManager
         return Resources.Load<T>(path);
     }
 
-    public GameObject Instantiate(string path, Transform parent = null)
+    public GameObject Instantiate(string path, Vector3 position = default, Transform parent = null)
     {
         // 1. original 이미 들고 있으면 바로 사용
         GameObject original = Load<GameObject>($"Prefabs/{path}");
@@ -38,10 +38,10 @@ public class ResourceManager
         // 2. 혹시 풀링된 애가 있을까?
         if (original.GetComponent<Poolable>() != null)
         {
-            return Managers.Pool.Pop(original, parent).gameObject;
+            return Managers.Pool.Pop(original, position, parent).gameObject;
         }
 
-        GameObject go = Object.Instantiate(original, parent);
+        GameObject go = Object.Instantiate(original, position, Quaternion.identity, parent);
         go.name = original.name;
 
         return go;

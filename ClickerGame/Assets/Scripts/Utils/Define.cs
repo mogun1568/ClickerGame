@@ -23,6 +23,8 @@ public class Define
     {
         Click,
         Drag,
+        BeginDrag,
+        EndDrag,
     }
 
     public enum MouseEvent
@@ -34,5 +36,14 @@ public class Define
     public enum CameraMode
     {
         QuarterView,
+    }
+
+    public enum State
+    {
+        Idle,
+        Run,
+        Attack,
+        Hurt,
+        Death
     }
 }

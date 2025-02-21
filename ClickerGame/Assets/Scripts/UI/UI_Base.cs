@@ -10,7 +10,7 @@ public abstract class UI_Base : MonoBehaviour
 {
     protected Dictionary<Type, UnityEngine.Object[]> _objects = new Dictionary<Type, UnityEngine.Object[]>();
 
-    // 추상 메소드 (UI_Bas를 상속받는 클래스에서 재정의 해야함)
+    // 추상 메소드 (UI_Base를 상속받는 클래스에서 재정의 해야함)
     public abstract void Init();
 
     protected void Bind<T>(Type type) where T : UnityEngine.Object
@@ -73,6 +73,14 @@ public abstract class UI_Base : MonoBehaviour
             case Define.UIEvent.Drag:
                 evt.OnDragHandler -= action;
                 evt.OnDragHandler += action;
+                break;
+            case Define.UIEvent.BeginDrag:
+                evt.OnBeginDragHandler -= action;
+                evt.OnBeginDragHandler += action;
+                break;
+            case Define.UIEvent.EndDrag:
+                evt.OnEndDragHandler -= action;
+                evt.OnEndDragHandler += action;
                 break;
         }
     }

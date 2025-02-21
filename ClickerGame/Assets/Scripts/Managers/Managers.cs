@@ -8,7 +8,9 @@ public class Managers : MonoBehaviour
     static Managers Instance { get { Init(); return s_instance; } } // 유일한 매니저를 갖고온다
 
     #region Contents
+    GameManager _game = new GameManager();
 
+    public static GameManager Game { get { return Instance._game; } }
     #endregion
 
     #region Core
@@ -29,7 +31,7 @@ public class Managers : MonoBehaviour
     public static UIManager UI { get { return Instance._ui; } }
     #endregion
 
-    void Start()
+    void Awake()
     {
         Init();
     }

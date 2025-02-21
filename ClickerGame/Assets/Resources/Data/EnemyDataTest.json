@@ -1,0 +1,15 @@
+{
+  "enemys": [
+    {
+      "enemyType": "HeavyBandit",
+      "enemyName": "HeavyBandit",
+      "enemyMaxHP": 50.0,
+      "enemyHP": 50.0,
+      "enemyATK": 0.0,
+      "enemyDEF": 0.0,
+      "enemyAttackSpeed": 1.0,
+      "enemyRange": 1.5,
+      "enemyCoin": 1
+    }
+  ]
+}
