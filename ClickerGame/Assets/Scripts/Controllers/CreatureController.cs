@@ -1,5 +1,7 @@
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using System.Collections;
+using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
@@ -119,11 +121,6 @@ public class CreatureController : MonoBehaviour
 
     }
 
-    public virtual void UpdateDict()
-    {
-
-    }
-
     protected Animator _animator;
     protected AnimatorStateInfo _curAnimInfo;
     protected Coroutine _AttackCoroutine;
@@ -137,10 +134,10 @@ public class CreatureController : MonoBehaviour
 
     private void OnEnable()
     {
-        Init();
+        Init().Forget();
     }
 
-    protected virtual void Init()
+    protected virtual async UniTask Init()
     {
         // 왜 MyPlayerController에서 Run으로 설정하면 첫 애니가 적용이 안되는지 아직 의문
         if (gameObject.tag == "Player")
@@ -151,6 +148,8 @@ public class CreatureController : MonoBehaviour
         _animator = GetComponent<Animator>();
         DeadFlag = false;
         UpdateAnimation();
+
+        await UniTask.WaitUntil(() => Managers.Data.GameDataReady);
     }
 
     protected virtual void Move(float endPosX, float moveSpeed)
@@ -329,8 +328,6 @@ public class CreatureController : MonoBehaviour
         StatInfo.HP -= damage;
         StatInfo.HP = Mathf.Max(StatInfo.HP, 0);
         //Debug.Log($"{gameObject.tag}, {StatInfo.HP}");
-
-        UpdateDict();
 
         if (StatInfo.HP <= 0)
             State = Define.State.Death;

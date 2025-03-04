@@ -54,7 +54,7 @@ public class FirebaseManager
             {
                 auth = FirebaseAuth.DefaultInstance;
                 dbReference = FirebaseDatabase.DefaultInstance.RootReference;
-                Managers.FirebaseData.Init();
+                Managers.Data.FirebaseData.Init();
 
                 //AddToInformation("Firebase is initialized successfully.");
                 Debug.Log("Firebase is initialized successfully.");
@@ -161,7 +161,7 @@ public class FirebaseManager
             if (auth.CurrentUser != null)
             {
                 //AddToInformation("User is signed in: " + auth.CurrentUser.DisplayName);
-                Managers.FirebaseData.LoadGameData();  // 사용자 데이터 로드
+                //Managers.FirebaseData.LoadGameData();  // 사용자 데이터 로드
             }
             else
             {

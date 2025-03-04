@@ -11,7 +11,12 @@ public class HUD : UI_Base
     Slider _slider;
     TextMeshProUGUI _Text;
 
-    void Awake()
+    private void Start()
+    {
+        Init();
+    }
+
+    public override void Init()
     {
         _slider = GetComponent<Slider>();
         _Text = GetComponent<TextMeshProUGUI>();
@@ -31,10 +36,5 @@ public class HUD : UI_Base
                 _slider.value = curHP / maxHP;
                 break;
         }
-    }
-
-    public override void Init()
-    {
-        
     }
 }

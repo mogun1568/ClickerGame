@@ -18,21 +18,21 @@ namespace Data
         public int statIncreasePrice;
     }
 
-    [Serializable]
-    public class StatData : ILoader<string, Stat>
-    {
-        public List<Stat> stats = new List<Stat>();
+    //[Serializable]
+    //public class StatData : ILoader<string, Stat>
+    //{
+    //    public List<Stat> stats = new List<Stat>();
 
-        public Dictionary<string, Stat> MakeDict()
-        {
-            Dictionary<string, Stat> dict = new Dictionary<string, Stat>();
-            foreach (Stat stat in stats)
-            {
-                dict.Add(stat.statType, stat);
-            }
-            return dict;
-        }
-    }
+    //    public Dictionary<string, Stat> MakeDict()
+    //    {
+    //        Dictionary<string, Stat> dict = new Dictionary<string, Stat>();
+    //        foreach (Stat stat in stats)
+    //        {
+    //            dict.Add(stat.statType, stat);
+    //        }
+    //        return dict;
+    //    }
+    //}
     #endregion
 
     #region Enemy
@@ -49,20 +49,40 @@ namespace Data
         public int enemyCoin;
     }
 
+    //[Serializable]
+    //public class EnemyData : ILoader<string, Enemy>
+    //{
+    //    public List<Enemy> enemys = new List<Enemy>();
+
+    //    public Dictionary<string, Enemy> MakeDict()
+    //    {
+    //        Dictionary<string, Enemy> dict = new Dictionary<string, Enemy>();
+    //        foreach (Enemy enemy in enemys)
+    //        {
+    //            dict.Add(enemy.enemyName, enemy);
+    //        }
+    //        return dict;
+    //    }
+    //}
+    #endregion
+
+    #region Game
     [Serializable]
-    public class EnemyData : ILoader<string, Enemy>
+    public class GameData
     {
+        public List<Stat> stats = new List<Stat>();
         public List<Enemy> enemys = new List<Enemy>();
 
-        public Dictionary<string, Enemy> MakeDict()
+        public Dictionary<string, T> MakeDict<T>(List<T> dataList, Func<T, string> keySelector)
         {
-            Dictionary<string, Enemy> dict = new Dictionary<string, Enemy>();
-            foreach (Enemy enemy in enemys)
+            Dictionary<string, T> dict = new Dictionary<string, T>();
+            foreach (var data in dataList)
             {
-                dict.Add(enemy.enemyName, enemy);
+                dict[keySelector(data)] = data;
             }
             return dict;
         }
+
     }
     #endregion
 }

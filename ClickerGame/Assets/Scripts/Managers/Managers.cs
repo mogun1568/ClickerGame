@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Cysharp.Threading.Tasks;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,11 +11,9 @@ public class Managers : MonoBehaviour
     #region Contents
     GameManager _game = new GameManager();
     FirebaseManager _firebase = new FirebaseManager();
-    FirebaseDataManager _firebaseData = new FirebaseDataManager();
 
     public static GameManager Game { get { return Instance._game; } }
     public static FirebaseManager Firebase { get { return Instance._firebase; } }
-    public static FirebaseDataManager FirebaseData { get { return Instance._firebaseData; } }
     #endregion
 
     #region Core
@@ -35,7 +34,7 @@ public class Managers : MonoBehaviour
     public static UIManager UI { get { return Instance._ui; } }
     #endregion
 
-    void Awake()
+    void Start()
     {
         Init();
     }
@@ -59,11 +58,10 @@ public class Managers : MonoBehaviour
             DontDestroyOnLoad(go);
             s_instance = go.GetComponent<Managers>();
 
-            s_instance._data.Init();
+            s_instance._firebase.Init();
+            s_instance._data.Init().Forget();
             s_instance._pool.Init();
             s_instance._sound.Init();
-            s_instance._firebase.Init();
-            //s_instance._firebaseData.Init();
         }
     }
 

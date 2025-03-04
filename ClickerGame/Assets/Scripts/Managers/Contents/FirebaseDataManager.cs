@@ -1,17 +1,8 @@
+using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Firebase.Auth;
 using Firebase.Database;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
-
-// 게임 데이터 모델
-[Serializable]
-public class GameData
-{
-    public Dictionary<string, List<Data.Stat>> stats = new Dictionary<string, List<Data.Stat>>();
-    public Dictionary<string, List<Data.Enemy>> enemys = new Dictionary<string, List<Data.Enemy>>();
-}
 
 public class FirebaseDataManager
 {
@@ -20,116 +11,144 @@ public class FirebaseDataManager
 
     public void Init()
     {
-        auth = Managers.Firebase.auth;
-        dbReference = Managers.Firebase.dbReference;
+        auth = FirebaseAuth.DefaultInstance;
+        dbReference = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
-    private bool CheckFirebase()
+    // 전체 데이터 불러오기
+    public async UniTask<Data.GameData> LoadGameData()
     {
-        if (auth == null || dbReference == null)
+        FirebaseUser user = auth.CurrentUser;
+        if (user == null) return null;
+
+        string userId = user.UserId;
+
+        try
         {
-            //AddToInformation("Firebase is not initialized properly.");
-            return false;
+            DataSnapshot snapshot = await dbReference.Child("users").Child(userId).GetValueAsync().AsUniTask();
+            if (snapshot.Exists)
+            {
+                string json = snapshot.GetRawJsonValue();
+                Data.GameData gameData = JsonUtility.FromJson<Data.GameData>(json);
+                Debug.Log("Game data loaded successfully.");
+                return gameData;
+            }
+            else
+            {
+                Debug.LogWarning("No game data found.");
+                return null;
+            }
         }
-        return true;
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Failed to load game data: {e.Message}");
+            return null;
+        }
     }
 
     // 전체 데이터 저장 (덮어쓰기)
-    public void SaveGameData(GameData data)
+    public async UniTask SaveGameData(Data.GameData data)
     {
-        if (!CheckFirebase()) return;
         FirebaseUser user = auth.CurrentUser;
-        if (user == null)
-        {
-            //AddToInformation("Login required.");
-            return;
-        }
+        if (user == null) return;
 
         string userId = user.UserId;
         string jsonData = JsonUtility.ToJson(data);
 
-        dbReference.Child("users").Child(userId).SetRawJsonValueAsync(jsonData).ContinueWith(task =>
+        try
         {
-            //if (task.IsCompletedSuccessfully)
-            //    AddToInformation("Game data saved successfully.");
-            //else
-            //    AddToInformation("Failed to save game data: " + task.Exception);
-        });
+            await dbReference.Child("users").Child(userId).SetRawJsonValueAsync(jsonData).AsUniTask();
+            Debug.Log("Game data saved successfully.");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Failed to save game data: {e.Message}");
+        }
     }
 
-    // 특정 스탯 저장
-    public void SaveStat(string playerId, Data.Stat stat)
+    // 특정 스탯 업데이트 (일부 필드만 수정)
+    public async UniTask UpdateStat(string statType, Dictionary<string, object> newValues)
     {
-        if (!CheckFirebase()) return;
         FirebaseUser user = auth.CurrentUser;
-        if (user == null)
-        {
-            //AddToInformation("Login required.");
-            return;
-        }
+        if (user == null) return;
 
         string userId = user.UserId;
-        string jsonStat = JsonUtility.ToJson(stat);
 
-        dbReference.Child("users").Child(userId).Child("stats").Child(playerId).Push().SetRawJsonValueAsync(jsonStat)
-            .ContinueWith(task =>
-            {
-                //if (task.IsCompletedSuccessfully)
-                //    AddToInformation("Stat saved successfully.");
-                //else
-                //    AddToInformation("Failed to save stat: " + task.Exception);
-            });
-    }
-
-    // 특정 적 데이터 저장
-    public void SaveEnemy(string playerId, Data.Enemy enemy)
-    {
-        if (!CheckFirebase()) return;
-        FirebaseUser user = auth.CurrentUser;
-        if (user == null)
+        try
         {
-            //AddToInformation("Login required.");
-            return;
-        }
-
-        string userId = user.UserId;
-        string jsonEnemy = JsonUtility.ToJson(enemy);
-
-        dbReference.Child("users").Child(userId).Child("enemys").Child(playerId).Push().SetRawJsonValueAsync(jsonEnemy)
-            .ContinueWith(task =>
+            Dictionary<string, object> updates = new Dictionary<string, object>();
+            foreach (var kvp in newValues)
             {
-                //if (task.IsCompletedSuccessfully)
-                //    AddToInformation("Enemy saved successfully.");
-                //else
-                //    AddToInformation("Failed to save enemy: " + task.Exception);
-            });
-    }
-
-    // 전체 데이터 불러오기
-    public void LoadGameData()
-    {
-        if (!CheckFirebase()) return;
-        FirebaseUser user = auth.CurrentUser;
-        if (user == null)
-        {
-            //AddToInformation("Login required.");
-            return;
-        }
-
-        string userId = user.UserId;
-        dbReference.Child("users").Child(userId).GetValueAsync().ContinueWith(task =>
-        {
-            if (task.IsCompletedSuccessfully && task.Result.Exists)
-            {
-                string json = task.Result.GetRawJsonValue();
-                GameData gameData = JsonUtility.FromJson<GameData>(json);
-                //AddToInformation("Game data loaded successfully.");
+                updates[$"{statType}/{kvp.Key}"] = kvp.Value;
             }
-            else
+
+            await dbReference.Child("users").Child(userId).Child("stats").UpdateChildrenAsync(updates).AsUniTask();
+            Debug.Log($"Stat '{statType}' updated successfully.");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Failed to update stat '{statType}': {e.Message}");
+        }
+    }
+
+    // 특정 적 업데이트 (일부 필드만 수정)
+    public async UniTask UpdateAllEnemiesStat(string statName, object newValue)
+    {
+        FirebaseUser user = auth.CurrentUser;
+        if (user == null) return;
+
+        string userId = user.UserId;
+
+        try
+        {
+            DatabaseReference enemiesRef = dbReference.Child("users").Child(userId).Child("enemys");
+            DataSnapshot snapshot = await enemiesRef.GetValueAsync().AsUniTask();
+
+            if (!snapshot.Exists)
             {
-                //AddToInformation("No game data found.");
+                Debug.LogWarning("No enemies found to update.");
+                return;
             }
-        });
+
+            Dictionary<string, object> enemyUpdates = new Dictionary<string, object>();
+            foreach (DataSnapshot enemy in snapshot.Children)
+            {
+                enemyUpdates[$"{enemy.Key}/{statName}"] = newValue;
+            }
+
+            await enemiesRef.UpdateChildrenAsync(enemyUpdates).AsUniTask();
+            Debug.Log($"Updated '{statName}' for all enemies successfully.");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Failed to update '{statName}' for all enemies: {e.Message}");
+        }
+    }
+
+    // 적 추가 (Push 키 활용)
+    public void AddNewEnemy(Data.Enemy newEnemy)
+    {
+        FirebaseUser user = auth.CurrentUser;
+        if (user == null) return;
+
+        string userId = user.UserId;
+
+        AddNewEnemyAsync(userId, newEnemy).Forget(); // async 사용 안 하고 호출 가능
+    }
+
+    private async UniTask AddNewEnemyAsync(string userId, Data.Enemy newEnemy)
+    {
+        try
+        {
+            DatabaseReference enemiesRef = dbReference.Child("users").Child(userId).Child("enemys");
+            string enemyKey = enemiesRef.Push().Key; // 고유 키 생성
+            await enemiesRef.Child(enemyKey).SetValueAsync(newEnemy).AsUniTask(); // 비동기 저장
+
+            Debug.Log($"Enemy '{newEnemy.enemyName}' added successfully.");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Failed to add enemy: {e.Message}");
+        }
     }
 }
-

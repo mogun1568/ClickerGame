@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -31,15 +32,25 @@ public class StatLevelUpButton : UI_Base
     private float _statIncreaseValue;
     private int _statIncreasePrice;
 
+    private void Start()
+    {
+        Init();
+        DataInit().Forget();
+    }
 
-    private void Awake()
+    public override void Init()
     {
         Bind<Button>(typeof(Buttons));
         Bind<Image>(typeof(Images));
         Bind<TextMeshProUGUI>(typeof(Texts));
 
         // Bind를 Button을로 했기 때문에 GetObject로 안됨
-        BindEvent(GetButton((int)Buttons.LevelUp_Button).gameObject, (PointerEventData data) => { StatUpdate(); }, Define.UIEvent.Click);
+        BindEvent(GetButton((int)Buttons.LevelUp_Button).gameObject, (PointerEventData data) => { StatUpdate(); }, Define.UIEvent.Click); 
+    }
+
+    private async UniTask DataInit()
+    {
+        await UniTask.WaitUntil(() => Managers.Data.GameDataReady);
 
         _statDict = Managers.Data.MyPlayerStatDict;
         _statName = gameObject.name;
@@ -89,8 +100,9 @@ public class StatLevelUpButton : UI_Base
                 break;
         }
 
-        Managers.Game.MyPlayer.UpdateDict();
         DetailStatUpdate();
+        Managers.Data.UpdateDict(_statName);
+        HUDUpdate();
     }
 
     private bool CheckCoin()
@@ -107,8 +119,6 @@ public class StatLevelUpButton : UI_Base
     {
         _statDict[_statName].statLevel++;
         _statDict[_statName].statPrice += _statIncreasePrice;
-
-        HUDUpdate();
     }
 
     private void HUDUpdate()
@@ -116,10 +126,5 @@ public class StatLevelUpButton : UI_Base
         GetText((int)Texts.Text_StatLevel).text = _statDict[_statName].statLevel.ToString();
         GetText((int)Texts.Text_StatValue).text = _statDict[_statName].statValue.ToString();
         GetText((int)Texts.Text_StatPrice).text = _statDict[_statName].statPrice.ToString();
-    }
-
-    public override void Init()
-    {
-        
     }
 }

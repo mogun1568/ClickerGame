@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,9 +10,9 @@ public class EnemyController : CreatureController
     private Tween deadMoveTween;
     private Data.Enemy _enemyStat;
 
-    protected override void Init()
+    protected override async UniTask Init()
     {
-        base.Init();
+        await base.Init();
 
         // (Clone)을 수정하기 전에 호출됨
         string goName = gameObject.name;
@@ -111,7 +112,7 @@ public class EnemyController : CreatureController
 
     protected override void UpdateAttacking()
     {
-        base.UpdateHurt();
+        base.UpdateAttacking();
         _AttackCoroutine = StartCoroutine(CheckAnimationTime(0.5f, StatInfo.ATK));
     }
 
@@ -123,7 +124,7 @@ public class EnemyController : CreatureController
         //Debug.Log(Managers.Game._enemyCount);
 
         Managers.Game.MyPlayer.StatInfo.Coin += StatInfo.Coin;
-        Managers.Game.MyPlayer.UpdateDict();
+        Managers.Data.UpdateDict("Coin");
         Debug.Log(Managers.Game.MyPlayer.StatInfo.Coin);
 
         DeadMove(-7f, _moveSpeed);

@@ -14,7 +14,12 @@ public class TapUI : UI_Base
     private TextMeshProUGUI _text;
     private Color _open, _close;
 
-    private void Awake()
+    private void Start()
+    {
+        Init();
+    }
+
+    public override void Init()
     {
         _tapGroup = GetComponentInParent<TapGroup>();
         _text = GetComponent<TextMeshProUGUI>();
@@ -41,10 +46,5 @@ public class TapUI : UI_Base
     {
         _text.color = _close;
         GetObject((int)GameObjects.Tap_Focus).SetActive(false);
-    }
-
-    public override void Init()
-    {
-        
     }
 }

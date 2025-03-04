@@ -21,18 +21,18 @@ public class TapGroup : UI_Base
     public TapUI _curTapMenu;
     private GameObject _curTap;
 
-    private void Awake()
+    private void Start()
+    {
+        Init();
+    }
+
+    public override void Init()
     {
         Bind<GameObject>(typeof(GameObjects));
 
         _curTapMenu = GetObject((int)GameObjects.TapMenu_Stat).GetComponent<TapUI>();
         _curTap = GetObject((int)GameObjects.Tap_Stat);
 
-        Init();
-    }
-
-    public override void Init()
-    {
         GetObject((int)GameObjects.TapMenu_Skill).GetComponent<TapUI>().CloseTap();
         GetObject((int)GameObjects.TapMenu_Inventory).GetComponent<TapUI>().CloseTap();
         GetObject((int)GameObjects.TapMenu_Shop).GetComponent<TapUI>().CloseTap();

@@ -1,49 +1,154 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public interface ILoader<Key, Value>
-{
-    Dictionary<Key, Value> MakeDict();
-}
+//public interface ILoader<Key, Value>
+//{
+//    Dictionary<Key, Value> MakeDict();
+//}
 
 public class DataManager
 {
     public Dictionary<string, Data.Stat> MyPlayerStatDict { get; private set; } = new Dictionary<string, Data.Stat>();
     public Dictionary<string, Data.Enemy> EnemyDict { get; private set; } = new Dictionary<string, Data.Enemy>();
-    
+
+    public LocalDataManager LocalData { get; private set; } = new LocalDataManager();
+    public FirebaseDataManager FirebaseData { get; private set; } = new FirebaseDataManager();
+
     private string _path;
 
-    public void Init()
+    private bool _isLogIn = false;
+
+    public bool GameDataReady { get; private set; } = false;
+
+    //public void Init()
+    //{
+    //    _path = Application.persistentDataPath;
+    //    MyPlayerStatDict = LoadJson<Data.StatData, string, Data.Stat>("MyPlayerStatData").MakeDict();
+    //    EnemyDict = LoadJson<Data.EnemyData, string, Data.Enemy>("EnemyData").MakeDict();
+    //}
+
+    //// 이 부분 잘 모르겠음
+    //Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>
+    //{
+    //    //string textAsset = File.ReadAllText(Path.Combine(_path, $"{path}.json"));
+    //    TextAsset textAsset = Managers.Resource.Load<TextAsset>($"Data/{path}");
+    //    return JsonUtility.FromJson<Loader>(textAsset.text);
+    //}
+
+    //// SaveJson<Loader, Key, Value>(Loader data, string path)
+    //public void SaveJson<T>(T data, string path)
+    //{
+    //    // 객체를 JSON 문자열로 변환
+    //    string jsonString = JsonUtility.ToJson(data, true);
+
+    //    // 저장할 파일 경로 설정
+    //    //string filePath = Path.Combine(Application.persistentDataPath, $"{path}.json");
+    //    string filePath = Path.Combine(Application.dataPath, $"Resources/Data/{path}.json");
+
+    //    // JSON 파일로 저장
+    //    File.WriteAllText(filePath, jsonString);
+
+    //    //Debug.Log($"JSON 저장 완료: {filePath}");
+    //}
+
+    public async UniTask Init()
     {
-        MyPlayerStatDict = LoadJson<Data.StatData, string, Data.Stat>("MyPlayerStatData").MakeDict();
-        EnemyDict = LoadJson<Data.EnemyData, string, Data.Enemy>("EnemyData").MakeDict();
-        _path = Application.persistentDataPath;
+        //_path = Path.Combine(Application.persistentDataPath, "GameData.json");
+        _path = "GameData";
+
+        Data.GameData gameData = await LoadGameData();
+        MyPlayerStatDict = gameData.MakeDict(gameData.stats, stat => stat.statType);
+        EnemyDict = gameData.MakeDict(gameData.enemys, enemy => enemy.enemyName);
+        GameDataReady = true;
     }
 
-    // 이 부분 잘 모르겠음
-    Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>
+    public async UniTask<Data.GameData> LoadGameData()
     {
-        //string textAsset = File.ReadAllText(Path.Combine(_path, $"{path}.json"));
-        TextAsset textAsset = Managers.Resource.Load<TextAsset>($"Data/{path}");
-        return JsonUtility.FromJson<Loader>(textAsset.text);
+        Data.GameData gameData = null;
+
+        if (_isLogIn)
+        {
+            gameData = await FirebaseData.LoadGameData();
+            if (gameData != null)
+                return gameData;
+            else
+                Debug.Log("Firebase 데이터가 없어서 기본 로컬 데이터 로드!");
+        }
+
+        gameData = LocalData.LoadLocalData<Data.GameData>(_path);
+        if (gameData != null)
+            return gameData;
+
+        Debug.Log("저장된 데이터가 없습니다. 기본 데이터를 생성합니다.");
+        gameData = LocalData.CreateDefaultGameData();
+        if (gameData != null)
+        {
+            SaveGameData(gameData);
+            return gameData;
+        }
+
+        Debug.LogWarning("기본 데이터 생성을 실패했습니다.");
+        return null;
     }
 
-    // SaveJson<Loader, Key, Value>(Loader data, string path)
-    public void SaveJson<T>(T data, string path)
+
+    public void SaveGameData(Data.GameData data)
     {
-        // 객체를 JSON 문자열로 변환
-        string jsonString = JsonUtility.ToJson(data, true);
+        if (_isLogIn)
+        {
+            FirebaseData.SaveGameData(data).Forget();  // UniTask 변환
+        }
+        else
+        {
+            LocalData.SaveLocalData(data, "GameDataTest");  // 로컬 저장
+        }
+    }
 
-        // 저장할 파일 경로 설정
-        //string filePath = Path.Combine(Application.persistentDataPath, $"{path}.json");
-        string filePath = Path.Combine(Application.dataPath, $"Resources/Data/{path}.json");
+    public void UpdateDict(string statType = "")
+    {
+        if (_isLogIn)
+        {
+            if (statType == "")
+                SaveGameData(ReturnGameData());
+            //else
+            //    FirebaseData.UpdateStat();
+        }
+        else
+        {
+            SaveGameData(ReturnGameData());
+        }
+    }
 
-        // JSON 파일로 저장
-        File.WriteAllText(filePath, jsonString);
+    public Data.GameData ReturnGameData()
+    {
+        return new Data.GameData
+        {
+            stats = UpdateStats(Managers.Game.MyPlayer),
+            enemys = UpdateEnemys()
+        };
+    }
 
-        //Debug.Log($"JSON 저장 완료: {filePath}");
+    private List<Data.Stat> UpdateStats(MyPlayerController _myPlayer)
+    {
+        MyPlayerStatDict["Coin"].statValue = _myPlayer.StatInfo.Coin;
+        MyPlayerStatDict["MaxHP"].statValue = _myPlayer.MaxHP;
+        MyPlayerStatDict["HP"].statValue = _myPlayer.HP;
+        MyPlayerStatDict["Regeneration"].statValue = _myPlayer.Regeneration;
+        MyPlayerStatDict["ATK"].statValue = _myPlayer.StatInfo.ATK;
+        MyPlayerStatDict["DEF"].statValue = _myPlayer.StatInfo.DEF;
+        MyPlayerStatDict["AttackSpeed"].statValue = _myPlayer.AttackSpeed;
+        MyPlayerStatDict["Range"].statValue = _myPlayer.StatInfo.Range;
+
+        return new List<Data.Stat>(Managers.Data.MyPlayerStatDict.Values);
+    }
+
+    private List<Data.Enemy> UpdateEnemys()
+    {
+        // 몬스터 체력이나 공격력을 플레이어의 스탯에 따라 변화하게 할 지
+        // 아니면 시간? 라운드? 등에 따라 다르게 할 지 고민 중
+
+        return new List<Data.Enemy>(Managers.Data.EnemyDict.Values);
     }
 }
