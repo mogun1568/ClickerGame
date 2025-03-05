@@ -106,14 +106,25 @@ public class DataManager
         }
     }
 
+    private void UpdateStat(string statType)
+    {
+        Dictionary<string, object> StatValues = new Dictionary<string, object>
+        {
+            { "statValue", MyPlayerStatDict[statType].statValue },
+            { "statLevel", MyPlayerStatDict[statType].statLevel },
+            { "statPrice", MyPlayerStatDict[statType].statPrice }
+        };
+        FirebaseData.UpdateStat("Speed", StatValues).Forget();
+    }
+
     public void UpdateDict(string statType = "")
     {
         if (_isLogIn)
         {
             if (statType == "")
                 SaveGameData(ReturnGameData());
-            //else
-            //    FirebaseData.UpdateStat();
+            else
+                UpdateStat(statType);
         }
         else
         {

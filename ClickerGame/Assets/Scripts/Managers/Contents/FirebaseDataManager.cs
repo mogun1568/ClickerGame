@@ -67,7 +67,7 @@ public class FirebaseDataManager
     }
 
     // 특정 스탯 업데이트 (일부 필드만 수정)
-    public async UniTask UpdateStat(string statType, Dictionary<string, object> newValues)
+    public async UniTask UpdateStat(string statType, Dictionary<string, object> statValues)
     {
         FirebaseUser user = auth.CurrentUser;
         if (user == null) return;
@@ -77,7 +77,7 @@ public class FirebaseDataManager
         try
         {
             Dictionary<string, object> updates = new Dictionary<string, object>();
-            foreach (var kvp in newValues)
+            foreach (var kvp in statValues)
             {
                 updates[$"{statType}/{kvp.Key}"] = kvp.Value;
             }

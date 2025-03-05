@@ -5,7 +5,7 @@
             "statIcon": "",
             "statLevel": 0,
             "statName": "",
-            "statValue": 9458.0,
+            "statValue": 10038.0,
             "statIncreaseValue": 0.0,
             "statPrice": 0,
             "statIncreasePrice": 0
@@ -13,11 +13,11 @@
         {
             "statType": "MaxHP",
             "statIcon": "HPIcon",
-            "statLevel": 7,
+            "statLevel": 2,
             "statName": "최대 체력",
-            "statValue": 160.0,
+            "statValue": 110.0,
             "statIncreaseValue": 10.0,
-            "statPrice": 7,
+            "statPrice": 2,
             "statIncreasePrice": 1
         },
         {
@@ -25,7 +25,7 @@
             "statIcon": "HPIcon",
             "statLevel": 0,
             "statName": "체력",
-            "statValue": 148.0,
+            "statValue": 53.0,
             "statIncreaseValue": 0.0,
             "statPrice": 0,
             "statIncreasePrice": 0
@@ -33,31 +33,31 @@
         {
             "statType": "Regeneration",
             "statIcon": "RegenerationIcon",
-            "statLevel": 10,
+            "statLevel": 2,
             "statName": "자연 회복",
-            "statValue": 19.0,
+            "statValue": 11.0,
             "statIncreaseValue": 1.0,
-            "statPrice": 91,
+            "statPrice": 11,
             "statIncreasePrice": 10
         },
         {
             "statType": "ATK",
             "statIcon": "ATKIcon",
-            "statLevel": 13,
+            "statLevel": 2,
             "statName": "공격력",
-            "statValue": 16.0,
+            "statValue": 10.5,
             "statIncreaseValue": 0.5,
-            "statPrice": 17,
+            "statPrice": 6,
             "statIncreasePrice": 1
         },
         {
             "statType": "DEF",
             "statIcon": "DEFIcon",
-            "statLevel": 8,
+            "statLevel": 2,
             "statName": "방어력",
-            "statValue": 4.5,
+            "statValue": 1.5,
             "statIncreaseValue": 0.5,
-            "statPrice": 12,
+            "statPrice": 6,
             "statIncreasePrice": 1
         },
         {
