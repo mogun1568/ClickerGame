@@ -21,7 +21,7 @@ public class TapGroup : UI_Base
     public TapUI _curTapMenu;
     private GameObject _curTap;
 
-    private void Start()
+    private void Awake()
     {
         Init();
     }
@@ -33,9 +33,9 @@ public class TapGroup : UI_Base
         _curTapMenu = GetObject((int)GameObjects.TapMenu_Stat).GetComponent<TapUI>();
         _curTap = GetObject((int)GameObjects.Tap_Stat);
 
-        GetObject((int)GameObjects.TapMenu_Skill).GetComponent<TapUI>().CloseTap();
-        GetObject((int)GameObjects.TapMenu_Inventory).GetComponent<TapUI>().CloseTap();
-        GetObject((int)GameObjects.TapMenu_Shop).GetComponent<TapUI>().CloseTap();
+        GetObject((int)GameObjects.TapMenu_Skill).GetComponent<TapUI>();
+        GetObject((int)GameObjects.TapMenu_Inventory).GetComponent<TapUI>();
+        GetObject((int)GameObjects.TapMenu_Shop).GetComponent<TapUI>();
         GetObject((int)GameObjects.Tap_Skill).SetActive(false);
         GetObject((int)GameObjects.Tap_Inventory).SetActive(false);
         GetObject((int)GameObjects.Tap_Shop).SetActive(false);

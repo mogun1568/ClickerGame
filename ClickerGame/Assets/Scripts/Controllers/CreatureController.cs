@@ -162,7 +162,21 @@ public class CreatureController : MonoBehaviour
         if (DeadFlag)
             return;
 
+        // _targetTag가 null일 수가 있나?
+        if (string.IsNullOrEmpty(_targetTag))
+        {
+            _target = null;
+            return;
+        }
+
         GameObject[] targets = GameObject.FindGameObjectsWithTag(_targetTag);
+
+        if (targets.Length == 0)
+        {
+            _target = null;
+            return;
+        }
+
         GameObject nearestTarget = null;
 
         foreach (GameObject target in targets)
@@ -179,10 +193,12 @@ public class CreatureController : MonoBehaviour
             }
         }
 
-        if (nearestTarget != null)
-            _target = nearestTarget;
-        else
-            _target = null;
+        _target = nearestTarget;
+
+        //if (nearestTarget != null)
+        //    _target = nearestTarget;
+        //else
+        //    _target = null;
     }
 
     protected virtual void Update()

@@ -14,7 +14,7 @@ public class TapUI : UI_Base
     private TextMeshProUGUI _text;
     private Color _open, _close;
 
-    private void Start()
+    private void Awake()
     {
         Init();
     }
@@ -29,6 +29,10 @@ public class TapUI : UI_Base
         Bind<GameObject>(typeof(GameObjects));
         // UI 핸들러로 이벤트를 탐지해서 작동하는 방식으로 Button 컴포넌트와 상관없음
         BindEvent(gameObject, (PointerEventData data) => { ClickTap(); }, Define.UIEvent.Click);
+
+        // TapGroup이 TapUI보다 먼저 Init되서 생기는 문제 때문에 아래로 임시
+        if (gameObject.name != "TapMenu_Stat")
+            CloseTap();
     }
 
     private void ClickTap()
