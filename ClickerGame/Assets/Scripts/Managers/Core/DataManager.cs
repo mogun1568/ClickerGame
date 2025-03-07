@@ -10,15 +10,37 @@ using UnityEngine;
 
 public class DataManager
 {
+    #region Datas
+    private LocalDataManager _localData;
+    private FirebaseDataManager _firebaseData;
+
+    public LocalDataManager LocalData
+    {
+        get
+        {
+            if (_localData == null)  // 처음 접근할 때만 생성
+                _localData = new LocalDataManager();
+            return _localData;
+        }
+    }
+
+    public FirebaseDataManager FirebaseData
+    {
+        get
+        {
+            if (_firebaseData == null)  // 처음 접근할 때만 생성
+                _firebaseData = new FirebaseDataManager();
+            return _firebaseData;
+        }
+    }
+    #endregion
+
     public Dictionary<string, Data.Stat> MyPlayerStatDict { get; private set; } = new Dictionary<string, Data.Stat>();
     public Dictionary<string, Data.Enemy> EnemyDict { get; private set; } = new Dictionary<string, Data.Enemy>();
 
-    public LocalDataManager LocalData { get; private set; } = new LocalDataManager();
-    public FirebaseDataManager FirebaseData { get; private set; } = new FirebaseDataManager();
-
     private string _path;
 
-    private bool _isLogIn = false;
+    public bool IsLogIn { get; private set; } = false;
 
     public bool GameDataReady { get; private set; } = false;
 
@@ -58,6 +80,7 @@ public class DataManager
         //_path = Path.Combine(Application.persistentDataPath, "GameData.json");
         _path = "GameData";
 
+        await UniTask.WaitUntil(() => Managers.Firebase.CheckFirebaseDone);
         Data.GameData gameData = await LoadGameData();
         MyPlayerStatDict = gameData.MakeDict(gameData.stats, stat => stat.statType);
         EnemyDict = gameData.MakeDict(gameData.enemys, enemy => enemy.enemyName);
@@ -68,7 +91,7 @@ public class DataManager
     {
         Data.GameData gameData = null;
 
-        if (_isLogIn)
+        if (Managers.Firebase.IsLogIn)
         {
             gameData = await FirebaseData.LoadGameData();
             if (gameData != null)
@@ -96,7 +119,7 @@ public class DataManager
 
     public void SaveGameData(Data.GameData data)
     {
-        if (_isLogIn)
+        if (Managers.Firebase.IsLogIn)
         {
             FirebaseData.SaveGameData(data).Forget();  // UniTask 변환
         }
@@ -119,7 +142,7 @@ public class DataManager
 
     public void UpdateDict(string statType = "")
     {
-        if (_isLogIn)
+        if (Managers.Firebase.IsLogIn)
         {
             if (statType == "")
                 SaveGameData(ReturnGameData());
@@ -161,5 +184,11 @@ public class DataManager
         // 아니면 시간? 라운드? 등에 따라 다르게 할 지 고민 중
 
         return new List<Data.Enemy>(Managers.Data.EnemyDict.Values);
+    }
+
+    public void Clear()
+    {
+        GameDataReady = false;
+        Init().Forget();
     }
 }

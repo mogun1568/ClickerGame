@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -68,6 +69,9 @@ public class Managers : MonoBehaviour
     public static void Clear()
     {
         // Data는 클리어 안해도 됨
+        Data.Clear(); // 원래는 그렇지만 로그인/아웃에 필요, 조건문이 추가될 지도
+
+        DOTween.KillAll();
         Input.Clear();
         Sound.Clear();
         Scene.Clear();

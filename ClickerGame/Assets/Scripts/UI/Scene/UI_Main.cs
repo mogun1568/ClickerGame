@@ -20,6 +20,7 @@ public class UI_Main : UI_Scene
 
     private void OpenMenu()
     {
-        Managers.UI.ShowPopupUI<UI_Login>("Popup_Login");
+        //Managers.UI.ShowPopupUI<UI_Login>("Popup_Login");
+        Managers.Scene.LoadScene(Define.Scene.GamePlay);
     }
 }

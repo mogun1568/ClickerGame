@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -41,6 +42,7 @@ public class UI_Login : UI_Popup
         else
         {
             Managers.Firebase.OnSignOut();
+            // 게임 재시작하면 좋을듯? 
         }
     }
 }

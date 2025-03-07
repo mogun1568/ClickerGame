@@ -16,13 +16,13 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Firebase;
 using Firebase.Auth;
 using Firebase.Database;
 using Google;
 using Unity.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class FirebaseManager
 {
@@ -31,6 +31,9 @@ public class FirebaseManager
     public FirebaseAuth auth;
     public DatabaseReference dbReference;
     private GoogleSignInConfiguration configuration;
+
+    public bool IsLogIn { get; private set; } = false;
+    public bool CheckFirebaseDone { get; private set; } = false;
 
     // Defer the configuration creation until Awake so the web Client ID
     // Can be set via the property inspector in the Editor.
@@ -55,6 +58,7 @@ public class FirebaseManager
                 auth = FirebaseAuth.DefaultInstance;
                 dbReference = FirebaseDatabase.DefaultInstance.RootReference;
                 Managers.Data.FirebaseData.Init();
+                CheckFirebaseDone = true;
 
                 //AddToInformation("Firebase is initialized successfully.");
                 Debug.Log("Firebase is initialized successfully.");
@@ -93,9 +97,11 @@ public class FirebaseManager
             //AddToInformation("No user is signed in.");
             return; // 로그인된 사용자가 없으면 종료
         }
-
+        
         auth.SignOut();
         GoogleSignIn.DefaultInstance.SignOut();
+        IsLogIn = false;
+        Managers.Scene.LoadScene(Define.Scene.GamePlay);
     }
 
     // 안됨
@@ -161,7 +167,8 @@ public class FirebaseManager
             if (auth.CurrentUser != null)
             {
                 //AddToInformation("User is signed in: " + auth.CurrentUser.DisplayName);
-                //Managers.FirebaseData.LoadGameData();  // 사용자 데이터 로드
+                IsLogIn = true;
+                Managers.Scene.LoadScene(Define.Scene.GamePlay);
             }
             else
             {

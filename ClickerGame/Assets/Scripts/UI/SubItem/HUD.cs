@@ -24,6 +24,9 @@ public class HUD : UI_Base
 
     void LateUpdate()
     {
+        if (!Managers.Data.GameDataReady)
+            return;
+
         switch (_type)
         {
             case InfoType.Coin:

@@ -5,7 +5,7 @@
             "statIcon": "",
             "statLevel": 0,
             "statName": "",
-            "statValue": 10010.0,
+            "statValue": 10060.0,
             "statIncreaseValue": 0.0,
             "statPrice": 0,
             "statIncreasePrice": 0
@@ -25,7 +25,7 @@
             "statIcon": "HPIcon",
             "statLevel": 0,
             "statName": "체력",
-            "statValue": 80.0,
+            "statValue": 70.0,
             "statIncreaseValue": 0.0,
             "statPrice": 0,
             "statIncreasePrice": 0

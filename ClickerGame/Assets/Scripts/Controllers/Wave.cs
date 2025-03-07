@@ -22,6 +22,9 @@ public class Wave : MonoBehaviour
 
     private void Update()
     {
+        if (!Managers.Data.GameDataReady)
+            return;
+
         if (_enemyCount > 0)
             return;
 

@@ -9,7 +9,7 @@ public class GameScene : BaseScene
     {
         base.Init();
 
-        SceneType = Define.Scene.Game;
+        SceneType = Define.Scene.GamePlay;
 
         Managers.UI.ShowSceneUI<UI_Main>("MainUI");
 
