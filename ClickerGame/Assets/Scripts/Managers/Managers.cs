@@ -70,12 +70,13 @@ public class Managers : MonoBehaviour
     {
         // Data는 클리어 안해도 됨
         Data.Clear(); // 원래는 그렇지만 로그인/아웃에 필요, 조건문이 추가될 지도
-
-        DOTween.KillAll();
         Input.Clear();
         Sound.Clear();
         Scene.Clear();
         UI.Clear();
         Pool.Clear();
+
+        DOTween.KillAll(true);    // 모든 트윈 강제 종료
+        DOTween.Clear();          // 메모리에서 DOTween 데이터까지 완전 정리
     }
 }

@@ -4,6 +4,13 @@ using UnityEngine;
 
 namespace Data
 {
+    [Serializable]
+    public class Info
+    {
+        public int coin;
+        public long lastTime;
+    }
+
     #region Stat
     [Serializable]
     public class Stat
@@ -70,6 +77,7 @@ namespace Data
     [Serializable]
     public class GameData
     {
+        public Info info = new Info();
         public List<Stat> stats = new List<Stat>();
         public List<Enemy> enemys = new List<Enemy>();
 
@@ -82,7 +90,6 @@ namespace Data
             }
             return dict;
         }
-
     }
     #endregion
 }

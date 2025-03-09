@@ -57,7 +57,7 @@ public class FirebaseManager
             {
                 auth = FirebaseAuth.DefaultInstance;
                 dbReference = FirebaseDatabase.DefaultInstance.RootReference;
-                Managers.Data.FirebaseData.Init();
+                Managers.Data.FirebaseDataInit();
                 CheckFirebaseDone = true;
 
                 //AddToInformation("Firebase is initialized successfully.");

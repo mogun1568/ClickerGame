@@ -23,6 +23,13 @@ public class GameScene : BaseScene
         await UniTask.WaitUntil(() => Managers.Data.GameDataReady);
 
         Managers.UI.ClosePopupUI();
+
+        InvokeRepeating(nameof(SaveLastTime), 10f, 10f);
+    }
+
+    private void SaveLastTime()
+    {
+        Managers.Data.UpdateInfo("LastTime");
     }
 
     public override void Clear()

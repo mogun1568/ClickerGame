@@ -66,6 +66,28 @@ public class FirebaseDataManager
         }
     }
 
+    // 특정 인포 업데이트 (일부 필드만 수정)
+    public async UniTask UpdateInfo(string fieldName, object fieldValue)
+    {
+        FirebaseUser user = auth.CurrentUser;
+        if (user == null) return;
+
+        string userId = user.UserId;
+
+        try
+        {
+            await dbReference.Child("users").Child(userId).Child("info").Child(fieldName)
+                .SetValueAsync(fieldValue).AsUniTask();
+
+            Debug.Log($"Info field '{fieldName}' updated successfully.");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Failed to update info field '{fieldName}': {e.Message}");
+        }
+    }
+
+
     // 특정 스탯 업데이트 (일부 필드만 수정)
     public async UniTask UpdateStat(string statType, Dictionary<string, object> statValues)
     {

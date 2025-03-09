@@ -1,15 +1,9 @@
 {
+  "info": {
+    "coin": 10000,
+    "lastTime": 1741509860
+  },
   "stats": [
-    {
-      "statType": "Coin",
-      "statIcon": "",
-      "statLevel": 0,
-      "statName": "",
-      "statValue": 10000.0,
-      "statIncreaseValue": 0.0,
-      "statPrice": 0,
-      "statIncreasePrice": 0
-    },
     {
       "statType": "MaxHP",
       "statIcon": "HPIcon",

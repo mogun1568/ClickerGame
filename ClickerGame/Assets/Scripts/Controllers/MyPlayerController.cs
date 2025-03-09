@@ -27,7 +27,7 @@ public class MyPlayerController : CreatureController
         //State = Define.State.Run;
 
         _statDict = Managers.Data.MyPlayerStatDict;
-        UpdateStat();
+        UpdateInfoAndStat();
 
         _targetTag = "Enemy";
 
@@ -71,9 +71,11 @@ public class MyPlayerController : CreatureController
             });
     }
 
-    protected override void UpdateStat()
+    protected override void UpdateInfoAndStat()
     {
-        StatInfo.Coin = (int)_statDict["Coin"].statValue;
+        StatInfo.Coin = Managers.Data.MyPlayerInfo.coin;
+
+        //StatInfo.Coin = (int)_statDict["Coin"].statValue;
         MaxHP = _statDict["MaxHP"].statValue;
         HP = _statDict["HP"].statValue;
         Regeneration = _statDict["Regeneration"].statValue;
@@ -151,7 +153,7 @@ public class MyPlayerController : CreatureController
 
         CancelInvoke("Regenerate");
         StatInfo.Coin /= 2;
-        Managers.Data.UpdateDict("Coin");
+        Managers.Data.UpdateInfo("Coin");
     }
 
     protected override IEnumerator DeadAnim(float delay)

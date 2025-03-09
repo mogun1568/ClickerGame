@@ -20,7 +20,7 @@ public class EnemyController : CreatureController
             goName = goName.Substring(0, goName.Length - 7).Trim();
 
         _enemyStat = Managers.Data.EnemyDict[goName];
-        UpdateStat();
+        UpdateInfoAndStat();
         StatInfo.AttackCountdown = 0;
 
         _targetTag = "Player";
@@ -31,7 +31,7 @@ public class EnemyController : CreatureController
         Move(-0.5f, _moveSpeed);
     }
 
-    protected override void UpdateStat()
+    protected override void UpdateInfoAndStat()
     {
         MaxHP = _enemyStat.enemyMaxHP;
         HP = _enemyStat.enemyMaxHP;
@@ -124,7 +124,7 @@ public class EnemyController : CreatureController
         //Debug.Log(Managers.Game._enemyCount);
 
         Managers.Game.MyPlayer.StatInfo.Coin += StatInfo.Coin;
-        Managers.Data.UpdateDict("Coin");
+        Managers.Data.UpdateInfo("Coin");
         Debug.Log(Managers.Game.MyPlayer.StatInfo.Coin);
 
         DeadMove(-7f, _moveSpeed);

@@ -117,7 +117,7 @@ public class CreatureController : MonoBehaviour
         }
     }
 
-    protected virtual void UpdateStat()
+    protected virtual void UpdateInfoAndStat()
     {
 
     }
