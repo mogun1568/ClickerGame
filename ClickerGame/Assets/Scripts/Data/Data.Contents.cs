@@ -8,6 +8,7 @@ namespace Data
     public class Info
     {
         public int coin;
+        public float HP;
         public long lastTime;
     }
 

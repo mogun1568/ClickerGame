@@ -90,7 +90,7 @@ public class EnemyController : CreatureController
             .OnComplete(() =>
             {
                 // 이동 완료 시 호출
-                InvokeRepeating("UpdateTarget", 0f, 0.1f);
+                InvokeRepeating(nameof(UpdateTarget), 0f, 0.1f);
                 MoveTween = null;
             });
     }
@@ -124,7 +124,7 @@ public class EnemyController : CreatureController
         //Debug.Log(Managers.Game._enemyCount);
 
         Managers.Game.MyPlayer.StatInfo.Coin += StatInfo.Coin;
-        Managers.Data.UpdateInfo("Coin");
+        Managers.Data.UpdateInfo("Coin", Managers.Game.MyPlayer.StatInfo.Coin);
         Debug.Log(Managers.Game.MyPlayer.StatInfo.Coin);
 
         DeadMove(-7f, _moveSpeed);

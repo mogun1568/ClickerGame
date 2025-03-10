@@ -140,9 +140,7 @@ public class DataManager
     {
         if (Managers.Firebase.IsLogIn)
         {
-            if (infoType == "coin")
-                _firebaseData.UpdateInfo(infoType, MyPlayerInfo.coin).Forget();
-            else if (infoType == "LastTime")
+            if (infoType == "LastTime")
                 _firebaseData.UpdateInfo(infoType, UpdateLastTime()).Forget();
             else
                 _firebaseData.UpdateInfo(infoType, infoValue).Forget();
@@ -179,17 +177,18 @@ public class DataManager
     {
         return new Data.GameData
         {
-            info = SaveInfo(Managers.Game.MyPlayer.StatInfo.Coin),
+            info = SaveInfo(Managers.Game.MyPlayer),
             stats = SaveStats(Managers.Game.MyPlayer),
             enemys = SaveEnemys()
         };
     }
 
-    private Data.Info SaveInfo(int Coin)
+    private Data.Info SaveInfo(MyPlayerController _myPlayer)
     {
         return new Data.Info
         {
-            coin = Coin,
+            coin = _myPlayer.StatInfo.Coin,
+            HP = _myPlayer.HP,
             lastTime = UpdateLastTime()
         };
     }
@@ -197,8 +196,8 @@ public class DataManager
     private List<Data.Stat> SaveStats(MyPlayerController _myPlayer)
     {
         //MyPlayerStatDict["Coin"].statValue = _myPlayer.StatInfo.Coin;
+        //MyPlayerStatDict["HP"].statValue = _myPlayer.HP;
         MyPlayerStatDict["MaxHP"].statValue = _myPlayer.MaxHP;
-        MyPlayerStatDict["HP"].statValue = _myPlayer.HP;
         MyPlayerStatDict["Regeneration"].statValue = _myPlayer.Regeneration;
         MyPlayerStatDict["ATK"].statValue = _myPlayer.StatInfo.ATK;
         MyPlayerStatDict["DEF"].statValue = _myPlayer.StatInfo.DEF;

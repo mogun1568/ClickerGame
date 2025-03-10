@@ -93,18 +93,16 @@ public class CreatureController : MonoBehaviour
         get { return StatInfo.MaxHP; }
         set
         {
-            float previousMaxHP = StatInfo.MaxHP;
+            float increaseAmount = value - StatInfo.MaxHP;
             StatInfo.MaxHP = value;
-
-            float increaseAmount = value - previousMaxHP;
-            HP = Mathf.Min(HP + increaseAmount, StatInfo.MaxHP);
+            HP += increaseAmount;
         }
     }
 
     public virtual float HP
     {
         get { return StatInfo.HP; }
-        set { StatInfo.HP = value; }
+        set { StatInfo.HP = Mathf.Clamp(value, 0, MaxHP); }
     }
 
     public virtual float AttackSpeed
@@ -158,7 +156,7 @@ public class CreatureController : MonoBehaviour
 
     }
 
-    private void UpdateTarget()
+    protected void UpdateTarget()
     {
         if (DeadFlag)
             return;
@@ -314,10 +312,11 @@ public class CreatureController : MonoBehaviour
 
     }
 
+        //_animator = null;
     protected virtual void UpdateDie()
     {
-        //_animator = null;
         _AttackCoroutine = null;
+        CancelInvoke(nameof(UpdateTarget));
 
         _targetTag = null;
         _target = null;
@@ -340,13 +339,18 @@ public class CreatureController : MonoBehaviour
         }
     }
 
+    protected virtual float CalculateDamage(float damage)
+    {
+        float reducedDamage = 100f / (100f + StatInfo.DEF);
+        return damage * reducedDamage;
+    }
+
     protected virtual void Hurt(float damage)
     {
-        StatInfo.HP -= damage;
-        StatInfo.HP = Mathf.Max(StatInfo.HP, 0);
-        //Debug.Log($"{gameObject.tag}, {StatInfo.HP}");
+        HP -= CalculateDamage(damage);
+        //Debug.Log($"{gameObject.tag}, {HP}");
 
-        if (StatInfo.HP <= 0)
+        if (HP <= 0)
             State = Define.State.Death;
         else
             State = Define.State.Hurt;

@@ -34,8 +34,8 @@ public class HUD : UI_Base
                 _Text.text = MyPlayerCoin.ToString("N0");
                 break;
             case InfoType.HP:
-                float curHP = Managers.Game.MyPlayer.StatInfo.HP;
-                float maxHP = Managers.Game.MyPlayer.StatInfo.MaxHP;
+                float curHP = Managers.Game.MyPlayer.HP;
+                float maxHP = Managers.Game.MyPlayer.MaxHP;
                 _slider.value = curHP / maxHP;
                 break;
         }

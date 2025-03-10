@@ -1,57 +1,48 @@
 {
     "info": {
-        "coin": 9844,
-        "lastTime": 1741520450
+        "coin": 10206,
+        "HP": 100.19801330566406,
+        "lastTime": 1741607543
     },
     "stats": [
         {
             "statType": "MaxHP",
             "statIcon": "HPIcon",
-            "statLevel": 8,
+            "statLevel": 3,
             "statName": "최대 체력",
-            "statValue": 170.0,
+            "statValue": 120.0,
             "statIncreaseValue": 10.0,
-            "statPrice": 8,
+            "statPrice": 3,
             "statIncreasePrice": 1
-        },
-        {
-            "statType": "HP",
-            "statIcon": "HPIcon",
-            "statLevel": 0,
-            "statName": "체력",
-            "statValue": 151.0,
-            "statIncreaseValue": 0.0,
-            "statPrice": 0,
-            "statIncreasePrice": 0
         },
         {
             "statType": "Regeneration",
             "statIcon": "RegenerationIcon",
-            "statLevel": 5,
+            "statLevel": 2,
             "statName": "자연 회복",
-            "statValue": 14.0,
+            "statValue": 11.0,
             "statIncreaseValue": 1.0,
-            "statPrice": 41,
+            "statPrice": 11,
             "statIncreasePrice": 10
         },
         {
             "statType": "ATK",
             "statIcon": "ATKIcon",
-            "statLevel": 8,
+            "statLevel": 1,
             "statName": "공격력",
-            "statValue": 13.5,
+            "statValue": 10.0,
             "statIncreaseValue": 0.5,
-            "statPrice": 12,
+            "statPrice": 5,
             "statIncreasePrice": 1
         },
         {
             "statType": "DEF",
             "statIcon": "DEFIcon",
-            "statLevel": 9,
+            "statLevel": 1,
             "statName": "방어력",
-            "statValue": 5.0,
+            "statValue": 1.0,
             "statIncreaseValue": 0.5,
-            "statPrice": 13,
+            "statPrice": 5,
             "statIncreasePrice": 1
         },
         {

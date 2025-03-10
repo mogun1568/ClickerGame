@@ -1,6 +1,7 @@
 {
   "info": {
     "coin": 10000,
+    "HP":  100,
     "lastTime": 1741509860
   },
   "stats": [
@@ -13,16 +14,6 @@
       "statIncreaseValue": 10.0,
       "statPrice": 1,
       "statIncreasePrice": 1
-    },
-    {
-      "statType": "HP",
-      "statIcon": "HPIcon",
-      "statLevel": 0,
-      "statName": "체력",
-      "statValue": 100.0,
-      "statIncreaseValue": 0.0,
-      "statPrice": 0,
-      "statIncreasePrice": 0
     },
     {
       "statType": "Regeneration",

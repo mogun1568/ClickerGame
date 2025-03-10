@@ -34,7 +34,7 @@ public class MyPlayerController : CreatureController
         if (transform.position.x == -2)
         {
             isMove = false;
-            InvokeRepeating("UpdateTarget", 0f, 0.1f);
+            InvokeRepeating(nameof(UpdateTarget), 0f, 0.1f);
         }
         else
         {
@@ -45,7 +45,7 @@ public class MyPlayerController : CreatureController
 
         Managers.Data.UpdateDict();
 
-        InvokeRepeating("Regenerate", 1f, 1f);
+        InvokeRepeating(nameof(Regenerate), 1f, 1f);
     }
 
     protected override void TargetIsNull()
@@ -67,17 +67,18 @@ public class MyPlayerController : CreatureController
             {
                 // 이동 완료 시 호출
                 isMove = false;
-                InvokeRepeating("UpdateTarget", 0f, 0.1f);
+                InvokeRepeating(nameof(UpdateTarget), 0f, 0.1f);
             });
     }
 
     protected override void UpdateInfoAndStat()
     {
         StatInfo.Coin = Managers.Data.MyPlayerInfo.coin;
+        HP = Managers.Data.MyPlayerInfo.HP;
 
         //StatInfo.Coin = (int)_statDict["Coin"].statValue;
+        //HP = _statDict["HP"].statValue;
         MaxHP = _statDict["MaxHP"].statValue;
-        HP = _statDict["HP"].statValue;
         Regeneration = _statDict["Regeneration"].statValue;
         StatInfo.ATK = _statDict["ATK"].statValue;
         StatInfo.DEF = _statDict["DEF"].statValue;
@@ -129,7 +130,7 @@ public class MyPlayerController : CreatureController
 
     public void Regenerate()
     {
-        if (HP + Regeneration > MaxHP)
+        if (HP == MaxHP)
             return;
 
         HP += Regeneration;
@@ -144,16 +145,16 @@ public class MyPlayerController : CreatureController
     protected override void Hurt(float damage)
     {
         base.Hurt(damage);
-        Managers.Data.UpdateDict("HP");
+        Managers.Data.UpdateInfo("HP", HP);
     }
 
     protected override void UpdateDie()
     {
         base.UpdateDie();
 
-        CancelInvoke("Regenerate");
+        CancelInvoke(nameof(Regenerate));
         StatInfo.Coin /= 2;
-        Managers.Data.UpdateInfo("Coin");
+        Managers.Data.UpdateInfo("Coin", StatInfo.Coin);
     }
 
     protected override IEnumerator DeadAnim(float delay)
