@@ -33,17 +33,24 @@ public class LocalDataManager
             stats = new List<Data.Stat>
             {
                 //new Data.Stat { statType = "Coin", statIcon = "", statLevel = 0, statName = "", statValue = 10000.0f, statIncreaseValue = 0.0f, statPrice = 0, statIncreasePrice = 0 },
-                new Data.Stat { statType = "MaxHP", statIcon = "HPIcon", statLevel = 1, statName = "최대 체력", statValue = 100.0f, statIncreaseValue = 10.0f, statPrice = 1, statIncreasePrice = 1 },
-                new Data.Stat { statType = "HP", statIcon = "HPIcon", statLevel = 0, statName = "체력", statValue = 100.0f, statIncreaseValue = 0.0f, statPrice = 0, statIncreasePrice = 0 },
-                new Data.Stat { statType = "Regeneration", statIcon = "RegenerationIcon", statLevel = 1, statName = "자연 회복", statValue = 10.0f, statIncreaseValue = 1.0f, statPrice = 1, statIncreasePrice = 10 },
-                new Data.Stat { statType = "ATK", statIcon = "ATKIcon", statLevel = 1, statName = "공격력", statValue = 10.0f, statIncreaseValue = 0.5f, statPrice = 5, statIncreasePrice = 1 },
-                new Data.Stat { statType = "DEF", statIcon = "DEFIcon", statLevel = 1, statName = "방어력", statValue = 1.0f, statIncreaseValue = 0.5f, statPrice = 5, statIncreasePrice = 1 },
-                new Data.Stat { statType = "AttackSpeed", statIcon = "AttackSpeedIcon", statLevel = 1, statName = "공격 속도", statValue = 1.0f, statIncreaseValue = 0.01f, statPrice = 10, statIncreasePrice = 1 },
-                new Data.Stat { statType = "Range", statIcon = "RangeIcon", statLevel = 1, statName = "공격 범위", statValue = 1.5f, statIncreaseValue = 0.01f, statPrice = 10, statIncreasePrice = 1 }
+                //new Data.Stat { statType = "HP", statIcon = "HPIcon", statLevel = 0, statName = "체력", statValue = 100.0f, statIncreaseValue = 0.0f, statPrice = 0, statIncreasePrice = 0 },
+                new Data.Stat { statType = "MaxHP", statIcon = "HPIcon", statLevel = 1, statName = "최대 체력", 
+                    statValue = 100.0f, statIncreaseValue = 10.0f, statPrice = 1, statIncreasePrice = 1 },
+                new Data.Stat { statType = "Regeneration", statIcon = "RegenerationIcon", statLevel = 1, statName = "자연 회복", 
+                    statValue = 5.0f, statIncreaseValue = 1.0f, statPrice = 10, statIncreasePrice = 10 },
+                new Data.Stat { statType = "ATK", statIcon = "ATKIcon", statLevel = 1, statName = "공격력", 
+                    statValue = 10.0f, statIncreaseValue = 0.5f, statPrice = 1, statIncreasePrice = 2 },
+                new Data.Stat { statType = "DEF", statIcon = "DEFIcon", statLevel = 1, statName = "방어력", 
+                    statValue = 1.0f, statIncreaseValue = 0.5f, statPrice = 10, statIncreasePrice = 10 },
+                new Data.Stat { statType = "AttackSpeed", statIcon = "AttackSpeedIcon", statLevel = 1, statName = "공격 속도", 
+                    statValue = 1.0f, statIncreaseValue = 0.01f, statPrice = 10, statIncreasePrice = 2 },
+                new Data.Stat { statType = "Range", statIcon = "RangeIcon", statLevel = 1, statName = "공격 범위", 
+                    statValue = 1.5f, statIncreaseValue = 0.01f, statPrice = 10, statIncreasePrice = 2 }
             },
             enemys = new List<Data.Enemy>
             {
-                new Data.Enemy { enemyType = "HeavyBandit", enemyName = "HeavyBandit", enemyMaxHP = 30.0f, enemyATK = 10.0f, enemyDEF = 0.0f, enemyAttackSpeed = 1.0f, enemyRange = 1.5f, enemyCoin = 10 }
+                new Data.Enemy { enemyType = "HeavyBandit", enemyName = "HeavyBandit", 
+                    enemyMaxHP = 30.0f, enemyATK = 10.0f, enemyDEF = 0.0f, enemyAttackSpeed = 1.0f, enemyRange = 1.5f, enemyCoin = 10 }
             }
         };
     }

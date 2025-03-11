@@ -20,9 +20,9 @@
       "statIcon": "RegenerationIcon",
       "statLevel": 1,
       "statName": "자연 회복",
-      "statValue": 10.0,
+      "statValue": 5.0,
       "statIncreaseValue": 1.0,
-      "statPrice": 1,
+      "statPrice": 10,
       "statIncreasePrice": 10
     },
     {
@@ -32,8 +32,8 @@
       "statName": "공격력",
       "statValue": 10.0,
       "statIncreaseValue": 0.5,
-      "statPrice": 5,
-      "statIncreasePrice": 1
+      "statPrice": 1,
+      "statIncreasePrice": 2
     },
     {
       "statType": "DEF",
@@ -42,8 +42,8 @@
       "statName": "방어력",
       "statValue": 1.0,
       "statIncreaseValue": 0.5,
-      "statPrice": 5,
-      "statIncreasePrice": 1
+      "statPrice": 10,
+      "statIncreasePrice": 10
     },
     {
       "statType": "AttackSpeed",
@@ -53,7 +53,7 @@
       "statValue": 1.0,
       "statIncreaseValue": 0.01,
       "statPrice": 10,
-      "statIncreasePrice": 1
+      "statIncreasePrice": 2
     },
     {
       "statType": "Range",
@@ -63,7 +63,7 @@
       "statValue": 1.5,
       "statIncreaseValue": 0.01,
       "statPrice": 10,
-      "statIncreasePrice": 1
+      "statIncreasePrice": 2
     }
   ],
   "enemys": [
