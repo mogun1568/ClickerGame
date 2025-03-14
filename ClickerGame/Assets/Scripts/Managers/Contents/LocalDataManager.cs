@@ -28,12 +28,11 @@ public class LocalDataManager
             info = new Data.Info
             {
                 coin = 10000,
+                HP = 100.0f,
                 lastTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
             },
             stats = new List<Data.Stat>
             {
-                //new Data.Stat { statType = "Coin", statIcon = "", statLevel = 0, statName = "", statValue = 10000.0f, statIncreaseValue = 0.0f, statPrice = 0, statIncreasePrice = 0 },
-                //new Data.Stat { statType = "HP", statIcon = "HPIcon", statLevel = 0, statName = "체력", statValue = 100.0f, statIncreaseValue = 0.0f, statPrice = 0, statIncreasePrice = 0 },
                 new Data.Stat { statType = "MaxHP", statIcon = "HPIcon", statLevel = 1, statName = "최대 체력", 
                     statValue = 100.0f, statIncreaseValue = 10.0f, statPrice = 1, statIncreasePrice = 1 },
                 new Data.Stat { statType = "Regeneration", statIcon = "RegenerationIcon", statLevel = 1, statName = "자연 회복", 

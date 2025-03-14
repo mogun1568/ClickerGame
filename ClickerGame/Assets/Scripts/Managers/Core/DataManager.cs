@@ -173,38 +173,29 @@ public class DataManager
             SaveGameData(ReturnGameData());
     }
 
-    public Data.GameData ReturnGameData()
+    private Data.GameData ReturnGameData()
     {
         return new Data.GameData
         {
-            info = SaveInfo(Managers.Game.MyPlayer),
-            stats = SaveStats(Managers.Game.MyPlayer),
+            info = SaveInfo(),
+            stats = SaveStats(),
             enemys = SaveEnemys()
         };
     }
 
-    private Data.Info SaveInfo(MyPlayerController _myPlayer)
+    private Data.Info SaveInfo()
     {
         return new Data.Info
         {
-            coin = _myPlayer.StatInfo.Coin,
-            HP = _myPlayer.HP,
+            coin = MyPlayerInfo.coin,
+            HP = MyPlayerInfo.HP,
             lastTime = UpdateLastTime()
         };
     }
 
-    private List<Data.Stat> SaveStats(MyPlayerController _myPlayer)
+    private List<Data.Stat> SaveStats()
     {
-        //MyPlayerStatDict["Coin"].statValue = _myPlayer.StatInfo.Coin;
-        //MyPlayerStatDict["HP"].statValue = _myPlayer.HP;
-        MyPlayerStatDict["MaxHP"].statValue = _myPlayer.MaxHP;
-        MyPlayerStatDict["Regeneration"].statValue = _myPlayer.Regeneration;
-        MyPlayerStatDict["ATK"].statValue = _myPlayer.StatInfo.ATK;
-        MyPlayerStatDict["DEF"].statValue = _myPlayer.StatInfo.DEF;
-        MyPlayerStatDict["AttackSpeed"].statValue = _myPlayer.AttackSpeed;
-        MyPlayerStatDict["Range"].statValue = _myPlayer.StatInfo.Range;
-
-        return new List<Data.Stat>(Managers.Data.MyPlayerStatDict.Values);
+        return new List<Data.Stat>(MyPlayerStatDict.Values);
     }
 
     private List<Data.Enemy> SaveEnemys()
@@ -212,12 +203,26 @@ public class DataManager
         // 몬스터 체력이나 공격력을 플레이어의 스탯에 따라 변화하게 할 지
         // 아니면 시간? 라운드? 등에 따라 다르게 할 지 고민 중
 
-        return new List<Data.Enemy>(Managers.Data.EnemyDict.Values);
+        return new List<Data.Enemy>(EnemyDict.Values);
     }
 
     private long UpdateLastTime()
     {
         return DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+    }
+
+    // 에디터에서는 test json 파일에 저장되어서 빌드 후에 테스트 필요
+    public void OfflineReward()
+    {
+        long currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        int diffTime = (int)(currentTime - MyPlayerInfo.lastTime);
+
+        // 1분(60초) 이상 차이가 나면 오프라인 보상 UI 띄우기
+        if (diffTime < 60)
+            return;
+
+        int coin = diffTime / 60 * 1;
+        Managers.UI.ShowPopupUI<UI_Offline>("Popup_Offline").StatInit(coin);
     }
 
     public void Clear()

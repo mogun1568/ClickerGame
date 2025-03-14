@@ -19,9 +19,8 @@ public class EnemyController : CreatureController
         if (goName.EndsWith("(Clone)"))
             goName = goName.Substring(0, goName.Length - 7).Trim();
 
-        _enemyStat = Managers.Data.EnemyDict[goName];
-        UpdateInfoAndStat();
-        StatInfo.AttackCountdown = 0;
+        StatInfo = new EnemyStat(Managers.Data.EnemyDict[goName]);
+        _animator.SetFloat("AttackSpeed", AttackSpeed);
 
         _targetTag = "Player";
         StopAllCoroutines();
@@ -121,13 +120,8 @@ public class EnemyController : CreatureController
         base.UpdateDie();
 
         Managers.Game.Wave._enemyCount--;
-        //Debug.Log(Managers.Game._enemyCount);
-
         Managers.Game.MyPlayer.StatInfo.Coin += StatInfo.Coin;
-        Managers.Data.UpdateInfo("Coin", Managers.Game.MyPlayer.StatInfo.Coin);
-        Debug.Log(Managers.Game.MyPlayer.StatInfo.Coin);
 
         DeadMove(-7f, _moveSpeed);
-        //StartCoroutine(DeadAnim(1.1f));
     }
 }

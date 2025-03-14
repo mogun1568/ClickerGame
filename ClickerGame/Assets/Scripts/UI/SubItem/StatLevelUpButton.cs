@@ -70,6 +70,8 @@ public class StatLevelUpButton : UI_Base
         if (!CheckCoin())
             return;
 
+        DetailStatUpdate();
+
         switch (_statName)
         {
             case "MaxHP":
@@ -100,8 +102,6 @@ public class StatLevelUpButton : UI_Base
                 break;
         }
 
-        DetailStatUpdate();
-        Managers.Data.UpdateDict(_statName);
         HUDUpdate();
     }
 

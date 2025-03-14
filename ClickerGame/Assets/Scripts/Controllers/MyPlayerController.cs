@@ -9,13 +9,12 @@ using UnityEngine;
 
 public class MyPlayerController : CreatureController
 {
-    private Dictionary<string, Data.Stat> _statDict;
     public bool isMove;
 
     public float Regeneration
     {
-        get { return _statDict["Regeneration"].statValue; }
-        set { _statDict["Regeneration"].statValue = value; }
+        get { return ((PlayerStat)StatInfo).Regeneration; }
+        set { ((PlayerStat)StatInfo).Regeneration = value; }
     }
 
     protected override async UniTask Init()
@@ -26,8 +25,8 @@ public class MyPlayerController : CreatureController
 
         //State = Define.State.Run;
 
-        _statDict = Managers.Data.MyPlayerStatDict;
-        UpdateInfoAndStat();
+        StatInfo = new PlayerStat(Managers.Data.MyPlayerStatDict);
+        _animator.SetFloat("AttackSpeed", AttackSpeed);
 
         _targetTag = "Enemy";
 
@@ -42,8 +41,6 @@ public class MyPlayerController : CreatureController
             HP = MaxHP;
             Move(-2f, _moveSpeed);
         }
-
-        Managers.Data.UpdateDict();
 
         InvokeRepeating(nameof(Regenerate), 1f, 1f);
     }
@@ -71,63 +68,6 @@ public class MyPlayerController : CreatureController
             });
     }
 
-    protected override void UpdateInfoAndStat()
-    {
-        StatInfo.Coin = Managers.Data.MyPlayerInfo.coin;
-        HP = Managers.Data.MyPlayerInfo.HP;
-
-        //StatInfo.Coin = (int)_statDict["Coin"].statValue;
-        //HP = _statDict["HP"].statValue;
-        MaxHP = _statDict["MaxHP"].statValue;
-        Regeneration = _statDict["Regeneration"].statValue;
-        StatInfo.ATK = _statDict["ATK"].statValue;
-        StatInfo.DEF = _statDict["DEF"].statValue;
-        AttackSpeed = _statDict["AttackSpeed"].statValue;
-        StatInfo.Range = _statDict["Range"].statValue;
-        StatInfo.AttackCountdown = 0;
-    }
-
-    //public void UpdateDict()
-    //{
-    //    _statDict["Coin"].statValue = StatInfo.Coin;
-    //    _statDict["MaxHP"].statValue = MaxHP;
-    //    _statDict["HP"].statValue = HP;
-    //    _statDict["Regeneration"].statValue = Regeneration;
-    //    _statDict["ATK"].statValue = StatInfo.ATK;
-    //    _statDict["DEF"].statValue = StatInfo.DEF;
-    //    _statDict["AttackSpeed"].statValue = AttackSpeed;
-    //    _statDict["Range"].statValue = StatInfo.Range;
-
-    //    //Data.StatData statData = new Data.StatData
-    //    //{
-    //    //    stats = new List<Data.Stat>(Managers.Data.MyPlayerStatDict.Values)
-    //    //};
-    //    //Managers.Data.SaveJson(statData, "MyPlayerStatDataTest");
-
-    //    Data.GameData gameData = new Data.GameData
-    //    {
-    //        stats = new List<Data.Stat>(Managers.Data.MyPlayerStatDict.Values),
-    //        enemys = UpdateEnemys()
-    //    };
-    //    Managers.Data.SaveGameData(gameData);
-    //}
-
-    //// 플레이어의 Stat에 맞게 적들 Stat도 변경할 코드 예정
-    //// 다른 스크립로 이동할 수도
-    //private List<Data.Enemy> UpdateEnemys()
-    //{
-    //    // 몬스터 체력이나 공격력을 플레이어의 스탯에 따라 변화하게 할 지
-    //    // 아니면 시간? 라운드? 등에 따라 다르게 할 지 고민 중
-
-    //    //Data.EnemyData enemyData = new Data.EnemyData
-    //    //{
-    //    //    enemys = new List<Data.Enemy>(Managers.Data.EnemyDict.Values)
-    //    //};
-    //    //Managers.Data.SaveJson(enemyData, "EnemyDataTest");
-
-    //    return new List<Data.Enemy>(Managers.Data.EnemyDict.Values);
-    //}
-
     public void Regenerate()
     {
         if (HP == MaxHP)
@@ -142,19 +82,12 @@ public class MyPlayerController : CreatureController
         _AttackCoroutine = StartCoroutine(CheckAnimationTime(0.167f, StatInfo.ATK));
     }
 
-    protected override void Hurt(float damage)
-    {
-        base.Hurt(damage);
-        Managers.Data.UpdateInfo("HP", HP);
-    }
-
     protected override void UpdateDie()
     {
         base.UpdateDie();
 
         CancelInvoke(nameof(Regenerate));
         StatInfo.Coin /= 2;
-        Managers.Data.UpdateInfo("Coin", StatInfo.Coin);
     }
 
     protected override IEnumerator DeadAnim(float delay)

@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Offline Earnings
+  m_text: "\uC624\uD504\uB77C\uC778 \uBCF4\uC0C1"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9189e6a1db846854eac4c4b9dba35b7f, type: 2}
   m_sharedMaterial: {fileID: -4995292609712204125, guid: 9189e6a1db846854eac4c4b9dba35b7f, type: 2}
@@ -496,7 +496,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &61519997423294615
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1429,7 +1429,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: While you were away you earned
+  m_text: "\uC624\uD504\uB77C\uC778\uC774\uC5C8\uB358 \uC2DC\uAC04\uB9CC\uD07C \uBCF4\uC0C1\uC744
+    \uB4DC\uB9BD\uB2C8\uB2E4!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9189e6a1db846854eac4c4b9dba35b7f, type: 2}
   m_sharedMaterial: {fileID: -4995292609712204125, guid: 9189e6a1db846854eac4c4b9dba35b7f, type: 2}
@@ -6735,7 +6736,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4458572132764929080
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11721,7 +11722,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10308, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
