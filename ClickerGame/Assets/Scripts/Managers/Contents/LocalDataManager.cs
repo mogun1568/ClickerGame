@@ -5,19 +5,38 @@ using UnityEngine;
 
 public class LocalDataManager
 {
-    public T LoadLocalData<T>(string filePath)
+    private string _fileName = "GameData";
+    private string _TestFileName = "GameDataTest";
+    private string _filePath;
+
+    public T LoadLocalData<T>()
     {
-        //string jsonString = File.ReadAllText(filePath);
-        TextAsset textAsset = Managers.Resource.Load<TextAsset>($"Data/{filePath}");
-        return JsonUtility.FromJson<T>(textAsset.text);
+        _filePath = Path.Combine(Application.persistentDataPath, $"{_fileName}.json");
+        // 파일이 존재하면 로드, 없으면 기본값 반환
+        if (File.Exists(_filePath))
+        {
+            string jsonString = File.ReadAllText(_filePath);
+            return JsonUtility.FromJson<T>(jsonString);
+        }
+        else
+            return default;
+
+
+        //TextAsset textAsset = Managers.Resource.Load<TextAsset>($"Data/{_fileName}");
+        //return JsonUtility.FromJson<T>(textAsset.text);
     }
 
-    public void SaveLocalData<T>(T data, string filePath)
+    public void SaveLocalData<T>(T data)
     {
-        filePath = Path.Combine(Application.dataPath, $"Resources/Data/{filePath}.json");
-        // 지금은 알아보기 쉽기 위해 true지만 빌드때는 false로 해야 함
+        _filePath = Path.Combine(Application.persistentDataPath, $"{_fileName}.json");
+        // 지금은 알아보기 쉽게 True, 빌드 후에는 False로 변경
         string jsonString = JsonUtility.ToJson(data, true);
-        File.WriteAllText(filePath, jsonString);
+        File.WriteAllText(_filePath, jsonString);
+
+        //_filePath = Path.Combine(Application.dataPath, $"Resources/Data/{_TestFileName}.json");
+        //// 지금은 알아보기 쉽기 위해 true지만 빌드때는 false로 해야 함
+        //string jsonString = JsonUtility.ToJson(data, true);
+        //File.WriteAllText(_filePath, jsonString);
     }
 
     // 해킹 방지로 하드 코딩과 암호화 중에 고민 중

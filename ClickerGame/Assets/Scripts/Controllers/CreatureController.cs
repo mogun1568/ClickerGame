@@ -90,34 +90,24 @@ public class CreatureController : MonoBehaviour
 
     public virtual float MaxHP
     {
-        get { return StatInfo.MaxHP; }
-        set
-        {
-            float increaseAmount = value - StatInfo.MaxHP;
-            StatInfo.MaxHP = value;
-            HP += increaseAmount;
-        }
+        get => StatInfo.MaxHP;
+        set => StatInfo.MaxHP = value;
     }
 
     public virtual float HP
     {
-        get { return StatInfo.HP; }
-        set { StatInfo.HP = Mathf.Clamp(value, 0, MaxHP); }
+        get => StatInfo.HP;
+        set => StatInfo.HP = value;
     }
 
     public virtual float AttackSpeed
     {
-        get { return StatInfo.AttackSpeed; }
+        get => StatInfo.AttackSpeed;
         set
         {
-            StatInfo.AttackSpeed = Mathf.Round(value * 100f) / 100f;
+            StatInfo.AttackSpeed = value;
             _animator.SetFloat("AttackSpeed", StatInfo.AttackSpeed);
         }
-    }
-
-    protected virtual void UpdateInfoAndStat()
-    {
-
     }
 
     protected Animator _animator;
@@ -133,10 +123,10 @@ public class CreatureController : MonoBehaviour
 
     private void OnEnable()
     {
-        Init().Forget();
+        InitAsync().Forget();
     }
 
-    protected virtual async UniTask Init()
+    protected virtual async UniTask InitAsync()
     {
         // 왜 MyPlayerController에서 Run으로 설정하면 첫 애니가 적용이 안되는지 아직 의문
         if (gameObject.tag == "Player")

@@ -60,7 +60,7 @@ public class Managers : MonoBehaviour
             s_instance = go.GetComponent<Managers>();
 
             s_instance._firebase.Init();
-            s_instance._data.Init().Forget();
+            s_instance._data.InitAsync().Forget();
             s_instance._pool.Init();
             s_instance._sound.Init();
         }

@@ -13,10 +13,10 @@ public class GameScene : BaseScene
 
         Managers.UI.ShowSceneUI<UI_Main>("MainUI");
 
-        LoadingUI().Forget();
+        LoadingUIAsync().Forget();
     }
 
-    private async UniTask LoadingUI()
+    private async UniTask LoadingUIAsync()
     {
         Managers.UI.ShowPopupUI<UI_Popup>("UI_Loading");
 

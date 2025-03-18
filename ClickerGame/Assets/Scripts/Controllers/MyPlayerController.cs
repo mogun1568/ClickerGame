@@ -17,9 +17,9 @@ public class MyPlayerController : CreatureController
         set { ((PlayerStat)StatInfo).Regeneration = value; }
     }
 
-    protected override async UniTask Init()
+    protected override async UniTask InitAsync()
     {
-        await base.Init();
+        await base.InitAsync();
 
         Managers.Game.MyPlayer = this;
 

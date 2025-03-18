@@ -10,9 +10,9 @@ public class EnemyController : CreatureController
     private Tween deadMoveTween;
     private Data.Enemy _enemyStat;
 
-    protected override async UniTask Init()
+    protected override async UniTask InitAsync()
     {
-        await base.Init();
+        await base.InitAsync();
 
         // (Clone)을 수정하기 전에 호출됨
         string goName = gameObject.name;
@@ -28,17 +28,6 @@ public class EnemyController : CreatureController
         deadMoveTween = null;
 
         Move(-0.5f, _moveSpeed);
-    }
-
-    protected override void UpdateInfoAndStat()
-    {
-        MaxHP = _enemyStat.enemyMaxHP;
-        HP = _enemyStat.enemyMaxHP;
-        StatInfo.ATK = _enemyStat.enemyATK;
-        StatInfo.DEF = _enemyStat.enemyDEF;
-        AttackSpeed = _enemyStat.enemyAttackSpeed;
-        StatInfo.Range = _enemyStat.enemyRange;
-        StatInfo.Coin = _enemyStat.enemyCoin;
     }
 
     protected override void Update()

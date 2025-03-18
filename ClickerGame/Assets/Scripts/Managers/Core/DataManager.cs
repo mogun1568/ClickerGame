@@ -4,11 +4,6 @@ using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-//public interface ILoader<Key, Value>
-//{
-//    Dictionary<Key, Value> MakeDict();
-//}
-
 public class DataManager
 {
     #region Datas
@@ -40,46 +35,10 @@ public class DataManager
     public Dictionary<string, Data.Stat> MyPlayerStatDict { get; private set; } = new Dictionary<string, Data.Stat>();
     public Dictionary<string, Data.Enemy> EnemyDict { get; private set; } = new Dictionary<string, Data.Enemy>();
 
-    private string _path;
-
     public bool GameDataReady { get; private set; } = false;
 
-    //public void Init()
-    //{
-    //    _path = Application.persistentDataPath;
-    //    MyPlayerStatDict = LoadJson<Data.StatData, string, Data.Stat>("MyPlayerStatData").MakeDict();
-    //    EnemyDict = LoadJson<Data.EnemyData, string, Data.Enemy>("EnemyData").MakeDict();
-    //}
-
-    //// 이 부분 잘 모르겠음
-    //Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>
-    //{
-    //    //string textAsset = File.ReadAllText(Path.Combine(_path, $"{path}.json"));
-    //    TextAsset textAsset = Managers.Resource.Load<TextAsset>($"Data/{path}");
-    //    return JsonUtility.FromJson<Loader>(textAsset.text);
-    //}
-
-    //// SaveJson<Loader, Key, Value>(Loader data, string path)
-    //public void SaveJson<T>(T data, string path)
-    //{
-    //    // 객체를 JSON 문자열로 변환
-    //    string jsonString = JsonUtility.ToJson(data, true);
-
-    //    // 저장할 파일 경로 설정
-    //    //string filePath = Path.Combine(Application.persistentDataPath, $"{path}.json");
-    //    string filePath = Path.Combine(Application.dataPath, $"Resources/Data/{path}.json");
-
-    //    // JSON 파일로 저장
-    //    File.WriteAllText(filePath, jsonString);
-
-    //    //Debug.Log($"JSON 저장 완료: {filePath}");
-    //}
-
-    public async UniTask Init()
+    public async UniTask InitAsync()
     {
-        //_path = Path.Combine(Application.persistentDataPath, "GameData.json");
-        _path = "GameData";
-
         await UniTask.WaitUntil(() => Managers.Firebase.CheckFirebaseDone);
         Data.GameData gameData = await LoadGameData();
         MyPlayerInfo = gameData.info;
@@ -88,7 +47,6 @@ public class DataManager
         GameDataReady = true;
     }
 
-    // 굳이 private로 돌리고 이렇게 따로 할 필요가 있나 고민 중
     public void FirebaseDataInit()
     {
         _firebaseData.Init();
@@ -107,17 +65,14 @@ public class DataManager
                 Debug.Log("Firebase 데이터가 없어서 기본 로컬 데이터 로드!");
         }
 
-        gameData = _localData.LoadLocalData<Data.GameData>(_path);
+        gameData = _localData.LoadLocalData<Data.GameData>();
         if (gameData != null)
             return gameData;
 
         Debug.Log("저장된 데이터가 없습니다. 기본 데이터를 생성합니다.");
         gameData = _localData.CreateDefaultGameData();
         if (gameData != null)
-        {
-            SaveGameData(gameData);
             return gameData;
-        }
 
         Debug.LogWarning("기본 데이터 생성을 실패했습니다.");
         return null;
@@ -132,7 +87,7 @@ public class DataManager
         }
         else
         {
-            _localData.SaveLocalData(data, "GameDataTest");  // 로컬 저장
+            _localData.SaveLocalData(data);  // 로컬 저장
         }
     }
 
@@ -228,6 +183,6 @@ public class DataManager
     public void Clear()
     {
         GameDataReady = false;
-        Init().Forget();
+        InitAsync().Forget();
     }
 }

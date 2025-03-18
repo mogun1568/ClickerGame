@@ -35,7 +35,7 @@ public class StatLevelUpButton : UI_Base
     private void Start()
     {
         Init();
-        DataInit().Forget();
+        DataInitAsync().Forget();
     }
 
     public override void Init()
@@ -48,7 +48,7 @@ public class StatLevelUpButton : UI_Base
         BindEvent(GetButton((int)Buttons.LevelUp_Button).gameObject, (PointerEventData data) => { StatUpdate(); }, Define.UIEvent.Click); 
     }
 
-    private async UniTask DataInit()
+    private async UniTask DataInitAsync()
     {
         await UniTask.WaitUntil(() => Managers.Data.GameDataReady);
 

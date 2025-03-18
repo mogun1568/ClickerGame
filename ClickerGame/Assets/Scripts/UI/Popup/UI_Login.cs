@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -16,6 +17,8 @@ public class UI_Login : UI_Popup
     {
         Text_Info
     }
+
+    private string _logText;
 
     private void Awake()
     {
@@ -36,13 +39,23 @@ public class UI_Login : UI_Popup
     private void Log()
     {
         if (Managers.Firebase.auth.CurrentUser == null)
-        {
             Managers.Firebase.OnSignIn();
-        }
         else
-        {
             Managers.Firebase.OnSignOut();
-            // 게임 재시작하면 좋을듯? 
-        }
+    }
+
+    public async UniTask TextInitAsync()
+    {
+        if (_logText != "")
+            return;
+
+        await UniTask.WaitUntil(() => Managers.Firebase.CheckFirebaseDone);
+
+        if (Managers.Firebase.auth.CurrentUser == null)
+            _logText = "로그인되어 있지 않습니다.";
+        else
+            _logText = "환영합니다";
+
+        GetText((int)Texts.Text_Info).text = _logText;
     }
 }

@@ -34,8 +34,9 @@ public class PlayerStat : Stat
         get => Managers.Data.MyPlayerInfo.HP;
         set
         {
-            Managers.Data.MyPlayerInfo.HP = value;
-            Managers.Data.UpdateInfo("HP", value);
+            base.HP = value;
+            Managers.Data.MyPlayerInfo.HP = base.HP;
+            Managers.Data.UpdateInfo("HP", base.HP);
         }
     }
 
@@ -44,7 +45,8 @@ public class PlayerStat : Stat
         get => _statMaxHP.statValue;
         set
         {
-            _statMaxHP.statValue = value;
+            base.MaxHP = value;
+            _statMaxHP.statValue = base.MaxHP;
             Managers.Data.UpdateDict("MaxHP");
         }
     }
@@ -53,7 +55,7 @@ public class PlayerStat : Stat
     {
         get => _statRegeneration.statValue;
         set
-        {
+        {   
             _statRegeneration.statValue = value;
             Managers.Data.UpdateDict("Regeneration");
         }
@@ -64,7 +66,8 @@ public class PlayerStat : Stat
         get => _statATK.statValue;
         set
         {
-            _statATK.statValue = value;
+            base.ATK = value;
+            _statATK.statValue = base.ATK;
             Managers.Data.UpdateDict("ATK");
         }
     }
@@ -74,7 +77,8 @@ public class PlayerStat : Stat
         get => _statDEF.statValue;
         set
         {
-            _statDEF.statValue = value;
+            base.DEF = value;
+            _statDEF.statValue = base.DEF;
             Managers.Data.UpdateDict("DEF");
         }
     }
@@ -84,7 +88,8 @@ public class PlayerStat : Stat
         get => _statAttackSpeed.statValue;
         set
         {
-            _statAttackSpeed.statValue = value;
+            base.AttackSpeed = value;
+            _statAttackSpeed.statValue = base.AttackSpeed;
             Managers.Data.UpdateDict("AttackSpeed");
         }
     }
@@ -94,9 +99,9 @@ public class PlayerStat : Stat
         get => _statRange.statValue;
         set
         {
-            _statRange.statValue = value;
+            base.Range = value;
+            _statRange.statValue = base.Range;
             Managers.Data.UpdateDict("Range");
         }
     }
-
 }
