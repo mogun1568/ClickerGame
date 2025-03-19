@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using Firebase.Auth;
 using Firebase.Database;
 using UnityEngine;
+using Newtonsoft.Json;
 
 public class FirebaseDataManager
 {
@@ -29,7 +30,7 @@ public class FirebaseDataManager
             if (snapshot.Exists)
             {
                 string json = snapshot.GetRawJsonValue();
-                Data.GameData gameData = JsonUtility.FromJson<Data.GameData>(json);
+                Data.GameData gameData = JsonConvert.DeserializeObject<Data.GameData>(json);
                 Debug.Log("Game data loaded successfully.");
                 return gameData;
             }
@@ -46,14 +47,14 @@ public class FirebaseDataManager
         }
     }
 
-    // 전체 데이터 저장 (덮어쓰기)
+    // 전체 데이터 저장
     public async UniTask SaveGameData(Data.GameData data)
     {
         FirebaseUser user = auth.CurrentUser;
         if (user == null) return;
 
         string userId = user.UserId;
-        string jsonData = JsonUtility.ToJson(data);
+        string jsonData = JsonConvert.SerializeObject(data);
 
         try
         {
@@ -66,7 +67,7 @@ public class FirebaseDataManager
         }
     }
 
-    // 특정 인포 업데이트 (일부 필드만 수정)
+    // 특정 인포 업데이트
     public async UniTask UpdateInfo(string fieldName, object fieldValue)
     {
         FirebaseUser user = auth.CurrentUser;
@@ -87,8 +88,7 @@ public class FirebaseDataManager
         }
     }
 
-
-    // 특정 스탯 업데이트 (일부 필드만 수정)
+    // 특정 스탯 업데이트
     public async UniTask UpdateStat(string statType, Dictionary<string, object> statValues)
     {
         FirebaseUser user = auth.CurrentUser;
@@ -104,7 +104,9 @@ public class FirebaseDataManager
                 updates[$"{statType}/{kvp.Key}"] = kvp.Value;
             }
 
-            await dbReference.Child("users").Child(userId).Child("stats").UpdateChildrenAsync(updates).AsUniTask();
+            await dbReference.Child("users").Child(userId).Child("stats").Child(statType)
+                .UpdateChildrenAsync(statValues).AsUniTask();
+
             Debug.Log($"Stat '{statType}' updated successfully.");
         }
         catch (System.Exception e)
@@ -113,7 +115,7 @@ public class FirebaseDataManager
         }
     }
 
-    // 특정 적 업데이트 (일부 필드만 수정)
+    // 모든 적의 특정 스탯 업데이트
     public async UniTask UpdateAllEnemiesStat(string statName, object newValue)
     {
         FirebaseUser user = auth.CurrentUser;
@@ -147,7 +149,7 @@ public class FirebaseDataManager
         }
     }
 
-    // 적 추가 (Push 키 활용)
+    // 적 추가 (enemyName을 Key로 사용)
     public void AddNewEnemy(Data.Enemy newEnemy)
     {
         FirebaseUser user = auth.CurrentUser;
@@ -155,7 +157,7 @@ public class FirebaseDataManager
 
         string userId = user.UserId;
 
-        AddNewEnemyAsync(userId, newEnemy).Forget(); // async 사용 안 하고 호출 가능
+        AddNewEnemyAsync(userId, newEnemy).Forget();
     }
 
     private async UniTask AddNewEnemyAsync(string userId, Data.Enemy newEnemy)
@@ -163,8 +165,8 @@ public class FirebaseDataManager
         try
         {
             DatabaseReference enemiesRef = dbReference.Child("users").Child(userId).Child("enemys");
-            string enemyKey = enemiesRef.Push().Key; // 고유 키 생성
-            await enemiesRef.Child(enemyKey).SetValueAsync(newEnemy).AsUniTask(); // 비동기 저장
+
+            await enemiesRef.Child(newEnemy.enemyName).SetValueAsync(newEnemy).AsUniTask();
 
             Debug.Log($"Enemy '{newEnemy.enemyName}' added successfully.");
         }

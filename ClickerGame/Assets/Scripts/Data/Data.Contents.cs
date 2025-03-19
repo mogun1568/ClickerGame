@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System;
-using UnityEngine;
 
 namespace Data
 {
@@ -49,18 +48,8 @@ namespace Data
     public class GameData
     {
         public Info info = new Info();
-        public List<Stat> stats = new List<Stat>();
-        public List<Enemy> enemys = new List<Enemy>();
-
-        public Dictionary<string, T> MakeDict<T>(List<T> dataList, Func<T, string> keySelector)
-        {
-            Dictionary<string, T> dict = new Dictionary<string, T>();
-            foreach (var data in dataList)
-            {
-                dict[keySelector(data)] = data;
-            }
-            return dict;
-        }
+        public Dictionary<string, Stat> stats = new Dictionary<string, Stat>();
+        public Dictionary<string, Enemy> enemys = new Dictionary<string, Enemy>();
     }
     #endregion
 }

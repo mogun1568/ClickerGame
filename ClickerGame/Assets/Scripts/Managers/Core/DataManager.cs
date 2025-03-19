@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -9,26 +8,6 @@ public class DataManager
     #region Datas
     private LocalDataManager _localData = new LocalDataManager();
     private FirebaseDataManager _firebaseData = new FirebaseDataManager();
-
-    //public LocalDataManager LocalData
-    //{
-    //    get
-    //    {
-    //        if (_localData == null)  // 처음 접근할 때만 생성
-    //            _localData = new LocalDataManager();
-    //        return _localData;
-    //    }
-    //}
-
-    //public FirebaseDataManager FirebaseData
-    //{
-    //    get
-    //    {
-    //        if (_firebaseData == null)  // 처음 접근할 때만 생성
-    //            _firebaseData = new FirebaseDataManager();
-    //        return _firebaseData;
-    //    }
-    //}
     #endregion
 
     public Data.Info MyPlayerInfo { get; private set; } = new Data.Info();
@@ -42,8 +21,8 @@ public class DataManager
         await UniTask.WaitUntil(() => Managers.Firebase.CheckFirebaseDone);
         Data.GameData gameData = await LoadGameData();
         MyPlayerInfo = gameData.info;
-        MyPlayerStatDict = gameData.MakeDict(gameData.stats, stat => stat.statType);
-        EnemyDict = gameData.MakeDict(gameData.enemys, enemy => enemy.enemyName);
+        MyPlayerStatDict = gameData.stats;
+        EnemyDict = gameData.enemys;
         GameDataReady = true;
     }
 
@@ -81,6 +60,8 @@ public class DataManager
 
     public void SaveGameData()
     {
+        UpdateLastTime();
+
         if (Managers.Firebase.IsLogIn)
         {
             _firebaseData.SaveGameData(ReturnGameData()).Forget();  // UniTask 변환
@@ -132,33 +113,10 @@ public class DataManager
     {
         return new Data.GameData
         {
-            info = SaveInfo(),
-            stats = SaveStats(),
-            enemys = SaveEnemys()
+            info = MyPlayerInfo,
+            stats = MyPlayerStatDict,
+            enemys = EnemyDict
         };
-    }
-
-    private Data.Info SaveInfo()
-    {
-        return new Data.Info
-        {
-            Coin = MyPlayerInfo.Coin,
-            HP = MyPlayerInfo.HP,
-            LastTime = UpdateLastTime()
-        };
-    }
-
-    private List<Data.Stat> SaveStats()
-    {
-        return new List<Data.Stat>(MyPlayerStatDict.Values);
-    }
-
-    private List<Data.Enemy> SaveEnemys()
-    {
-        // 몬스터 체력이나 공격력을 플레이어의 스탯에 따라 변화하게 할 지
-        // 아니면 시간? 라운드? 등에 따라 다르게 할 지 고민 중
-
-        return new List<Data.Enemy>(EnemyDict.Values);
     }
 
     private long UpdateLastTime()
