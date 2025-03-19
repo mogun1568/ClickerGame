@@ -46,9 +46,9 @@ public class LocalDataManager
         {
             info = new Data.Info
             {
-                coin = 10000,
+                Coin = 10000,
                 HP = 100.0f,
-                lastTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+                LastTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
             },
             stats = new List<Data.Stat>
             {

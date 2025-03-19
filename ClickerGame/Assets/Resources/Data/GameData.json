@@ -1,8 +1,8 @@
 {
   "info": {
-    "coin": 10000,
+    "Coin": 10000,
     "HP":  100,
-    "lastTime": 1741509860
+    "LastTime": 1741509860
   },
   "stats": [
     {

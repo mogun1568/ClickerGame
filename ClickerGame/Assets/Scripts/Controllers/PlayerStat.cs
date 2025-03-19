@@ -21,10 +21,10 @@ public class PlayerStat : Stat
 
     public override int Coin
     {
-        get => Managers.Data.MyPlayerInfo.coin;
+        get => Managers.Data.MyPlayerInfo.Coin;
         set
         {
-            Managers.Data.MyPlayerInfo.coin = value;
+            Managers.Data.MyPlayerInfo.Coin = value;
             Managers.Data.UpdateInfo("Coin", value);
         }
     }

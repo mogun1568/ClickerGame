@@ -79,15 +79,15 @@ public class DataManager
     }
 
 
-    public void SaveGameData(Data.GameData data)
+    public void SaveGameData()
     {
         if (Managers.Firebase.IsLogIn)
         {
-            _firebaseData.SaveGameData(data).Forget();  // UniTask 변환
+            _firebaseData.SaveGameData(ReturnGameData()).Forget();  // UniTask 변환
         }
         else
         {
-            _localData.SaveLocalData(data);  // 로컬 저장
+            _localData.SaveLocalData(ReturnGameData());  // 로컬 저장
         }
     }
 
@@ -101,7 +101,7 @@ public class DataManager
                 _firebaseData.UpdateInfo(infoType, infoValue).Forget();
         }
         else
-            SaveGameData(ReturnGameData());
+            SaveGameData();
     }
 
     private void UpdateStat(string statType)
@@ -112,7 +112,7 @@ public class DataManager
             { "statLevel", MyPlayerStatDict[statType].statLevel },
             { "statPrice", MyPlayerStatDict[statType].statPrice }
         };
-        _firebaseData.UpdateStat("Speed", StatValues).Forget();
+        _firebaseData.UpdateStat(statType, StatValues).Forget();
     }
 
     public void UpdateDict(string statType = "")
@@ -120,12 +120,12 @@ public class DataManager
         if (Managers.Firebase.IsLogIn)
         {
             if (statType == "")
-                SaveGameData(ReturnGameData());
+                SaveGameData();
             else
                 UpdateStat(statType);
         }
         else
-            SaveGameData(ReturnGameData());
+            SaveGameData();
     }
 
     private Data.GameData ReturnGameData()
@@ -142,9 +142,9 @@ public class DataManager
     {
         return new Data.Info
         {
-            coin = MyPlayerInfo.coin,
+            Coin = MyPlayerInfo.Coin,
             HP = MyPlayerInfo.HP,
-            lastTime = UpdateLastTime()
+            LastTime = UpdateLastTime()
         };
     }
 
@@ -170,7 +170,7 @@ public class DataManager
     public void OfflineReward()
     {
         long currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-        int diffTime = (int)(currentTime - MyPlayerInfo.lastTime);
+        int diffTime = (int)(currentTime - MyPlayerInfo.LastTime);
 
         // 1분(60초) 이상 차이가 나면 오프라인 보상 UI 띄우기
         if (diffTime < 60)

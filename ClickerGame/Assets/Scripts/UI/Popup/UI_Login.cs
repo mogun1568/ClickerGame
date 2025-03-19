@@ -15,10 +15,11 @@ public class UI_Login : UI_Popup
 
     enum Texts
     {
+        Text_Login,
         Text_Info
     }
 
-    private string _logText;
+    private string _loginText, _infoText;
 
     private void Awake()
     {
@@ -46,16 +47,23 @@ public class UI_Login : UI_Popup
 
     public async UniTask TextInitAsync()
     {
-        if (_logText != "")
-            return;
+        //if (_infoText != "")
+        //    return;
 
         await UniTask.WaitUntil(() => Managers.Firebase.CheckFirebaseDone);
 
         if (Managers.Firebase.auth.CurrentUser == null)
-            _logText = "로그인되어 있지 않습니다.";
+        {
+            _loginText = "GOOGLE LOGIN";
+            _infoText = "로그인되어 있지 않습니다.";
+        }
         else
-            _logText = "환영합니다";
+        {
+            _loginText = "GOOGLE LOGOUT";
+            _infoText = "환영합니다";
+        }
 
-        GetText((int)Texts.Text_Info).text = _logText;
+        GetText((int)Texts.Text_Login).text = _loginText;
+        GetText((int)Texts.Text_Info).text = _infoText;
     }
 }

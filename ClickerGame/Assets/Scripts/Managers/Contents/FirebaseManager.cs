@@ -168,6 +168,7 @@ public class FirebaseManager
             {
                 //AddToInformation("User is signed in: " + auth.CurrentUser.DisplayName);
                 IsLogIn = true;
+                Managers.Data.SaveGameData();
                 Managers.Scene.LoadScene(Define.Scene.GamePlay);
             }
             else

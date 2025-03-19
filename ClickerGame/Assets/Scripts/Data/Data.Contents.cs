@@ -8,9 +8,9 @@ namespace Data
     [Serializable]
     public class Info
     {
-        public int coin;
+        public int Coin;
         public float HP;
-        public long lastTime;
+        public long LastTime;
     }
     #endregion
 
