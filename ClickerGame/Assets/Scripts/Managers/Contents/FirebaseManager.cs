@@ -153,7 +153,7 @@ public class FirebaseManager
     {
         Credential credential = GoogleAuthProvider.GetCredential(idToken, null);
 
-        auth.SignInWithCredentialAsync(credential).ContinueWith(task =>
+        auth.SignInWithCredentialAsync(credential).ContinueWith(async task =>
         {
             if (task.IsCanceled || task.IsFaulted)
             {
@@ -167,8 +167,12 @@ public class FirebaseManager
             if (auth.CurrentUser != null)
             {
                 //AddToInformation("User is signed in: " + auth.CurrentUser.DisplayName);
+                bool userDataExists = await CheckUserDataExists();
+                if (!userDataExists)
+                    Managers.Data.SaveGameData();
+
+                Managers.Data.DeleteLocalData();
                 IsLogIn = true;
-                Managers.Data.SaveGameData();
                 Managers.Scene.LoadScene(Define.Scene.GamePlay);
             }
             else
@@ -176,6 +180,25 @@ public class FirebaseManager
                 //AddToInformation("CurrentUser is null. Something went wrong.");
             }
         });
+    }
+
+    private async UniTask<bool> CheckUserDataExists()
+    {
+        FirebaseUser user = auth.CurrentUser;
+        if (user == null) return false;
+
+        string userId = user.UserId;
+
+        try
+        {
+            DataSnapshot snapshot = await dbReference.Child("users").Child(userId).GetValueAsync().AsUniTask();
+            return snapshot.Exists; // 데이터 존재 여부 반환
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Failed to check user data: {e.Message}");
+            return false;
+        }
     }
 
     public void OnSignInSilently()

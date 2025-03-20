@@ -23,6 +23,13 @@ public class UI_Offline : UI_Popup
 
     private void Awake()
     {
+        Init();
+    }
+
+    public override void Init()
+    {
+        base.Init();
+
         Bind<Button>(typeof(Buttons));
         Bind<Image>(typeof(Images));
         Bind<TextMeshProUGUI>(typeof(Texts));

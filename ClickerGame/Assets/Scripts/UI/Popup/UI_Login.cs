@@ -1,7 +1,5 @@
 using Cysharp.Threading.Tasks;
-using System.Threading.Tasks;
 using TMPro;
-using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -23,6 +21,13 @@ public class UI_Login : UI_Popup
 
     private void Awake()
     {
+        Init();
+    }
+
+    public override void Init()
+    {
+        base.Init();
+
         Bind<Button>(typeof(Buttons));
         Bind<TextMeshProUGUI>(typeof(Texts));
 

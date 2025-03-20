@@ -6,42 +6,42 @@ using UnityEngine.EventSystems;
 
 public class InputManager
 {
-    public Action KeyAction = null;
-    public Action<Define.MouseEvent> MouseAction = null;
+    public Action BackButton = null;
 
-    bool _pressed = false;
+    public void Init()
+    {
+        BackButton -= OnBackButtonHandler;
+        BackButton += OnBackButtonHandler;
+    }
 
     public void OnUpdate()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
+        //if (EventSystem.current.IsPointerOverGameObject())
+        //{
+        //    return;
+        //}
+
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            return;
+            BackButton.Invoke();
         }
+    }
 
-        if (Input.anyKey && KeyAction != null)
+    private void OnBackButtonHandler()
+    {
+        if (Managers.UI.IsPopupActive())
         {
-            KeyAction.Invoke();
-        } 
-
-        if (MouseAction != null)
+            Managers.UI.ClosePopupUI();
+        }
+        else
         {
-            if (Input.GetMouseButton(0))
-            {
-                MouseAction.Invoke(Define.MouseEvent.Press);
-                _pressed = true;
-            }
-            else
-            {
-                if (_pressed)
-                    MouseAction.Invoke(Define.MouseEvent.Click);
-                _pressed = false;
-            }
+            //Managers.UI.ShowPopupUI<>("");
         }
     }
 
     public void Clear()
     {
-        KeyAction = null;
-        MouseAction = null;
+        BackButton -= OnBackButtonHandler;
+        BackButton = null;
     }
 }

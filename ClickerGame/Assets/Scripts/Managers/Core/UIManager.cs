@@ -127,6 +127,14 @@ public class UIManager
         }
     }
 
+    public bool IsPopupActive()
+    {
+        if (_popupStack.Count > 0)
+            return true;
+        else
+            return false;
+    }
+
     public void Clear()
     {
         CloseAllPopupUI();

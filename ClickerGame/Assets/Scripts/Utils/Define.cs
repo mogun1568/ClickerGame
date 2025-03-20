@@ -27,12 +27,6 @@ public class Define
         EndDrag,
     }
 
-    public enum MouseEvent
-    {
-        Press,
-        Click,
-    }
-
     public enum CameraMode
     {
         QuarterView,

@@ -138,6 +138,11 @@ public class DataManager
         Managers.UI.ShowPopupUI<UI_Offline>("Popup_Offline").StatInit(coin);
     }
 
+    public void DeleteLocalData()
+    {
+        _localData.DeleteData();
+    }
+
     public void Clear()
     {
         GameDataReady = false;

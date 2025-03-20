@@ -76,4 +76,21 @@ public class LocalDataManager
         }
         };
     }
+    
+    public void DeleteData()
+    {
+        // 로컬 데이터가 저장된 파일 경로
+        _filePath = Path.Combine(Application.persistentDataPath, $"{_fileName}.json");
+
+        // 파일이 존재하면 삭제
+        if (File.Exists(_filePath))
+        {
+            File.Delete(_filePath);
+            Debug.Log("Local data has been deleted.");
+        }
+        else
+        {
+            Debug.LogWarning("No local data found to delete.");
+        }
+    }
 }
