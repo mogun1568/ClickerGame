@@ -36,6 +36,7 @@ public class InputManager
         else
         {
             //Managers.UI.ShowPopupUI<>("");
+            Application.Quit();
         }
     }
 

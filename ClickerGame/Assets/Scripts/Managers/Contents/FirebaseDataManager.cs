@@ -60,6 +60,7 @@ public class FirebaseDataManager
         {
             await dbReference.Child("users").Child(userId).SetRawJsonValueAsync(jsonData).AsUniTask();
             Debug.Log("Game data saved successfully.");
+            Managers.Firebase.CheckSaveDataDone = true;
         }
         catch (System.Exception e)
         {

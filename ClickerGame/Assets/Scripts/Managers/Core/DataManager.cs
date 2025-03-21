@@ -41,7 +41,10 @@ public class DataManager
             if (gameData != null)
                 return gameData;
             else
-                Debug.Log("Firebase 데이터가 없어서 기본 로컬 데이터 로드!");
+            {
+                Debug.LogError("Firebase 데이터가 없습니다.");
+                return null;
+            }
         }
 
         gameData = _localData.LoadLocalData<Data.GameData>();

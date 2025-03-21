@@ -38,6 +38,7 @@ public class Managers : MonoBehaviour
     void Start()
     {
         Init();
+        s_instance._input.Init();
     }
 
     void Update()
@@ -61,7 +62,6 @@ public class Managers : MonoBehaviour
 
             s_instance._firebase.Init();
             s_instance._data.InitAsync().Forget();
-            s_instance._input.Init();
             s_instance._pool.Init();
             s_instance._sound.Init();
         }

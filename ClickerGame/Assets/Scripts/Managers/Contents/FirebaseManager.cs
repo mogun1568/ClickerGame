@@ -2,7 +2,7 @@
 // Copyright (C) 2017 Google Inc. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
-//  you may not use this file except in compliance with the License.
+//  You may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
 //  http://www.apache.org/licenses/LICENSE-2.0
@@ -21,7 +21,6 @@ using Firebase;
 using Firebase.Auth;
 using Firebase.Database;
 using Google;
-using Unity.Collections;
 using UnityEngine;
 
 public class FirebaseManager
@@ -34,11 +33,16 @@ public class FirebaseManager
 
     public bool IsLogIn { get; private set; } = false;
     public bool CheckFirebaseDone { get; private set; } = false;
+    public bool CheckSaveDataDone { get; set; } = false;
 
     // Defer the configuration creation until Awake so the web Client ID
     // Can be set via the property inspector in the Editor.
     public void Init()
     {
+        IsLogIn = false;
+        CheckFirebaseDone = false;
+        CheckSaveDataDone = false;
+
         configuration = new GoogleSignInConfiguration { WebClientId = webClientId, RequestIdToken = true };
         CheckFirebaseDependencies();
     }
@@ -49,7 +53,7 @@ public class FirebaseManager
         {
             if (task.IsCanceled || task.IsFaulted)
             {
-                //AddToInformation("Firebase Initialize Failed: " + task.Exception?.ToString());
+                Debug.LogError("Firebase Initialize Failed: " + task.Exception?.ToString());
                 return;
             }
 
@@ -58,61 +62,68 @@ public class FirebaseManager
                 auth = FirebaseAuth.DefaultInstance;
                 dbReference = FirebaseDatabase.DefaultInstance.RootReference;
                 Managers.Data.FirebaseDataInit();
+                if (auth.CurrentUser != null) IsLogIn = true;
                 CheckFirebaseDone = true;
 
-                //AddToInformation("Firebase is initialized successfully.");
                 Debug.Log("Firebase is initialized successfully.");
             }
             else
             {
-                //AddToInformation("Could not resolve all Firebase dependencies: " + task.Result.ToString());
+                Debug.LogError("Could not resolve all Firebase dependencies: " + task.Result.ToString());
             }
         });
     }
 
-
     public void OnSignIn()
     {
-        //AddToInformation("Calling SignIn");
+        Debug.Log("Calling SignIn");
 
+        // 이미 로그인된 경우 함수 종료
         if (auth.CurrentUser != null)
         {
-            //AddToInformation("Already signed in as: " + auth.CurrentUser.DisplayName);
-            return;  // 이미 로그인된 경우 함수 종료
+            Debug.Log("Already signed in as: " + auth.CurrentUser.DisplayName);
+            return; 
         }
 
         GoogleSignIn.Configuration = configuration;
         GoogleSignIn.Configuration.UseGameSignIn = false;
         GoogleSignIn.Configuration.RequestIdToken = true;
 
+        if (GoogleSignIn.DefaultInstance == null)
+        {
+            Debug.LogError("GoogleSignIn.DefaultInstance is null. Check GoogleSignIn package initialization.");
+            return;
+        }
+
         GoogleSignIn.DefaultInstance.SignIn().ContinueWith(OnAuthenticationFinished, TaskScheduler.FromCurrentSynchronizationContext());
     }
 
     public void OnSignOut()
     {
-        //AddToInformation("Calling SignOut");
+        Debug.Log("Calling SignOut");
 
+        // 로그인된 사용자가 없으면 종료
         if (auth.CurrentUser == null)
         {
-            //AddToInformation("No user is signed in.");
-            return; // 로그인된 사용자가 없으면 종료
+            Debug.Log("No user is signed in.");
+            return;
         }
-        
+
         auth.SignOut();
         GoogleSignIn.DefaultInstance.SignOut();
         IsLogIn = false;
         Managers.Scene.LoadScene(Define.Scene.GamePlay);
     }
 
-    // 안됨
     public void OnDisconnect()
     {
-        //AddToInformation("Calling Disconnect");
+        Debug.Log("Calling Disconnect");
 
+        // 로그인된 사용자가 없으면 종료
         if (auth.CurrentUser == null)
         {
-            //AddToInformation("No user is signed in.");
-            return; // 로그인된 사용자가 없으면 종료
+            Debug.Log("No user is signed in.");
+            return;
         }
 
         GoogleSignIn.DefaultInstance.Disconnect();
@@ -130,58 +141,71 @@ public class FirebaseManager
                 {
                     GoogleSignIn.SignInException error =
                             (GoogleSignIn.SignInException)enumerator.Current;
-                    //AddToInformation("Got Error: " + error.Status + " " + error.Message);
+                    Debug.LogError("Got Error: " + error.Status + " " + error.Message);
                 }
                 else
                 {
-                    //AddToInformation("Got Unexpected Exception?!?" + task.Exception);
+                    Debug.LogError("Got Unexpected Exception?!?" + task.Exception);
                 }
             }
         }
         else if (task.IsCanceled)
         {
-            //AddToInformation("Canceled");
+            Debug.Log("Canceled");
         }
         else
         {
-            //AddToInformation("Welcome: " + task.Result.DisplayName + "!");
+            Debug.Log("Welcome: " + task.Result.DisplayName + "!");
             SignInWithGoogleOnFirebase(task.Result.IdToken);
         }
     }
 
     private void SignInWithGoogleOnFirebase(string idToken)
     {
+        if (string.IsNullOrEmpty(idToken))
+        {
+            Debug.LogError("Google Sign-In failed: ID Token is null or empty.");
+            return;
+        }
+
         Credential credential = GoogleAuthProvider.GetCredential(idToken, null);
 
         auth.SignInWithCredentialAsync(credential).ContinueWith(async task =>
         {
             if (task.IsCanceled || task.IsFaulted)
             {
-                //AddToInformation("Sign-in Failed: " + task.Exception?.ToString());
+                Debug.LogError("Sign-in Failed: " + task.Exception?.ToString());
                 return;
             }
 
-            //AddToInformation("Sign In Successful.");
+            Debug.Log("Sign In Successful.");
+            IsLogIn = true;
 
             // 인증 완료 후 CurrentUser 확인
             if (auth.CurrentUser != null)
             {
-                //AddToInformation("User is signed in: " + auth.CurrentUser.DisplayName);
+                Debug.Log("User is signed in: " + auth.CurrentUser.DisplayName);
                 bool userDataExists = await CheckUserDataExists();
                 if (!userDataExists)
+                {
+                    Debug.Log("User does not have Data");
+                    CheckSaveDataDone = false;
                     Managers.Data.SaveGameData();
+                    await UniTask.WaitUntil(() => CheckSaveDataDone);
+                }
 
+                Debug.Log("User has the Data");
                 Managers.Data.DeleteLocalData();
-                IsLogIn = true;
                 Managers.Scene.LoadScene(Define.Scene.GamePlay);
             }
             else
             {
-                //AddToInformation("CurrentUser is null. Something went wrong.");
+                Debug.LogError("CurrentUser is null. Something went wrong.");
             }
         });
     }
 
+    // 데이터 존재 여부 반환
     private async UniTask<bool> CheckUserDataExists()
     {
         FirebaseUser user = auth.CurrentUser;
@@ -192,7 +216,7 @@ public class FirebaseManager
         try
         {
             DataSnapshot snapshot = await dbReference.Child("users").Child(userId).GetValueAsync().AsUniTask();
-            return snapshot.Exists; // 데이터 존재 여부 반환
+            return snapshot.Exists;
         }
         catch (System.Exception e)
         {
@@ -203,12 +227,13 @@ public class FirebaseManager
 
     public void OnSignInSilently()
     {
-        //AddToInformation("Calling SignIn Silently");
+        Debug.Log("Calling SignIn Silently");
 
+        // 이미 로그인된 경우 함수 종료
         if (auth.CurrentUser != null)
         {
-            //AddToInformation("Already signed in as: " + auth.CurrentUser.DisplayName);
-            return;  // 이미 로그인된 경우 함수 종료
+            Debug.Log("Already signed in as: " + auth.CurrentUser.DisplayName);
+            return;
         }
 
         GoogleSignIn.Configuration = configuration;
@@ -218,14 +243,13 @@ public class FirebaseManager
         GoogleSignIn.DefaultInstance.SignInSilently().ContinueWith(OnAuthenticationFinished, TaskScheduler.FromCurrentSynchronizationContext());
     }
 
-
     public void OnGamesSignIn()
     {
         GoogleSignIn.Configuration = configuration;
         GoogleSignIn.Configuration.UseGameSignIn = true;
         GoogleSignIn.Configuration.RequestIdToken = false;
 
-        //AddToInformation("Calling Games SignIn");
+        Debug.Log("Calling Games SignIn");
 
         GoogleSignIn.DefaultInstance.SignIn().ContinueWith(OnAuthenticationFinished, TaskScheduler.FromCurrentSynchronizationContext());
     }
