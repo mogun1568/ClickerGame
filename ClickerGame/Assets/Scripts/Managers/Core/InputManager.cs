@@ -35,8 +35,7 @@ public class InputManager
         }
         else
         {
-            //Managers.UI.ShowPopupUI<>("");
-            Application.Quit();
+            Managers.UI.ShowPopupUI<UI_GameQuit>("Popup_GameQuit");
         }
     }
 
