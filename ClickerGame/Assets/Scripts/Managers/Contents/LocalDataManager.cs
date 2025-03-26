@@ -43,6 +43,12 @@ public class LocalDataManager
         //File.WriteAllText(_filePath, jsonString);
     }
 
+    public bool HasLocalData()
+    {
+        _filePath = Path.Combine(Application.persistentDataPath, $"{_fileName}.json");
+        return File.Exists(_filePath);
+    }
+
     // 해킹 방지로 하드 코딩과 암호화 중에 고민 중
     public Data.GameData CreateDefaultGameData()
     {

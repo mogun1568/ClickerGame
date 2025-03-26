@@ -15,9 +15,11 @@ public class DataManager
     public Dictionary<string, Data.Enemy> EnemyDict { get; private set; } = new Dictionary<string, Data.Enemy>();
 
     public bool GameDataReady { get; private set; } = false;
+    public bool CheckSaveDataDone { get; set; } = false;
 
     public async UniTask InitAsync()
     {
+        CheckSaveDataDone = false;
         await UniTask.WaitUntil(() => Managers.Firebase.CheckFirebaseDone);
         Data.GameData gameData = await LoadGameData();
         MyPlayerInfo = gameData.info;
@@ -43,9 +45,31 @@ public class DataManager
             else
             {
                 Debug.LogError("Firebase 데이터가 없습니다.");
-                return null;
+
+                gameData = LoadLocalData();
+                if (gameData != null)
+                {
+                    CheckSaveDataDone = false;
+                    SaveGameData();
+                    await UniTask.WaitUntil(() => CheckSaveDataDone);
+                    _localData.DeleteData();
+                    return gameData;
+                }
+                else
+                    return null;
             }
         }
+
+        gameData = LoadLocalData();
+        if (gameData != null)
+            return gameData;
+
+        return null;
+    }
+
+    private Data.GameData LoadLocalData()
+    {
+        Data.GameData gameData = null;
 
         gameData = _localData.LoadLocalData<Data.GameData>();
         if (gameData != null)
@@ -59,7 +83,6 @@ public class DataManager
         Debug.LogWarning("기본 데이터 생성을 실패했습니다.");
         return null;
     }
-
 
     public void SaveGameData()
     {
@@ -141,14 +164,16 @@ public class DataManager
         Managers.UI.ShowPopupUI<UI_Offline>("Popup_Offline").StatInit(coin);
     }
 
-    public void DeleteLocalData()
+    public bool HasLocalData()
     {
-        _localData.DeleteData();
+        if (_localData.HasLocalData()) return true;
+        return false;
     }
 
     public void Clear()
     {
         GameDataReady = false;
+        CheckSaveDataDone = false;
         InitAsync().Forget();
     }
 }

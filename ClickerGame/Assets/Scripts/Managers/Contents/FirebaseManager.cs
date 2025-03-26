@@ -33,7 +33,6 @@ public class FirebaseManager
 
     public bool IsLogIn { get; private set; } = false;
     public bool CheckFirebaseDone { get; private set; } = false;
-    public bool CheckSaveDataDone { get; set; } = false;
 
     // Defer the configuration creation until Awake so the web Client ID
     // Can be set via the property inspector in the Editor.
@@ -41,7 +40,6 @@ public class FirebaseManager
     {
         IsLogIn = false;
         CheckFirebaseDone = false;
-        CheckSaveDataDone = false;
 
         configuration = new GoogleSignInConfiguration { WebClientId = webClientId, RequestIdToken = true };
         CheckFirebaseDependencies();
@@ -185,17 +183,6 @@ public class FirebaseManager
             if (auth.CurrentUser != null)
             {
                 Debug.Log("User is signed in: " + auth.CurrentUser.DisplayName);
-                bool userDataExists = await CheckUserDataExists();
-                if (!userDataExists)
-                {
-                    Debug.Log("User does not have Data");
-                    CheckSaveDataDone = false;
-                    Managers.Data.SaveGameData();
-                    await UniTask.WaitUntil(() => CheckSaveDataDone);
-                }
-
-                Debug.Log("User has the Data");
-                Managers.Data.DeleteLocalData();
                 Managers.Scene.LoadScene(Define.Scene.GamePlay);
             }
             else
@@ -203,26 +190,6 @@ public class FirebaseManager
                 Debug.LogError("CurrentUser is null. Something went wrong.");
             }
         });
-    }
-
-    // 데이터 존재 여부 반환
-    private async UniTask<bool> CheckUserDataExists()
-    {
-        FirebaseUser user = auth.CurrentUser;
-        if (user == null) return false;
-
-        string userId = user.UserId;
-
-        try
-        {
-            DataSnapshot snapshot = await dbReference.Child("users").Child(userId).GetValueAsync().AsUniTask();
-            return snapshot.Exists;
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError($"Failed to check user data: {e.Message}");
-            return false;
-        }
     }
 
     public void OnSignInSilently()
