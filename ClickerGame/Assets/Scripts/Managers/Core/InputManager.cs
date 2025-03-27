@@ -31,7 +31,10 @@ public class InputManager
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
             if (Managers.Scene.CurrentScene.SceneType == Define.Scene.Login)
-                TouchAction?.Invoke();
+            {
+                if (Managers.Firebase.IsLogIn || Managers.Data.HasLocalData())
+                    TouchAction?.Invoke();
+            }    
         }
     }
 
@@ -51,14 +54,5 @@ public class InputManager
     {
         Debug.Log("È­¸é ÅÍÄ¡µÊ!");
         Managers.Scene.LoadScene(Define.Scene.GamePlay);
-    }
-
-    public void Clear()
-    {
-        BackButton -= OnBackButtonHandler;
-        BackButton = null;
-
-        TouchAction -= OnTouchHandler;
-        TouchAction = null;
     }
 }

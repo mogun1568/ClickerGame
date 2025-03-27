@@ -43,7 +43,7 @@ public class LocalDataManager
         //File.WriteAllText(_filePath, jsonString);
     }
 
-    public bool HasLocalData()
+    public bool HasData()
     {
         _filePath = Path.Combine(Application.persistentDataPath, $"{_fileName}.json");
         return File.Exists(_filePath);

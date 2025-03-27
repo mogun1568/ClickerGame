@@ -38,7 +38,6 @@ public class Managers : MonoBehaviour
     void Start()
     {
         Init();
-        s_instance._input.Init();
     }
 
     void Update()
@@ -62,6 +61,7 @@ public class Managers : MonoBehaviour
 
             s_instance._firebase.Init();
             s_instance._data.InitAsync().Forget();
+            s_instance._input.Init();
             s_instance._pool.Init();
             s_instance._sound.Init();
         }
@@ -71,7 +71,6 @@ public class Managers : MonoBehaviour
     {
         // Data는 클리어 안해도 됨
         Data.Clear(); // 원래는 그렇지만 로그인/아웃에 필요, 조건문이 추가될 지도
-        Input.Clear();
         Sound.Clear();
         Scene.Clear();
         UI.Clear();

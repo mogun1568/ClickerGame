@@ -45,9 +45,15 @@ public class UI_Login : UI_Popup
     private void Log()
     {
         if (Managers.Firebase.auth.CurrentUser == null)
-            Managers.Firebase.OnSignIn();
+            Login();
         else
             Managers.Firebase.OnSignOut();
+    }
+
+    private void Login()
+    {
+        string str = "연동 계정의 데이터가 존재할 경우 게스트 데이터가 삭제됩니다. 계속하시겠습니까?";
+        Managers.UI.ShowPopupUI<UI_Notice>("Popup_Notice").UIInit(str);
     }
 
     public async UniTask TextInitAsync()

@@ -54,6 +54,7 @@ public class UI_Offline : UI_Popup
     private void GetReward(int amount = 1)
     {
         Managers.Game.MyPlayer.StatInfo.Coin += _rewardCoin * amount;
+        Managers.Data.UpdateInfo("LastTime");
         ClosePopupUI();
     }
 }

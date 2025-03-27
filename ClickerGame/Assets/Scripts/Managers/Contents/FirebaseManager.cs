@@ -168,7 +168,7 @@ public class FirebaseManager
 
         Credential credential = GoogleAuthProvider.GetCredential(idToken, null);
 
-        auth.SignInWithCredentialAsync(credential).ContinueWith(async task =>
+        auth.SignInWithCredentialAsync(credential).ContinueWith(task =>
         {
             if (task.IsCanceled || task.IsFaulted)
             {

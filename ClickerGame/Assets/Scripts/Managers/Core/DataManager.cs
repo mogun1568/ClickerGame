@@ -166,7 +166,7 @@ public class DataManager
 
     public bool HasLocalData()
     {
-        if (_localData.HasLocalData()) return true;
+        if (_localData.HasData()) return true;
         return false;
     }
 
