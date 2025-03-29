@@ -102,10 +102,7 @@ public class DataManager
     {
         if (Managers.Firebase.IsLogIn)
         {
-            if (infoType == "LastTime")
-                _firebaseData.UpdateInfo(infoType, UpdateLastTime()).Forget();
-            else
-                _firebaseData.UpdateInfo(infoType, infoValue).Forget();
+            _firebaseData.UpdateInfo(infoType, infoValue).Forget();
         }
         else
             SaveGameData();
@@ -145,9 +142,9 @@ public class DataManager
         };
     }
 
-    private long UpdateLastTime()
+    public void UpdateLastTime()
     {
-        return DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        MyPlayerInfo.LastTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
     }
 
     // 에디터에서는 test json 파일에 저장되어서 빌드 후에 테스트 필요
@@ -157,11 +154,11 @@ public class DataManager
         int diffTime = (int)(currentTime - MyPlayerInfo.LastTime);
 
         // 1분(60초) 이상 차이가 나면 오프라인 보상 UI 띄우기
-        if (diffTime < 60)
+        if (diffTime < 60 && MyPlayerInfo.OfflineReward <= 0)
             return;
 
-        int coin = diffTime / 60 * 1;
-        Managers.UI.ShowPopupUI<UI_Offline>("Popup_Offline").StatInit(coin);
+        MyPlayerInfo.OfflineReward += (diffTime / 60 * 1);
+        Managers.UI.ShowPopupUI<UI_Offline>("Popup_Offline").StatInit();
     }
 
     public bool HasLocalData()
@@ -174,6 +171,5 @@ public class DataManager
     {
         GameDataReady = false;
         CheckSaveDataDone = false;
-        InitAsync().Forget();
     }
 }

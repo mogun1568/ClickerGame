@@ -22,11 +22,7 @@ public class PlayerStat : Stat
     public override int Coin
     {
         get => Managers.Data.MyPlayerInfo.Coin;
-        set
-        {
-            Managers.Data.MyPlayerInfo.Coin = value;
-            Managers.Data.UpdateInfo("Coin", value);
-        }
+        set => Managers.Data.MyPlayerInfo.Coin = value;
     }
 
     public override float HP
@@ -36,7 +32,6 @@ public class PlayerStat : Stat
         {
             base.HP = value;
             Managers.Data.MyPlayerInfo.HP = base.HP;
-            Managers.Data.UpdateInfo("HP", base.HP);
         }
     }
 
@@ -46,19 +41,14 @@ public class PlayerStat : Stat
         set
         {
             base.MaxHP = value;
-            _statMaxHP.statValue = base.MaxHP;
-            Managers.Data.UpdateDict("MaxHP");
+            SetValue(ref _statMaxHP.statValue, value, "MaxHP");
         }
     }
 
     public float Regeneration
     {
         get => _statRegeneration.statValue;
-        set
-        {   
-            _statRegeneration.statValue = value;
-            Managers.Data.UpdateDict("Regeneration");
-        }
+        set => SetValue(ref _statRegeneration.statValue, value, "Regeneration");
     }
 
     public override float ATK
@@ -67,8 +57,7 @@ public class PlayerStat : Stat
         set
         {
             base.ATK = value;
-            _statATK.statValue = base.ATK;
-            Managers.Data.UpdateDict("ATK");
+            SetValue(ref _statATK.statValue, value, "ATK");
         }
     }
 
@@ -78,8 +67,7 @@ public class PlayerStat : Stat
         set
         {
             base.DEF = value;
-            _statDEF.statValue = base.DEF;
-            Managers.Data.UpdateDict("DEF");
+            SetValue(ref _statDEF.statValue, value, "DEF");
         }
     }
 
@@ -89,8 +77,7 @@ public class PlayerStat : Stat
         set
         {
             base.AttackSpeed = value;
-            _statAttackSpeed.statValue = base.AttackSpeed;
-            Managers.Data.UpdateDict("AttackSpeed");
+            SetValue(ref _statAttackSpeed.statValue, value, "AttackSpeed");
         }
     }
 
@@ -100,8 +87,16 @@ public class PlayerStat : Stat
         set
         {
             base.Range = value;
-            _statRange.statValue = base.Range;
-            Managers.Data.UpdateDict("Range");
+            SetValue(ref _statRange.statValue, value, "Range");
+        }
+    }
+
+    private void SetValue<T>(ref T field, T newValue, string key)
+    {
+        if (!Equals(field, newValue))
+        {
+            field = newValue;
+            Managers.Data.UpdateDict(key);
         }
     }
 }

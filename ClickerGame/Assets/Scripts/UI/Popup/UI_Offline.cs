@@ -43,18 +43,15 @@ public class UI_Offline : UI_Popup
         //GetText((int)Texts.Text_Gold).text = ;
     }
 
-    private int _rewardCoin;
-
-    public void StatInit(int coin)
+    public void StatInit()
     {
-        _rewardCoin = coin;
-        GetText((int)Texts.Text_Gold).text = _rewardCoin.ToString();
+        GetText((int)Texts.Text_Gold).text = Managers.Data.MyPlayerInfo.OfflineReward.ToString();
     }
 
     private void GetReward(int amount = 1)
     {
-        Managers.Game.MyPlayer.StatInfo.Coin += _rewardCoin * amount;
-        Managers.Data.UpdateInfo("LastTime");
+        Managers.Game.MyPlayer.StatInfo.Coin += Managers.Data.MyPlayerInfo.OfflineReward * amount;
+        Managers.Data.MyPlayerInfo.OfflineReward = 0;
         ClosePopupUI();
     }
 }

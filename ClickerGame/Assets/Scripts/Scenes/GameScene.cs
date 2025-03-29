@@ -20,18 +20,18 @@ public class GameScene : BaseScene
     {
         Managers.UI.ShowPopupUI<UI_Popup>("UI_Loading");
 
-        await UniTask.WaitUntil(() => Managers.Data.GameDataReady);
+        await Managers.Data.InitAsync();
 
         Managers.UI.ClosePopupUI();
 
         Managers.Data.OfflineReward();
 
-        InvokeRepeating(nameof(SaveLastTime), 10f, 10f);
+        InvokeRepeating(nameof(SaveLastTime), 0f, 60f);
     }
 
     private void SaveLastTime()
     {
-        Managers.Data.UpdateInfo("LastTime");
+        Managers.Data.UpdateLastTime();
     }
 
     private float pauseStartTime = 0f;

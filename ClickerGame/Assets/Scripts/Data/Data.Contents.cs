@@ -3,15 +3,7 @@ using System;
 
 namespace Data
 {
-    #region Info
-    [Serializable]
-    public class Info
-    {
-        public int Coin;
-        public float HP;
-        public long LastTime;
-    }
-    #endregion
+    // Info는 Data.Contents.Info에 정리
 
     #region Stat
     [Serializable]
