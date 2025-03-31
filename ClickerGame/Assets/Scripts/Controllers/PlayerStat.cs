@@ -41,7 +41,7 @@ public class PlayerStat : Stat
         set
         {
             base.MaxHP = value;
-            SetValue(ref _statMaxHP.statValue, value, "MaxHP");
+            SetValue(ref _statMaxHP.statValue, base.MaxHP, "MaxHP");
         }
     }
 
@@ -57,7 +57,7 @@ public class PlayerStat : Stat
         set
         {
             base.ATK = value;
-            SetValue(ref _statATK.statValue, value, "ATK");
+            SetValue(ref _statATK.statValue, base.ATK, "ATK");
         }
     }
 
@@ -67,7 +67,7 @@ public class PlayerStat : Stat
         set
         {
             base.DEF = value;
-            SetValue(ref _statDEF.statValue, value, "DEF");
+            SetValue(ref _statDEF.statValue, base.DEF, "DEF");
         }
     }
 
@@ -77,7 +77,7 @@ public class PlayerStat : Stat
         set
         {
             base.AttackSpeed = value;
-            SetValue(ref _statAttackSpeed.statValue, value, "AttackSpeed");
+            SetValue(ref _statAttackSpeed.statValue, base.AttackSpeed, "AttackSpeed");
         }
     }
 
@@ -87,7 +87,7 @@ public class PlayerStat : Stat
         set
         {
             base.Range = value;
-            SetValue(ref _statRange.statValue, value, "Range");
+            SetValue(ref _statRange.statValue, base.Range, "Range");
         }
     }
 

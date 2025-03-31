@@ -1,9 +1,5 @@
 using Cysharp.Threading.Tasks;
-using DG.Tweening;
 using System.Collections;
-using System.Threading.Tasks;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 
 public class CreatureController : MonoBehaviour

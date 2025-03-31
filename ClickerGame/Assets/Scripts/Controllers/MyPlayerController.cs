@@ -1,10 +1,6 @@
 using Cysharp.Threading.Tasks;
-using Data;
 using DG.Tweening;
 using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class MyPlayerController : CreatureController

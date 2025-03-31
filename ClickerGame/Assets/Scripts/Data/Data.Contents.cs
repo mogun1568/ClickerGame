@@ -31,6 +31,7 @@ namespace Data
         public float enemyDEF;
         public float enemyAttackSpeed;
         public float enemyRange;
+        public float enemyMoveSpeed;
         public int enemyCoin;
     }
     #endregion

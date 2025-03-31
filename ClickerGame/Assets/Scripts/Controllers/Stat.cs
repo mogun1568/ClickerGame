@@ -31,31 +31,31 @@ public class Stat
     public virtual float HP
     {
         get => _hp;
-        set => _hp = Mathf.Clamp(Mathf.Round(value * 100f) / 100f, 0, MaxHP);
+        set => _hp = ClampAndRound(value, 0, MaxHP);
     }
 
     public virtual float ATK
     {
         get => _atk;
-        set => _atk = Mathf.Round(value * 100f) / 100f;
+        set => _atk = RoundToTwoDecimals(value);
     }
 
     public virtual float DEF
     {
         get => _def;
-        set => _def = Mathf.Round(value * 100f) / 100f;
+        set => _def = RoundToTwoDecimals(value);
     }
 
     public virtual float AttackSpeed
     {
         get => _attackSpeed;
-        set => _attackSpeed = Mathf.Round(value * 100f) / 100f;
+        set => _attackSpeed = RoundToTwoDecimals(value);
     }
 
     public virtual float Range
     {
         get => _range;
-        set => _range = Mathf.Round(value * 100f) / 100f;
+        set => _range = RoundToTwoDecimals(value);
     }
 
     public virtual float AttackCountdown
@@ -64,4 +64,13 @@ public class Stat
         set => _attackCountdown = value;
     }
 
+    private float RoundToTwoDecimals(float value)
+    {
+        return Mathf.Round(value * 100f) / 100f;
+    }
+
+    private float ClampAndRound(float value, float min, float max)
+    {
+        return Mathf.Clamp(RoundToTwoDecimals(value), min, max);
+    }
 }

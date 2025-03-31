@@ -79,7 +79,7 @@ public class LocalDataManager
             enemys = new Dictionary<string, Data.Enemy>
             {
                 { "HeavyBandit", new Data.Enemy { enemyType = "HeavyBandit", enemyName = "HeavyBandit",
-                    enemyMaxHP = 30.0f, enemyATK = 10.0f, enemyDEF = 0.0f, enemyAttackSpeed = 1.0f, enemyRange = 1.5f, enemyCoin = 10 }}
+                    enemyMaxHP = 30.0f, enemyATK = 10.0f, enemyDEF = 0.0f, enemyAttackSpeed = 1.0f, enemyRange = 1.5f, enemyMoveSpeed = 2.5f, enemyCoin = 10 }}
             }
         };
     }

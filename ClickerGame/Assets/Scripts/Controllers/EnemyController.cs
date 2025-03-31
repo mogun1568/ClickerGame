@@ -1,14 +1,12 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyController : CreatureController
 {
     private Tween MoveTween;
     private Tween deadMoveTween;
-    private Data.Enemy _enemyStat;
+    private bool _isPlayerStop; // 플레이어가 멈췄을 때 몬스터 속도 변경을 위함
 
     protected override async UniTask InitAsync()
     {
@@ -26,6 +24,7 @@ public class EnemyController : CreatureController
         StopAllCoroutines();
         MoveTween = null;
         deadMoveTween = null;
+        _isPlayerStop = false;
 
         Move(-0.5f, _moveSpeed);
     }
@@ -66,11 +65,18 @@ public class EnemyController : CreatureController
         if (Managers.Game.MyPlayer.State == Define.State.Run || Managers.Game.MyPlayer.State == Define.State.Death)
             State = Define.State.Idle;
         else
+        {
             State = Define.State.Run;
+            _isPlayerStop = true;
+            Move(-0.5f, ((EnemyStat)StatInfo).MoveSpeed);
+        }
     }
 
     protected override void Move(float endPosX, float moveSpeed)
     {
+        if (_isPlayerStop)
+            MoveTween.Kill();
+
         float duration = Mathf.Abs(transform.position.x - endPosX) / moveSpeed;
 
         MoveTween = transform.DOMoveX(endPosX, duration)
