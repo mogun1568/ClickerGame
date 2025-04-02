@@ -20,7 +20,7 @@ public class CreatureController : MonoBehaviour
                 StopCoroutine(_AttackCoroutine);
 
             _state = value;
-            //if (gameObject.tag == "Player") Debug.Log(_state);
+            //if (gameObject.tag != "Player") Debug.Log(_state);
             UpdateAnimation();
             UpdateController();
         }
@@ -114,6 +114,8 @@ public class CreatureController : MonoBehaviour
     protected GameObject _target;
     private bool DeadFlag;
 
+    [SerializeField]
+    protected float _endPosX;
     [SerializeField]
     protected float _moveSpeed = 2.5f;
 
@@ -308,7 +310,9 @@ public class CreatureController : MonoBehaviour
         _target = null;
         DeadFlag = true;
 
-        StartCoroutine(DeadAnim(1.1f));
+        // 적 오브젝트를 +1개 만들기 위함 딱 맞게 만들면 비활성화됐다가 활성화하는 과정에서 한 마리가 오류 걸림
+        // 임시 방편 같아 수정 필요, 겜 시작할 때 미리 만들어 놔도 pool이 stack이라 의미가 없음, queue로 하면 될지도
+        StartCoroutine(DeadAnim(1.6f));
     }
 
     protected virtual IEnumerator CheckAnimationTime(float targetNormalizedTime, float amount)

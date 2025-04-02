@@ -21,12 +21,14 @@ public class EnemyController : CreatureController
         _animator.SetFloat("AttackSpeed", AttackSpeed);
 
         _targetTag = "Player";
+        _endPosX = -0.51f;
+
         StopAllCoroutines();
         MoveTween = null;
         deadMoveTween = null;
         _isPlayerStop = false;
 
-        Move(-0.5f, _moveSpeed);
+        Move(_endPosX, _moveSpeed);
     }
 
     protected override void Update()
@@ -65,17 +67,25 @@ public class EnemyController : CreatureController
         if (Managers.Game.MyPlayer.State == Define.State.Run || Managers.Game.MyPlayer.State == Define.State.Death)
             State = Define.State.Idle;
         else
-        {
+        {   
             State = Define.State.Run;
-            _isPlayerStop = true;
-            Move(-0.5f, ((EnemyStat)StatInfo).MoveSpeed);
+            if (!_isPlayerStop)
+            {
+                _isPlayerStop = true;
+                Move(_endPosX, ((EnemyStat)StatInfo).MoveSpeed);
+            }
         }
     }
 
     protected override void Move(float endPosX, float moveSpeed)
     {
-        if (_isPlayerStop)
+        if (MoveTween != null)
+        {
             MoveTween.Kill();
+            MoveTween = null;
+        }
+
+        Debug.Log(moveSpeed);
 
         float duration = Mathf.Abs(transform.position.x - endPosX) / moveSpeed;
 

@@ -45,16 +45,17 @@ public class Wave : MonoBehaviour
 
     IEnumerator SpawnEnemyWave()
     {
+        _enemyCount += _waveCount;
+
         for (int i = 0; i < _waveCount; i++)
         {
-            SpawnEnemy();
             yield return new WaitForSeconds(0.5f);
+            SpawnEnemy();
         }
     }   
 
     void SpawnEnemy()
     {
         Managers.Resource.Instantiate($"Enemy/HeavyBandit", new Vector3(7, 1.9f, -1));
-        _enemyCount++;
     }
 }

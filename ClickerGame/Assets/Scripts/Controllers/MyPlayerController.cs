@@ -35,7 +35,8 @@ public class MyPlayerController : CreatureController
         {
             isMove = true;
             HP = MaxHP;
-            Move(-2f, _moveSpeed);
+            _endPosX = -2f;
+            Move(-_endPosX, _moveSpeed);
         }
 
         InvokeRepeating(nameof(Regenerate), 1f, 1f);
