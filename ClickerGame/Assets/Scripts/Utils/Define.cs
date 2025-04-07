@@ -33,6 +33,7 @@ public class Define
 
     public enum State
     {
+        None,
         Idle,
         Run,
         Attack,

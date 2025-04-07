@@ -24,8 +24,8 @@ public class EnemyController : CreatureController
         _endPosX = -0.51f;
 
         StopAllCoroutines();
-        MoveTween = null;
-        deadMoveTween = null;
+        MoveTween.Kill();
+        deadMoveTween.Kill();
         _isPlayerStop = false;
 
         Move(_endPosX, _moveSpeed);
@@ -35,13 +35,16 @@ public class EnemyController : CreatureController
     {
         if (State == Define.State.Death)
         {
-            if (Managers.Game.MyPlayer.State == Define.State.Run)
+            if (deadMoveTween != null)
             {
-                if (!deadMoveTween.IsPlaying()) deadMoveTween.Play();
-            }
-            else
-            {
-                if (deadMoveTween.IsPlaying()) deadMoveTween.Pause();
+                if (Managers.Game.MyPlayer.State == Define.State.Run)
+                {
+                    if (!deadMoveTween.IsPlaying()) deadMoveTween.Play();
+                }
+                else
+                {
+                    if (deadMoveTween.IsPlaying()) deadMoveTween.Pause();
+                }
             }
         }
 
@@ -80,17 +83,15 @@ public class EnemyController : CreatureController
     protected override void Move(float endPosX, float moveSpeed)
     {
         if (MoveTween != null)
-        {
             MoveTween.Kill();
-            MoveTween = null;
-        }
 
-        Debug.Log(moveSpeed);
-
+        //Debug.Log($"{transform.position.x}, {endPosX}");
         float duration = Mathf.Abs(transform.position.x - endPosX) / moveSpeed;
 
         MoveTween = transform.DOMoveX(endPosX, duration)
             .SetEase(Ease.Linear)
+            .SetAutoKill(true)
+            .OnKill(() => MoveTween = null)
             .OnComplete(() =>
             {
                 // 이동 완료 시 호출
@@ -111,6 +112,8 @@ public class EnemyController : CreatureController
 
         deadMoveTween = transform.DOMoveX(endPosX, duration)
             .SetEase(Ease.Linear)
+            .SetAutoKill(true)
+            .OnKill(() => deadMoveTween = null)
             .Pause();
     }
 

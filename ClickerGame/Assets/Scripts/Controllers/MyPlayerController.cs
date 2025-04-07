@@ -19,12 +19,16 @@ public class MyPlayerController : CreatureController
 
         Managers.Game.MyPlayer = this;
 
-        //State = Define.State.Run;
+        State = Define.State.Run;
 
         StatInfo = new PlayerStat(Managers.Data.MyPlayerStatDict);
         _animator.SetFloat("AttackSpeed", AttackSpeed);
 
         _targetTag = "Enemy";
+        StopAllCoroutines();
+
+        // Stat의 _maxHP에 값을 주기 위함, 스폰할 때마다 자동 풀피 기능도 됨
+        MaxHP = Managers.Data.MyPlayerStatDict["MaxHP"].statValue;
 
         if (transform.position.x == -2)
         {
@@ -34,9 +38,8 @@ public class MyPlayerController : CreatureController
         else
         {
             isMove = true;
-            HP = MaxHP;
             _endPosX = -2f;
-            Move(-_endPosX, _moveSpeed);
+            Move(_endPosX, _moveSpeed);
         }
 
         InvokeRepeating(nameof(Regenerate), 1f, 1f);
@@ -57,6 +60,7 @@ public class MyPlayerController : CreatureController
 
         transform.DOMoveX(endPosX, duration)
             .SetEase(Ease.Linear)
+            .SetAutoKill(true)
             .OnComplete(() =>
             {
                 // 이동 완료 시 호출

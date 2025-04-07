@@ -38,7 +38,7 @@ public class Wave : MonoBehaviour
 
     protected IEnumerator Respawn(float delay)
     {
-        yield return new WaitForSeconds(delay); // 지정한 시간만큼 대기
+        yield return new WaitForSeconds(delay);
         Managers.Resource.Instantiate($"Player/HeroKnight", new Vector3(-7, 1.9f, -1));
         
     }
@@ -47,10 +47,12 @@ public class Wave : MonoBehaviour
     {
         _enemyCount += _waveCount;
 
+        yield return new WaitForSeconds(1f);
+
         for (int i = 0; i < _waveCount; i++)
         {
-            yield return new WaitForSeconds(0.5f);
             SpawnEnemy();
+            yield return new WaitForSeconds(0.5f);
         }
     }   
 
