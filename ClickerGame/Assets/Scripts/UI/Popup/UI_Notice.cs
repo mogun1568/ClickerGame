@@ -35,6 +35,7 @@ public class UI_Notice : UI_Popup
     private void Confirm()
     {
         // 로그인 알림으로만 쓸 지 고민 중
+        Managers.UI.CloseAllPopupUI();
         Managers.Firebase.OnSignIn();
     }
 

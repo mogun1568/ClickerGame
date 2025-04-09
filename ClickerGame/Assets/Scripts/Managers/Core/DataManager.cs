@@ -40,9 +40,7 @@ public class DataManager
         if (Managers.Firebase.IsLogIn)
         {
             gameData = await _firebaseData.LoadGameData();
-            if (gameData != null)
-                return gameData;
-            else
+            if (gameData == null)
             {
                 Debug.LogError("Firebase 데이터가 없습니다.");
 
@@ -52,12 +50,16 @@ public class DataManager
                     CheckSaveDataDone = false;
                     SaveGameData();
                     await UniTask.WaitUntil(() => CheckSaveDataDone);
-                    _localData.DeleteData();
-                    return gameData;
                 }
                 else
-                    return null;
+                {
+                    Debug.LogError("로컬 데이터를 생성하지 못했습니다.");
+                }
             }
+
+            _localData.DeleteData();
+
+            return gameData;
         }
 
         gameData = LoadLocalData();

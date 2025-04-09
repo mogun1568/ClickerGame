@@ -65,12 +65,12 @@ public class UI_Login : UI_Popup
 
         if (Managers.Firebase.auth.CurrentUser == null)
         {
-            _loginText = "GOOGLE LOGIN";
+            _loginText = "GOOGLE 로그인";
             _infoText = "로그인되어 있지 않습니다.";
         }
         else
         {
-            _loginText = "GOOGLE LOGOUT";
+            _loginText = "GOOGLE 로그아웃";
             _infoText = "환영합니다";
         }
 
