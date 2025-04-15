@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 
@@ -107,6 +108,8 @@ public class CreatureController : MonoBehaviour
         }
     }
 
+    private Skill Skill;
+
     protected Animator _animator;
     protected AnimatorStateInfo _curAnimInfo;
     protected Coroutine _AttackCoroutine;
@@ -115,10 +118,10 @@ public class CreatureController : MonoBehaviour
     protected GameObject _target;
     private bool DeadFlag;
 
-    [SerializeField]
+    public Tween MoveTween;
     protected float _endPosX;
-    [SerializeField]
-    protected float _moveSpeed = 2.5f;
+    protected float _moveSpeed;
+    private bool _isUpdateTargetRunning;
 
     private void OnEnable()
     {
@@ -133,12 +136,40 @@ public class CreatureController : MonoBehaviour
         DeadFlag = false;
         UpdateAnimation();
 
+        Skill = GetComponent<Skill>();
+
+        MoveTween.Kill();
+        _moveSpeed = 2.5f;
+        _isUpdateTargetRunning = false;
+
         await UniTask.WaitUntil(() => Managers.Data.GameDataReady);
     }
 
     protected virtual void Move(float endPosX, float moveSpeed)
     {
+        if (MoveTween != null)
+            MoveTween.Kill();
 
+        float duration = Mathf.Abs(transform.position.x - endPosX) / moveSpeed;
+
+        MoveTween = transform.DOMoveX(endPosX, duration)
+            .SetEase(Ease.Linear)
+            .SetAutoKill(true)
+            .OnKill(() => MoveTween = null)
+            .OnComplete(() =>
+            {
+                // 이동 완료 시 호출
+                TweenComplete();
+            });
+    }
+
+    protected virtual void TweenComplete()
+    {
+        if (!_isUpdateTargetRunning)
+        {
+            _isUpdateTargetRunning = true;
+            InvokeRepeating(nameof(UpdateTarget), 0f, 0.1f);
+        }
     }
 
     protected void UpdateTarget()

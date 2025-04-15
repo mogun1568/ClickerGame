@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class MyPlayerController : CreatureController
 {
+    // 플레이어가 죽었을 때 배경 움직임 위함
     public bool isMove;
 
     public float Regeneration
@@ -54,19 +55,10 @@ public class MyPlayerController : CreatureController
         State = Define.State.Run;
     }
 
-    protected override void Move(float endPosX, float moveSpeed)
+    protected override void TweenComplete()
     {
-        float duration = Mathf.Abs(transform.position.x - endPosX) / moveSpeed;
-
-        transform.DOMoveX(endPosX, duration)
-            .SetEase(Ease.Linear)
-            .SetAutoKill(true)
-            .OnComplete(() =>
-            {
-                // 이동 완료 시 호출
-                isMove = false;
-                InvokeRepeating(nameof(UpdateTarget), 0f, 0.1f);
-            });
+        isMove = false;
+        base.TweenComplete();
     }
 
     public void Regenerate()

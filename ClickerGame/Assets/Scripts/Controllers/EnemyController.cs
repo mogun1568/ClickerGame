@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class EnemyController : CreatureController
 {
-    private Tween MoveTween;
     private Tween deadMoveTween;
     private bool _isPlayerStop; // 플레이어가 멈췄을 때 몬스터 속도 변경을 위함
 
@@ -24,7 +23,6 @@ public class EnemyController : CreatureController
         _endPosX = -0.51f;
 
         StopAllCoroutines();
-        MoveTween.Kill();
         deadMoveTween.Kill();
         _isPlayerStop = false;
 
@@ -78,26 +76,6 @@ public class EnemyController : CreatureController
                 Move(_endPosX, ((EnemyStat)StatInfo).MoveSpeed);
             }
         }
-    }
-
-    protected override void Move(float endPosX, float moveSpeed)
-    {
-        if (MoveTween != null)
-            MoveTween.Kill();
-
-        //Debug.Log($"{transform.position.x}, {endPosX}");
-        float duration = Mathf.Abs(transform.position.x - endPosX) / moveSpeed;
-
-        MoveTween = transform.DOMoveX(endPosX, duration)
-            .SetEase(Ease.Linear)
-            .SetAutoKill(true)
-            .OnKill(() => MoveTween = null)
-            .OnComplete(() =>
-            {
-                // 이동 완료 시 호출
-                InvokeRepeating(nameof(UpdateTarget), 0f, 0.1f);
-                MoveTween = null;
-            });
     }
 
     private void DeadMove(float endPosX, float moveSpeed)
