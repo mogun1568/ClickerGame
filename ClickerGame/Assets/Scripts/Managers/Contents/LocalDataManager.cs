@@ -76,6 +76,7 @@ public class LocalDataManager
                 { "Range", new Data.Stat { statType = "Range", statIcon = "RangeIcon", statLevel = 1, statName = "공격 범위",
                     statValue = 1.5f, statIncreaseValue = 0.01f, statPrice = 10, statIncreasePrice = 2 }}
             },
+            skills = new Dictionary<string, Data.Skill> { },
             enemys = new Dictionary<string, Data.Enemy>
             {
                 { "HeavyBandit", new Data.Enemy { enemyType = "HeavyBandit", enemyName = "HeavyBandit",

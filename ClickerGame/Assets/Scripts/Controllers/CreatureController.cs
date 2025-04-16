@@ -119,8 +119,8 @@ public class CreatureController : MonoBehaviour
     private bool DeadFlag;
 
     public Tween MoveTween;
-    protected float _endPosX;
-    protected float _moveSpeed;
+    public float _endPosX;
+    public float _moveSpeed;
     private bool _isUpdateTargetRunning;
 
     private void OnEnable()
@@ -145,7 +145,7 @@ public class CreatureController : MonoBehaviour
         await UniTask.WaitUntil(() => Managers.Data.GameDataReady);
     }
 
-    protected virtual void Move(float endPosX, float moveSpeed)
+    public virtual void Move(float endPosX, float moveSpeed)
     {
         if (MoveTween != null)
             MoveTween.Kill();

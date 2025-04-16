@@ -116,6 +116,32 @@ public class FirebaseDataManager
         }
     }
 
+    public async UniTask UpdateSkill(string skillType, Dictionary<string, object> skillValues)
+    {
+        FirebaseUser user = auth.CurrentUser;
+        if (user == null) return;
+
+        string userId = user.UserId;
+
+        try
+        {
+            Dictionary<string, object> updates = new Dictionary<string, object>();
+            foreach (var kvp in skillValues)
+            {
+                updates[$"{skillType}/{kvp.Key}"] = kvp.Value;
+            }
+
+            await dbReference.Child("users").Child(userId).Child("skills").Child(skillType)
+                .UpdateChildrenAsync(skillValues).AsUniTask();
+
+            Debug.Log($"Skill '{skillType}' updated successfully.");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Failed to update skill '{skillType}': {e.Message}");
+        }
+    }
+
     // 모든 적의 특정 스탯 업데이트
     public async UniTask UpdateAllEnemiesStat(string statName, object newValue)
     {

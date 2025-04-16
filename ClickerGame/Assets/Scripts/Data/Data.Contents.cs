@@ -20,6 +20,19 @@ namespace Data
     }
     #endregion
 
+    #region Skill
+    [Serializable]
+    public class Skill
+    {
+        public string skillType;
+        public string skillIcon;
+        public int skillLevel;
+        public string skillName;
+        public float skillValue;
+        public float skillIncreaseValue;
+    }
+    #endregion
+
     #region Enemy
     [Serializable]
     public class Enemy
@@ -42,6 +55,7 @@ namespace Data
     {
         public Info info = new Info();
         public Dictionary<string, Stat> stats = new Dictionary<string, Stat>();
+        public Dictionary<string, Skill> skills = new Dictionary<string, Skill>();
         public Dictionary<string, Enemy> enemys = new Dictionary<string, Enemy>();
     }
     #endregion

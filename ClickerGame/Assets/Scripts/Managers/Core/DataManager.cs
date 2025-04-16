@@ -12,6 +12,7 @@ public class DataManager
 
     public Data.Info MyPlayerInfo { get; private set; } = new Data.Info();
     public Dictionary<string, Data.Stat> MyPlayerStatDict { get; private set; } = new Dictionary<string, Data.Stat>();
+    public Dictionary<string, Data.Skill> MyPlayerSkillDict { get; private set; } = new Dictionary<string, Data.Skill>();
     public Dictionary<string, Data.Enemy> EnemyDict { get; private set; } = new Dictionary<string, Data.Enemy>();
 
     public bool GameDataReady { get; private set; } = false;
@@ -110,25 +111,48 @@ public class DataManager
             SaveGameData();
     }
 
-    private void UpdateStat(string statType)
+    private void UpdateFirebaseStat(string statType)
     {
         Dictionary<string, object> StatValues = new Dictionary<string, object>
         {
-            { "statValue", MyPlayerStatDict[statType].statValue },
             { "statLevel", MyPlayerStatDict[statType].statLevel },
+            { "statValue", MyPlayerStatDict[statType].statValue },
             { "statPrice", MyPlayerStatDict[statType].statPrice }
         };
         _firebaseData.UpdateStat(statType, StatValues).Forget();
     }
 
-    public void UpdateDict(string statType = "")
+    public void UpdateStat(string statType = "")
     {
         if (Managers.Firebase.IsLogIn)
         {
             if (statType == "")
                 SaveGameData();
             else
-                UpdateStat(statType);
+                UpdateFirebaseStat(statType);
+        }
+        else
+            SaveGameData();
+    }
+
+    private void UpdateFirebaseSkill(string skillType)
+    {
+        Dictionary<string, object> SKillValues = new Dictionary<string, object>
+        {
+            { "skillLevel", MyPlayerSkillDict[skillType].skillLevel },
+            { "skillValue", MyPlayerSkillDict[skillType].skillValue }
+        };
+        _firebaseData.UpdateSkill(skillType, SKillValues).Forget();
+    }
+
+    public void UpdateSKill(string skillType = "")
+    {
+        if (Managers.Firebase.IsLogIn)
+        {
+            if (skillType == "")
+                SaveGameData();
+            else
+                UpdateFirebaseSkill(skillType);
         }
         else
             SaveGameData();
@@ -140,6 +164,7 @@ public class DataManager
         {
             info = MyPlayerInfo,
             stats = MyPlayerStatDict,
+            skills = MyPlayerSkillDict,
             enemys = EnemyDict
         };
     }

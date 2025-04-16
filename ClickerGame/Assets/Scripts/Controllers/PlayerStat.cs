@@ -96,7 +96,7 @@ public class PlayerStat : Stat
         if (!Equals(field, newValue))
         {
             field = newValue;
-            Managers.Data.UpdateDict(key);
+            Managers.Data.UpdateStat(key);
         }
     }
 }
