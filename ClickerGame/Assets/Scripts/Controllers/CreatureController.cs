@@ -108,7 +108,7 @@ public class CreatureController : MonoBehaviour
         }
     }
 
-    private Skill Skill;
+    protected Skill SkillInfo;
 
     protected Animator _animator;
     protected AnimatorStateInfo _curAnimInfo;
@@ -136,7 +136,7 @@ public class CreatureController : MonoBehaviour
         DeadFlag = false;
         UpdateAnimation();
 
-        Skill = GetComponent<Skill>();
+        SkillInfo = GetComponent<Skill>();
 
         MoveTween.Kill();
         _moveSpeed = 2.5f;
@@ -147,6 +147,9 @@ public class CreatureController : MonoBehaviour
 
     public virtual void Move(float endPosX, float moveSpeed)
     {
+        if (State == Define.State.Death)
+            return;
+
         if (MoveTween != null)
             MoveTween.Kill();
 
@@ -155,7 +158,12 @@ public class CreatureController : MonoBehaviour
         MoveTween = transform.DOMoveX(endPosX, duration)
             .SetEase(Ease.Linear)
             .SetAutoKill(true)
-            .OnKill(() => MoveTween = null)
+            .OnKill(() =>
+            {
+                MoveTween = null;
+                if (transform.position.x != _endPosX)
+                    Move(_endPosX, _moveSpeed);
+            })
             .OnComplete(() =>
             {
                 // 이동 완료 시 호출
@@ -247,7 +255,8 @@ public class CreatureController : MonoBehaviour
 
     protected virtual void TargetIsNull()
     {
-
+        if (State == Define.State.Death)
+            return;
     }
 
     protected virtual void UpdateController()
@@ -353,6 +362,11 @@ public class CreatureController : MonoBehaviour
         {
             //Debug.Log($"{gameObject.tag}, {_curAnimInfo.normalizedTime % 1}");
             _target.GetComponent<CreatureController>().Hurt(amount);
+
+            // 이 부분에서 스킬을 써야 할 듯
+            // 스킬들 중 1렙 이상인 것들중에 랜덤으로 하나 쓰도록 해야 함
+            // 뭔가 스킬이 늦게 써지는 느낌이 있음
+            //if (gameObject.tag == "Player") SkillInfo.Knockback(_target);
         }
     }
 

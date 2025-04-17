@@ -1,5 +1,4 @@
 using Cysharp.Threading.Tasks;
-using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 
@@ -23,6 +22,7 @@ public class MyPlayerController : CreatureController
         State = Define.State.Run;
 
         StatInfo = new PlayerStat(Managers.Data.MyPlayerStatDict);
+        SkillInfo.Init();
         _animator.SetFloat("AttackSpeed", AttackSpeed);
 
         _targetTag = "Enemy";

@@ -65,15 +65,23 @@ public class EnemyController : CreatureController
     {
         base.TargetIsNull();
 
-        if (Managers.Game.MyPlayer.State == Define.State.Run || Managers.Game.MyPlayer.State == Define.State.Death)
+        if (Managers.Game.MyPlayer.State == Define.State.Death)
             State = Define.State.Idle;
+        else if (Managers.Game.MyPlayer.State == Define.State.Run)
+        {
+            if (_isPlayerStop)
+                return;
+
+            State = Define.State.Idle;
+        }
         else
-        {   
+        {
             State = Define.State.Run;
             if (!_isPlayerStop)
             {
                 _isPlayerStop = true;
-                Move(_endPosX, ((EnemyStat)StatInfo).MoveSpeed);
+                _moveSpeed = ((EnemyStat)StatInfo).MoveSpeed;
+                MoveTween.Kill();
             }
         }
     }

@@ -96,8 +96,7 @@ public class StatLevelUpButton : UI_Base
                 Debug.Log($"AttackSpeed -> {Managers.Game.MyPlayer.AttackSpeed}");
                 break;
             case "Range":
-                //Managers.Game.MyPlayer.StatInfo.Range += _statIncreaseValue;
-                Managers.Game.MyPlayer.StatInfo.Range = Mathf.Round((Managers.Game.MyPlayer.StatInfo.Range + _statIncreaseValue) * 100f) / 100f;
+                Managers.Game.MyPlayer.StatInfo.Range += _statIncreaseValue;
                 Debug.Log($"Range -> {Managers.Game.MyPlayer.StatInfo.Range}");
                 break;
         }

@@ -1,44 +1,41 @@
-using DG.Tweening;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Skill : MonoBehaviour
 {
-    private int _knockback;
-    private int _slow;
+    private Data.Skill _skillKnockback;
+    private Data.Skill _skillSlow;
 
-    private CreatureController Controller;
-    private Tween KnockbackTween;
-
-    private void Start()
+    public virtual void Init()
     {
-        Controller = GetComponent<CreatureController>();
+        Dictionary<string, Data.Skill> skillDict = Managers.Data.MyPlayerSkillDict;
+
+        _skillKnockback = skillDict["Knockback"];
+        _skillSlow = skillDict["Slow"];
     }
 
-    void Knockback()
+    public virtual void Knockback(GameObject target)
     {
-        //if (KnockbackTween != null)
-        //    KnockbackTween.Kill();
+        CreatureController controller = target.GetComponent<CreatureController>();
 
-        //float duration = Mathf.Abs(transform.position.x - endPosX) / moveSpeed;
-
-        //KnockbackTween = transform.DOMoveX(endPosX, duration)
-        //    .SetEase(Ease.Linear)
-        //    .SetAutoKill(true)
-        //    .OnKill(() => KnockbackTween = null)
-        //    .OnComplete(() =>
-        //    {
-        //        // 이동 완료 시 호출
-        //        Controller.Move(Controller._endPosX, Controller._moveSpeed);    
-        //    });
+        float endPosX = target.transform.position.x + _skillKnockback.skillValue;
+        float moveSpeed = 5f;
+        controller.Move(endPosX, moveSpeed);
     }
 
-    void Slow(float endPosX, float moveSpeed)
+    public virtual void Slow(GameObject target)
     {
-        
+        CreatureController controller = target.GetComponent<CreatureController>();
+
+        float preMoveSpeed = controller._moveSpeed;
+        controller._moveSpeed *= _skillSlow.skillValue;
+        StartCoroutine(SlowCoroutine(controller, preMoveSpeed));
     }
 
-    private void SkillComplete()
+    protected IEnumerator SlowCoroutine(CreatureController controller, float preMoveSpeed)
     {
-
+        yield return new WaitForSeconds(5);
+        controller._moveSpeed = preMoveSpeed;
     }
 }
