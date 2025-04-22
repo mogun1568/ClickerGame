@@ -7,10 +7,8 @@ public class Skill : MonoBehaviour
     private Data.Skill _skillKnockback;
     private Data.Skill _skillSlow;
 
-    public virtual void Init()
+    public Skill(Dictionary<string, Data.Skill> skillDict)
     {
-        Dictionary<string, Data.Skill> skillDict = Managers.Data.MyPlayerSkillDict;
-
         _skillKnockback = skillDict["Knockback"];
         _skillSlow = skillDict["Slow"];
     }

@@ -136,8 +136,6 @@ public class CreatureController : MonoBehaviour
         DeadFlag = false;
         UpdateAnimation();
 
-        SkillInfo = GetComponent<Skill>();
-
         MoveTween.Kill();
         _moveSpeed = 2.5f;
         _isUpdateTargetRunning = false;

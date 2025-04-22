@@ -30,8 +30,7 @@ namespace Data
         public string skillName;
         public float skillValue;
         public float skillIncreaseValue;
-        //public float skillProbability;
-        //public float skillIncreaseProbability;
+        public int skillCoolTime;
     }
     #endregion
 

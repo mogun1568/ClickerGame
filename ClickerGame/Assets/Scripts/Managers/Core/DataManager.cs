@@ -27,6 +27,7 @@ public class DataManager
         MyPlayerStatDict = gameData.stats;
         MyPlayerSkillDict = gameData.skills;
         EnemyDict = gameData.enemys;
+        Managers.Skill.Init();
         GameDataReady = true;
     }
 
@@ -142,7 +143,6 @@ public class DataManager
         {
             { "skillLevel", MyPlayerSkillDict[skillType].skillLevel },
             { "skillValue", MyPlayerSkillDict[skillType].skillValue }
-            //{ "skillProbability", MyPlayerSkillDict[skillType].skillProbability }
         };
         _firebaseData.UpdateSkill(skillType, SKillValues).Forget();
     }

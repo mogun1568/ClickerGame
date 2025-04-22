@@ -22,7 +22,7 @@ public class MyPlayerController : CreatureController
         State = Define.State.Run;
 
         StatInfo = new PlayerStat(Managers.Data.MyPlayerStatDict);
-        SkillInfo.Init();
+        SkillInfo = new PlayerSkill(Managers.Data.MyPlayerSkillDict);
         _animator.SetFloat("AttackSpeed", AttackSpeed);
 
         _targetTag = "Enemy";
