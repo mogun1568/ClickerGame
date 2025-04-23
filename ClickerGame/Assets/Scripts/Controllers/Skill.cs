@@ -4,20 +4,18 @@ using UnityEngine;
 
 public class Skill : MonoBehaviour
 {
-    private Data.Skill _skillKnockback;
-    private Data.Skill _skillSlow;
+    public Dictionary<string, Data.Skill> MyPlayerSkillDict;
 
-    public Skill(Dictionary<string, Data.Skill> skillDict)
+    public virtual void Init()
     {
-        _skillKnockback = skillDict["Knockback"];
-        _skillSlow = skillDict["Slow"];
+        MyPlayerSkillDict = Managers.Data.MyPlayerSkillDict;
     }
 
     public virtual void Knockback(GameObject target)
     {
         CreatureController controller = target.GetComponent<CreatureController>();
 
-        float endPosX = target.transform.position.x + _skillKnockback.skillValue;
+        float endPosX = target.transform.position.x + MyPlayerSkillDict["Knockback"].skillValue;
         float moveSpeed = 5f;
         controller.Move(endPosX, moveSpeed);
     }
@@ -27,7 +25,7 @@ public class Skill : MonoBehaviour
         CreatureController controller = target.GetComponent<CreatureController>();
 
         float preMoveSpeed = controller._moveSpeed;
-        controller._moveSpeed *= _skillSlow.skillValue;
+        controller._moveSpeed *= MyPlayerSkillDict["Slow"].skillValue;
         StartCoroutine(SlowCoroutine(controller, preMoveSpeed));
     }
 

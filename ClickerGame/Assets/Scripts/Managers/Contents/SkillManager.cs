@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class SkillManager
 {
-    public List<SkillData> AllSkills;
-    public List<(string name, int coolTime)> SkillList = new List<(string, int)>();
+    private List<SkillData> AllSkills;
+    private Dictionary<string, float> SkillCoolTime = new(); // 스킬 쿨타임 관리용
     private Dictionary<string, Data.Skill> MyPlayerSkillDict;
 
     public void Init()
@@ -13,7 +13,7 @@ public class SkillManager
 
         MyPlayerSkillDict = Managers.Data.MyPlayerSkillDict;
         foreach (var skill in MyPlayerSkillDict)
-            SkillList.Add((skill.Value.skillType, skill.Value.skillCoolTime));
+            SkillCoolTime[skill.Key] = -999f;
     }
 
     public void AddSkill()
@@ -29,21 +29,30 @@ public class SkillManager
         else
         {
             MyPlayerSkillDict.Add(randomSkill.skillType, randomSkill);
-            SkillList.Add((randomSkill.skillType, randomSkill.skillCoolTime));
+            SkillCoolTime[randomSkill.skillType] = -999f;
         }
     }
 
     public string ChooseSkill()
     {
-        if (SkillList == null || SkillList.Count == 0)
+        List<string> availableSkills = new();
+
+        float currentTime = Time.time;
+
+        foreach (var pair in MyPlayerSkillDict)
         {
-            Debug.Log("skillList is null.");
-            return null;
+            string skillName = pair.Key;
+            float coolTime = pair.Value.skillCoolTime;
+
+            if (currentTime - SkillCoolTime[skillName] >= coolTime)
+                availableSkills.Add(skillName);
         }
 
-        // 스킬 선택
+        if (availableSkills.Count == 0)
+            return null;
 
-        string name = "";
-        return name;
+        int randIndex = Random.Range(0, availableSkills.Count);
+        return availableSkills[randIndex];
     }
+
 }

@@ -78,11 +78,6 @@ public class LocalDataManager
             },
             skills = new Dictionary<string, Data.Skill>
             {
-                { "Knockback", new Data.Skill { skillType = "Knockback", skillIcon = "KnockbackIcon", skillLevel = 0, skillName = "³Ë¹é",
-                    skillValue = 1.0f, skillIncreaseValue = 0.2f }},
-                { "Slow", new Data.Skill { skillType = "Slow", skillIcon = "SlowIcon", skillLevel = 0, skillName = "½½·Î¿ì",
-                    skillValue = 0.8f, skillIncreaseValue = 0.1f }}
-
             },
             enemys = new Dictionary<string, Data.Enemy>
             {

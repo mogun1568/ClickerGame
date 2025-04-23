@@ -364,8 +364,11 @@ public class CreatureController : MonoBehaviour
             // 이 부분에서 스킬을 써야 할 듯
             // 스킬들 중 1렙 이상인 것들중에 랜덤으로 하나 쓰도록 해야 함
             // 뭔가 스킬이 늦게 써지는 느낌이 있음
-            //if (gameObject.tag == "Player") SkillInfo.Knockback(_target);
+            Skill();
         }
+    }
+
+    protected virtual void Skill() { 
     }
 
     protected virtual float CalculateDamage(float damage)

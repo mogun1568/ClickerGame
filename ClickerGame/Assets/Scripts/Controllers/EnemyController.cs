@@ -17,7 +17,7 @@ public class EnemyController : CreatureController
             goName = goName.Substring(0, goName.Length - 7).Trim();
 
         StatInfo = new EnemyStat(Managers.Data.EnemyDict[goName]);
-        //SkillInfo = new Skill(Managers.Data.MyPlayerSkillDict);
+        //SkillInfo = new Skill();
         _animator.SetFloat("AttackSpeed", AttackSpeed);
 
         _targetTag = "Player";

@@ -22,7 +22,7 @@ public class MyPlayerController : CreatureController
         State = Define.State.Run;
 
         StatInfo = new PlayerStat(Managers.Data.MyPlayerStatDict);
-        SkillInfo = new PlayerSkill(Managers.Data.MyPlayerSkillDict);
+        SkillInfo = new PlayerSkill();
         _animator.SetFloat("AttackSpeed", AttackSpeed);
 
         _targetTag = "Enemy";
@@ -73,6 +73,12 @@ public class MyPlayerController : CreatureController
     {
         base.UpdateAttacking();
         _AttackCoroutine = StartCoroutine(CheckAnimationTime(0.167f, StatInfo.ATK));
+    }
+
+    protected override void Skill()
+    {
+        base.Skill();
+        ((PlayerSkill)SkillInfo).UseSkill(_target);
     }
 
     protected override void UpdateDie()
