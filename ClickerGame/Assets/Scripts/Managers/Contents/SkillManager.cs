@@ -3,23 +3,46 @@ using UnityEngine;
 
 public class SkillManager
 {
-    private List<SkillData> AllSkills;
+    private List<Data.SkillInfo> AllSkills;
     private Dictionary<string, float> SkillCoolTime = new(); // 스킬 쿨타임 관리용
-    private Dictionary<string, Data.Skill> MyPlayerSkillDict;
+    private Dictionary<string, Data.SkillInfo> MyPlayerSkillDict;
+    private float _skillDropChance;
 
     public void Init()
     {
-        AllSkills = new List<SkillData>(Resources.LoadAll<SkillData>("Skill"));
+        SkillData[] skillDataAssets = Resources.LoadAll<SkillData>("Data/SkillData");
+
+        AllSkills = new List<Data.SkillInfo>();
+
+        foreach (SkillData skillData in skillDataAssets)
+        {
+            // 복사해서 새로운 SkillInfo로 저장
+            Data.SkillInfo copied = new Data.SkillInfo(skillData.skillData);
+            AllSkills.Add(copied);
+        }
 
         MyPlayerSkillDict = Managers.Data.MyPlayerSkillDict;
         foreach (var skill in MyPlayerSkillDict)
             SkillCoolTime[skill.Key] = -999f;
+
+        _skillDropChance = 0.1f;
     }
 
-    public void AddSkill()
+    public void RandomAddSkill()
+    {
+        if (Random.value > _skillDropChance)
+            return;
+
+        AddSkill();
+    }
+    
+    private void AddSkill()
     {
         int idx = Random.Range(0, AllSkills.Count);
-        Data.Skill randomSkill = AllSkills[idx].skillData;
+    
+        Data.SkillInfo randomSkill = AllSkills[idx];
+
+        Debug.Log($"Drop {randomSkill.skillType}");
 
         if (MyPlayerSkillDict.ContainsKey(randomSkill.skillType)) {
             MyPlayerSkillDict[randomSkill.skillType].skillLevel++;
@@ -49,9 +72,14 @@ public class SkillManager
         }
 
         if (availableSkills.Count == 0)
+        {
+            //Debug.Log("All Skills CoolTime.");
             return null;
-
+        }
+            
         int randIndex = Random.Range(0, availableSkills.Count);
+
+        SkillCoolTime[availableSkills[randIndex]] = currentTime;
         return availableSkills[randIndex];
     }
 

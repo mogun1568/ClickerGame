@@ -8,7 +8,7 @@ public class EnemyStat : Stat
         set => _moveSpeed = value;
     }
 
-    public EnemyStat(Data.Enemy enemyStat)
+    public EnemyStat(Data.EnemyInfo enemyStat)
     {
         MaxHP = enemyStat.enemyMaxHP;
         HP = enemyStat.enemyMaxHP;

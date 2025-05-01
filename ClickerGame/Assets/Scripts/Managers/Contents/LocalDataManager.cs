@@ -61,27 +61,27 @@ public class LocalDataManager
                 LastTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
                 OfflineReward = 0
             },
-            stats = new Dictionary<string, Data.Stat>
+            stats = new Dictionary<string, Data.StatInfo>
             {
-                { "MaxHP", new Data.Stat { statType = "MaxHP", statIcon = "HPIcon", statLevel = 1, statName = "최대 체력",
+                { "MaxHP", new Data.StatInfo { statType = "MaxHP", statIcon = "HPIcon", statLevel = 1, statName = "최대 체력",
                     statValue = 100.0f, statIncreaseValue = 10.0f, statPrice = 1, statIncreasePrice = 1 }},
-                { "Regeneration", new Data.Stat { statType = "Regeneration", statIcon = "RegenerationIcon", statLevel = 1, statName = "자연 회복",
+                { "Regeneration", new Data.StatInfo { statType = "Regeneration", statIcon = "RegenerationIcon", statLevel = 1, statName = "자연 회복",
                     statValue = 5.0f, statIncreaseValue = 1.0f, statPrice = 10, statIncreasePrice = 10 }},
-                { "ATK", new Data.Stat { statType = "ATK", statIcon = "ATKIcon", statLevel = 1, statName = "공격력",
+                { "ATK", new Data.StatInfo { statType = "ATK", statIcon = "ATKIcon", statLevel = 1, statName = "공격력",
                     statValue = 10.0f, statIncreaseValue = 0.5f, statPrice = 1, statIncreasePrice = 2 }},
-                { "DEF", new Data.Stat { statType = "DEF", statIcon = "DEFIcon", statLevel = 1, statName = "방어력",
+                { "DEF", new Data.StatInfo { statType = "DEF", statIcon = "DEFIcon", statLevel = 1, statName = "방어력",
                     statValue = 1.0f, statIncreaseValue = 0.5f, statPrice = 10, statIncreasePrice = 10 }},
-                { "AttackSpeed", new Data.Stat { statType = "AttackSpeed", statIcon = "AttackSpeedIcon", statLevel = 1, statName = "공격 속도",
+                { "AttackSpeed", new Data.StatInfo { statType = "AttackSpeed", statIcon = "AttackSpeedIcon", statLevel = 1, statName = "공격 속도",
                     statValue = 1.0f, statIncreaseValue = 0.01f, statPrice = 10, statIncreasePrice = 2 }},
-                { "Range", new Data.Stat { statType = "Range", statIcon = "RangeIcon", statLevel = 1, statName = "공격 범위",
+                { "Range", new Data.StatInfo { statType = "Range", statIcon = "RangeIcon", statLevel = 1, statName = "공격 범위",
                     statValue = 1.5f, statIncreaseValue = 0.01f, statPrice = 10, statIncreasePrice = 2 }}
             },
-            skills = new Dictionary<string, Data.Skill>
+            skills = new Dictionary<string, Data.SkillInfo>
             {
             },
-            enemys = new Dictionary<string, Data.Enemy>
+            enemys = new Dictionary<string, Data.EnemyInfo>
             {
-                { "HeavyBandit", new Data.Enemy { enemyType = "HeavyBandit", enemyName = "HeavyBandit",
+                { "HeavyBandit", new Data.EnemyInfo { enemyType = "HeavyBandit", enemyName = "HeavyBandit",
                     enemyMaxHP = 30.0f, enemyATK = 10.0f, enemyDEF = 0.0f, enemyAttackSpeed = 1.0f, enemyRange = 1.5f, enemyMoveSpeed = 2.5f, enemyCoin = 10 }}
             }
         };

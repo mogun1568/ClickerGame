@@ -40,4 +40,18 @@ public class Define
         Hurt,
         Death
     }
+
+    public enum Debuff
+    {
+        None,
+        Slow
+    }
+
+    public enum TweenType
+    {
+        Idle,
+        Run,
+        Knockback,
+        Slow
+    }
 }

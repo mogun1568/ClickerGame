@@ -118,8 +118,13 @@ public class CreatureController : MonoBehaviour
     protected GameObject _target;
     private bool DeadFlag;
 
+    // 디버프 종류가 늘어나면 클래스 같은걸로 관리할 수도
+    public Define.Debuff _debuff;
+    public Define.TweenType _tweenType;
+
     public Tween MoveTween;
     public float _endPosX;
+    public float _defaultMoveSpeed;
     public float _moveSpeed;
     private bool _isUpdateTargetRunning;
 
@@ -136,20 +141,40 @@ public class CreatureController : MonoBehaviour
         DeadFlag = false;
         UpdateAnimation();
 
+        _debuff = Define.Debuff.None;
+        _tweenType = Define.TweenType.Idle;
         MoveTween.Kill();
-        _moveSpeed = 2.5f;
+        _defaultMoveSpeed = 2.5f;
+        _moveSpeed = _defaultMoveSpeed;
         _isUpdateTargetRunning = false;
 
         await UniTask.WaitUntil(() => Managers.Data.GameDataReady);
     }
 
-    public virtual void Move(float endPosX, float moveSpeed)
+    private int GetPriority(Define.TweenType type)
+    {
+        return type switch
+        {
+            //Define.TweenType.Idle => 0,
+            Define.TweenType.Run => 1,
+            Define.TweenType.Slow => 2,
+            Define.TweenType.Knockback => 3,
+            _ => 0
+        };
+    }
+
+    public virtual void Move(float endPosX, float moveSpeed, Define.TweenType tweenType)
     {
         if (State == Define.State.Death)
             return;
 
+        if (GetPriority(tweenType) < GetPriority(_tweenType))
+            return; // 더 낮은 우선순위면 무시
+
         if (MoveTween != null)
             MoveTween.Kill();
+
+        _tweenType = tweenType;
 
         float duration = Mathf.Abs(transform.position.x - endPosX) / moveSpeed;
 
@@ -159,8 +184,21 @@ public class CreatureController : MonoBehaviour
             .OnKill(() =>
             {
                 MoveTween = null;
-                if (transform.position.x != _endPosX)
-                    Move(_endPosX, _moveSpeed);
+
+                // Knockback 끝났으면 Slow 재적용
+                if (_tweenType == Define.TweenType.Knockback)
+                {
+                    if (_debuff == Define.Debuff.Slow)
+                    {
+                        _tweenType = Define.TweenType.Slow;
+                        Move(_endPosX, _moveSpeed, Define.TweenType.Slow);
+                    }
+                    else
+                    {
+                        _tweenType = Define.TweenType.Run;
+                        Move(_endPosX, _moveSpeed, Define.TweenType.Run);
+                    }
+                }
             })
             .OnComplete(() =>
             {

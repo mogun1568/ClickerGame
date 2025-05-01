@@ -5,7 +5,8 @@ using UnityEngine;
 public class EnemyController : CreatureController
 {
     private Tween deadMoveTween;
-    private bool _isPlayerStop; // 플레이어가 멈췄을 때 몬스터 속도 변경을 위함
+    private bool _playerFirstAttack; // 플레이어가 첫타를 때렸는 지 확인
+    private bool _isPlayerMove;
 
     protected override async UniTask InitAsync()
     {
@@ -17,7 +18,8 @@ public class EnemyController : CreatureController
             goName = goName.Substring(0, goName.Length - 7).Trim();
 
         StatInfo = new EnemyStat(Managers.Data.EnemyDict[goName]);
-        //SkillInfo = new Skill();
+        SkillInfo = GetComponent<Skill>();
+        SkillInfo.Init();
         _animator.SetFloat("AttackSpeed", AttackSpeed);
 
         _targetTag = "Player";
@@ -25,9 +27,10 @@ public class EnemyController : CreatureController
 
         StopAllCoroutines();
         deadMoveTween.Kill();
-        _isPlayerStop = false;
+        _playerFirstAttack = false;
+        _isPlayerMove = false;
 
-        Move(_endPosX, _moveSpeed);
+        Move(_endPosX, _moveSpeed, Define.TweenType.Idle);
     }
 
     protected override void Update()
@@ -67,23 +70,38 @@ public class EnemyController : CreatureController
         base.TargetIsNull();
 
         if (Managers.Game.MyPlayer.State == Define.State.Death)
-            State = Define.State.Idle;
-        else if (Managers.Game.MyPlayer.State == Define.State.Run)
         {
-            if (_isPlayerStop)
+            // 넉백 후 오는 중에 플레이어가 죽으면 Idle 상태로 이동할 수도
+            State = Define.State.Idle;
+            return;
+        }
+
+        if (Managers.Game.MyPlayer.State == Define.State.Run)
+        {
+            if (_playerFirstAttack)
+            {
+                if (!_isPlayerMove)
+                {
+                    _isPlayerMove = true;
+                    Move(_endPosX, _moveSpeed + _defaultMoveSpeed, Define.TweenType.Run);
+                }
+
                 return;
+            }
 
             State = Define.State.Idle;
         }
         else
         {
             State = Define.State.Run;
-            if (!_isPlayerStop)
+
+            if (!_playerFirstAttack)
             {
-                _isPlayerStop = true;
+                _playerFirstAttack = true;
                 _moveSpeed = ((EnemyStat)StatInfo).MoveSpeed;
-                MoveTween.Kill();
+                Move(_endPosX, _moveSpeed, Define.TweenType.Run);
             }
+            _isPlayerMove = false;
         }
     }
 
@@ -92,7 +110,6 @@ public class EnemyController : CreatureController
         if (MoveTween != null)
         {
             MoveTween.Kill();
-            MoveTween = null;
         }
 
         float duration = (transform.position.x - endPosX) / moveSpeed;
@@ -116,7 +133,8 @@ public class EnemyController : CreatureController
 
         Managers.Game.Wave._enemyCount--;
         Managers.Game.MyPlayer.StatInfo.Coin += StatInfo.Coin;
+        Managers.Skill.RandomAddSkill();
 
-        DeadMove(-7f, _moveSpeed);
+        DeadMove(-7f, _defaultMoveSpeed);
     }
 }

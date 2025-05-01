@@ -11,9 +11,9 @@ public class DataManager
     #endregion
 
     public Data.Info MyPlayerInfo { get; private set; } = new Data.Info();
-    public Dictionary<string, Data.Stat> MyPlayerStatDict { get; private set; } = new Dictionary<string, Data.Stat>();
-    public Dictionary<string, Data.Skill> MyPlayerSkillDict { get; private set; } = new Dictionary<string, Data.Skill>();
-    public Dictionary<string, Data.Enemy> EnemyDict { get; private set; } = new Dictionary<string, Data.Enemy>();
+    public Dictionary<string, Data.StatInfo> MyPlayerStatDict { get; private set; } = new Dictionary<string, Data.StatInfo>();
+    public Dictionary<string, Data.SkillInfo> MyPlayerSkillDict { get; private set; } = new Dictionary<string, Data.SkillInfo>();
+    public Dictionary<string, Data.EnemyInfo> EnemyDict { get; private set; } = new Dictionary<string, Data.EnemyInfo>();
 
     public bool GameDataReady { get; private set; } = false;
     public bool CheckSaveDataDone { get; set; } = false;

@@ -177,7 +177,7 @@ public class FirebaseDataManager
     }
 
     // 적 추가 (enemyName을 Key로 사용)
-    public void AddNewEnemy(Data.Enemy newEnemy)
+    public void AddNewEnemy(Data.EnemyInfo newEnemy)
     {
         FirebaseUser user = auth.CurrentUser;
         if (user == null) return;
@@ -187,7 +187,7 @@ public class FirebaseDataManager
         AddNewEnemyAsync(userId, newEnemy).Forget();
     }
 
-    private async UniTask AddNewEnemyAsync(string userId, Data.Enemy newEnemy)
+    private async UniTask AddNewEnemyAsync(string userId, Data.EnemyInfo newEnemy)
     {
         try
         {

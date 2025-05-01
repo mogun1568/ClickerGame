@@ -18,5 +18,5 @@ MonoBehaviour:
     skillLevel: 1
     skillName: "\uC2AC\uB85C\uC6B0"
     skillValue: 0.8
-    skillIncreaseValue: 0.05
+    skillIncreaseValue: -0.05
     skillCoolTime: 5

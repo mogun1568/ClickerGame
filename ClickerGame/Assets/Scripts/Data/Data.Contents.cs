@@ -7,7 +7,7 @@ namespace Data
 
     #region Stat
     [Serializable]
-    public class Stat
+    public class StatInfo
     {
         public string statType;
         public string statIcon;
@@ -20,9 +20,9 @@ namespace Data
     }
     #endregion
 
-    #region Skill
+    #region SkillInfo
     [Serializable]
-    public class Skill
+    public class SkillInfo
     {
         public string skillType;
         public string skillIcon;
@@ -31,12 +31,27 @@ namespace Data
         public float skillValue;
         public float skillIncreaseValue;
         public float skillCoolTime;
+
+        public SkillInfo()
+        {
+        }
+
+        public SkillInfo(SkillInfo other)
+        {
+            skillType = other.skillType;
+            skillIcon = other.skillIcon;
+            skillLevel = other.skillLevel;
+            skillName = other.skillName;
+            skillValue = other.skillValue;
+            skillIncreaseValue = other.skillIncreaseValue;
+            skillCoolTime = other.skillCoolTime;
+        }
     }
     #endregion
 
     #region Enemy
     [Serializable]
-    public class Enemy
+    public class EnemyInfo
     {
         public string enemyType;
         public string enemyName;
@@ -55,9 +70,9 @@ namespace Data
     public class GameData
     {
         public Info info = new Info();
-        public Dictionary<string, Stat> stats = new Dictionary<string, Stat>();
-        public Dictionary<string, Skill> skills = new Dictionary<string, Skill>();
-        public Dictionary<string, Enemy> enemys = new Dictionary<string, Enemy>();
+        public Dictionary<string, StatInfo> stats = new Dictionary<string, StatInfo>();
+        public Dictionary<string, SkillInfo> skills = new Dictionary<string, SkillInfo>();
+        public Dictionary<string, EnemyInfo> enemys = new Dictionary<string, EnemyInfo>();
     }
     #endregion
 }

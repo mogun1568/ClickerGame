@@ -2,14 +2,14 @@ using System.Collections.Generic;
 
 public class PlayerStat : Stat
 {
-    private Data.Stat _statMaxHP;
-    private Data.Stat _statRegeneration;
-    private Data.Stat _statATK;
-    private Data.Stat _statDEF;
-    private Data.Stat _statAttackSpeed;
-    private Data.Stat _statRange;
+    private Data.StatInfo _statMaxHP;
+    private Data.StatInfo _statRegeneration;
+    private Data.StatInfo _statATK;
+    private Data.StatInfo _statDEF;
+    private Data.StatInfo _statAttackSpeed;
+    private Data.StatInfo _statRange;
 
-    public PlayerStat(Dictionary<string, Data.Stat> statDict)
+    public PlayerStat(Dictionary<string, Data.StatInfo> statDict)
     {
         _statMaxHP = statDict["MaxHP"];
         _statRegeneration = statDict["Regeneration"];

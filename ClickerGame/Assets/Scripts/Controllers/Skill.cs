@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Skill : MonoBehaviour
 {
-    public Dictionary<string, Data.Skill> MyPlayerSkillDict;
+    public Dictionary<string, Data.SkillInfo> MyPlayerSkillDict;
+
+    private float _preMoveSpeed;
 
     public virtual void Init()
     {
@@ -14,24 +16,29 @@ public class Skill : MonoBehaviour
     public virtual void Knockback(GameObject target)
     {
         CreatureController controller = target.GetComponent<CreatureController>();
+        controller._tweenType = Define.TweenType.Knockback;
 
         float endPosX = target.transform.position.x + MyPlayerSkillDict["Knockback"].skillValue;
-        float moveSpeed = 5f;
-        controller.Move(endPosX, moveSpeed);
+        float moveSpeed = 10f;
+        controller.Move(endPosX, moveSpeed, Define.TweenType.Knockback);
     }
 
     public virtual void Slow(GameObject target)
     {
         CreatureController controller = target.GetComponent<CreatureController>();
+        controller._debuff = Define.Debuff.Slow;
 
-        float preMoveSpeed = controller._moveSpeed;
+        _preMoveSpeed = controller._moveSpeed;
         controller._moveSpeed *= MyPlayerSkillDict["Slow"].skillValue;
-        StartCoroutine(SlowCoroutine(controller, preMoveSpeed));
+        controller.Move(controller._endPosX, controller._moveSpeed, Define.TweenType.Slow);
+        controller.StartCoroutine(SlowedCoroutine(controller));
     }
 
-    protected IEnumerator SlowCoroutine(CreatureController controller, float preMoveSpeed)
+    // Slow걸린 대상의 스크립트에서 실행되는 함수, 매개변수로 스크립트를 주는게 이상할 수도
+    public IEnumerator SlowedCoroutine(CreatureController controller)
     {
         yield return new WaitForSeconds(5);
-        controller._moveSpeed = preMoveSpeed;
+        controller._debuff = Define.Debuff.None;
+        controller._moveSpeed = _preMoveSpeed;
     }
 }

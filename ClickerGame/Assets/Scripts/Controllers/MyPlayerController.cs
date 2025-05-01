@@ -22,7 +22,8 @@ public class MyPlayerController : CreatureController
         State = Define.State.Run;
 
         StatInfo = new PlayerStat(Managers.Data.MyPlayerStatDict);
-        SkillInfo = new PlayerSkill();
+        SkillInfo = GetComponent<PlayerSkill>();
+        SkillInfo.Init();
         _animator.SetFloat("AttackSpeed", AttackSpeed);
 
         _targetTag = "Enemy";
@@ -40,7 +41,7 @@ public class MyPlayerController : CreatureController
         {
             isMove = true;
             _endPosX = -2f;
-            Move(_endPosX, _moveSpeed);
+            Move(_endPosX, _moveSpeed, Define.TweenType.Run);
         }
 
         InvokeRepeating(nameof(Regenerate), 1f, 1f);

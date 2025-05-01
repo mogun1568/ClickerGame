@@ -26,7 +26,7 @@ public class StatLevelUpButton : UI_Base
         Text_StatPrice
     }
     
-    private Dictionary<string, Data.Stat> _statDict;
+    private Dictionary<string, Data.StatInfo> _statDict;
     string _statName;
 
     private float _statIncreaseValue;
@@ -76,28 +76,28 @@ public class StatLevelUpButton : UI_Base
         {
             case "MaxHP":
                 Managers.Game.MyPlayer.MaxHP += _statIncreaseValue;
-                Debug.Log($"MaxHP -> {Managers.Game.MyPlayer.MaxHP}");
-                Debug.Log($"HP -> {Managers.Game.MyPlayer.HP}");
+                //Debug.Log($"MaxHP -> {Managers.Game.MyPlayer.MaxHP}");
+                //Debug.Log($"HP -> {Managers.Game.MyPlayer.HP}");
                 break;
             case "Regeneration":
                 Managers.Game.MyPlayer.Regeneration += _statIncreaseValue;
-                Debug.Log($"Regeneration -> {Managers.Game.MyPlayer.Regeneration}");
+                //Debug.Log($"Regeneration -> {Managers.Game.MyPlayer.Regeneration}");
                 break;
             case "ATK":
                 Managers.Game.MyPlayer.StatInfo.ATK += _statIncreaseValue;
-                Debug.Log($"ATK -> {Managers.Game.MyPlayer.StatInfo.ATK}");
+                //Debug.Log($"ATK -> {Managers.Game.MyPlayer.StatInfo.ATK}");
                 break;
             case "DEF":
                 Managers.Game.MyPlayer.StatInfo.DEF += _statIncreaseValue;
-                Debug.Log($"DEF -> {Managers.Game.MyPlayer.StatInfo.DEF}");
+                //Debug.Log($"DEF -> {Managers.Game.MyPlayer.StatInfo.DEF}");
                 break;
             case "AttackSpeed":
                 Managers.Game.MyPlayer.AttackSpeed += _statIncreaseValue;
-                Debug.Log($"AttackSpeed -> {Managers.Game.MyPlayer.AttackSpeed}");
+                //Debug.Log($"AttackSpeed -> {Managers.Game.MyPlayer.AttackSpeed}");
                 break;
             case "Range":
                 Managers.Game.MyPlayer.StatInfo.Range += _statIncreaseValue;
-                Debug.Log($"Range -> {Managers.Game.MyPlayer.StatInfo.Range}");
+                //Debug.Log($"Range -> {Managers.Game.MyPlayer.StatInfo.Range}");
                 break;
         }
 
