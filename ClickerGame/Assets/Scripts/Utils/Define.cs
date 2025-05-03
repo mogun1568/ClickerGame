@@ -41,6 +41,12 @@ public class Define
         Death
     }
 
+    public enum AbilityType
+    {
+        Stat,
+        Skill
+    }
+
     public enum Debuff
     {
         None,

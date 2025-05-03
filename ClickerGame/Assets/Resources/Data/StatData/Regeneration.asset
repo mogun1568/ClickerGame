@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bcdd3f1ac98a1d547b7e38b6a9554ce2, type: 3}
-  m_Name: Knockback
+  m_Name: Regeneration
   m_EditorClassIdentifier: 
-  creatureType: 1
-  abilityKind: Knockback
-  abilityIcon: KnockbackIcon
-  abilityName: "\uB109\uBC31"
+  creatureType: 0
+  abilityKind: Regeneration
+  abilityIcon: RegenerationIcon
+  abilityName: "\uC790\uC5F0 \uD68C\uBCF5"
   abilityLevel: 1
-  abilityValue: 1
-  abilityIncreaseValue: 0.2
-  statPrice: 0
-  statIncreasePrice: 0
-  skillCoolTime: 5
+  abilityValue: 5
+  abilityIncreaseValue: 1
+  statPrice: 10
+  statIncreasePrice: 10
+  skillCoolTime: 0

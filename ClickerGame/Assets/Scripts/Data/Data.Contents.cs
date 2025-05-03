@@ -4,19 +4,16 @@ using System;
 namespace Data
 {
     // Info´Â Data.Contents.Info¿¡ Á¤¸®
+    // StatÀÌ¶û SkillÀÌ¶û class ºñ½ÁÇØ¼­ ÇÕÄ¥±î °í¹Î
 
     #region Stat
     [Serializable]
     public class StatInfo
     {
-        public string statType;
-        public string statIcon;
+        //public string statType;
         public int statLevel;
-        public string statName;
         public float statValue;
-        public float statIncreaseValue;
         public int statPrice;
-        public int statIncreasePrice;
     }
     #endregion
 
@@ -24,28 +21,9 @@ namespace Data
     [Serializable]
     public class SkillInfo
     {
-        public string skillType;
-        public string skillIcon;
+        //public string skillType;
         public int skillLevel;
-        public string skillName;
         public float skillValue;
-        public float skillIncreaseValue;
-        public float skillCoolTime;
-
-        public SkillInfo()
-        {
-        }
-
-        public SkillInfo(SkillInfo other)
-        {
-            skillType = other.skillType;
-            skillIcon = other.skillIcon;
-            skillLevel = other.skillLevel;
-            skillName = other.skillName;
-            skillValue = other.skillValue;
-            skillIncreaseValue = other.skillIncreaseValue;
-            skillCoolTime = other.skillCoolTime;
-        }
     }
     #endregion
 

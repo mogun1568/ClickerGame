@@ -1,26 +1,17 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SkillManager
 {
-    private List<Data.SkillInfo> AllSkills;
+    private List<string> AllSkills;
     private Dictionary<string, float> SkillCoolTime = new(); // 스킬 쿨타임 관리용
     private Dictionary<string, Data.SkillInfo> MyPlayerSkillDict;
     private float _skillDropChance;
 
     public void Init()
     {
-        SkillData[] skillDataAssets = Resources.LoadAll<SkillData>("Data/SkillData");
-
-        AllSkills = new List<Data.SkillInfo>();
-
-        foreach (SkillData skillData in skillDataAssets)
-        {
-            // 복사해서 새로운 SkillInfo로 저장
-            Data.SkillInfo copied = new Data.SkillInfo(skillData.skillData);
-            AllSkills.Add(copied);
-        }
-
+        AllSkills = Managers.Resource.SkillDict.Keys.ToList();
         MyPlayerSkillDict = Managers.Data.MyPlayerSkillDict;
         foreach (var skill in MyPlayerSkillDict)
             SkillCoolTime[skill.Key] = -999f;
@@ -40,20 +31,29 @@ public class SkillManager
     {
         int idx = Random.Range(0, AllSkills.Count);
     
-        Data.SkillInfo randomSkill = AllSkills[idx];
+        string randomSkill = AllSkills[idx];
 
-        Debug.Log($"Drop {randomSkill.skillType}");
+        Debug.Log($"Drop {randomSkill}");
 
-        if (MyPlayerSkillDict.ContainsKey(randomSkill.skillType)) {
-            MyPlayerSkillDict[randomSkill.skillType].skillLevel++;
-            MyPlayerSkillDict[randomSkill.skillType].skillValue
-                += MyPlayerSkillDict[randomSkill.skillType].skillIncreaseValue;
+        if (MyPlayerSkillDict.ContainsKey(randomSkill)) {
+            MyPlayerSkillDict[randomSkill].skillLevel++;
+            MyPlayerSkillDict[randomSkill].skillValue
+                += Managers.Resource.SkillDict[randomSkill].abilityIncreaseValue;
         }
         else
         {
-            MyPlayerSkillDict.Add(randomSkill.skillType, randomSkill);
-            SkillCoolTime[randomSkill.skillType] = -999f;
+            MyPlayerSkillDict.Add(randomSkill, CreateDefaultSkillData(randomSkill));
+            SkillCoolTime[randomSkill] = -999f;
         }
+    }
+
+    public Data.SkillInfo CreateDefaultSkillData(string skillKind)
+    {
+        return new Data.SkillInfo
+        {
+            skillLevel = Managers.Resource.SkillDict[skillKind].abilityLevel,
+            skillValue = Managers.Resource.SkillDict[skillKind].abilityValue
+        };
     }
 
     public string ChooseSkill()
@@ -64,11 +64,11 @@ public class SkillManager
 
         foreach (var pair in MyPlayerSkillDict)
         {
-            string skillName = pair.Key;
-            float coolTime = pair.Value.skillCoolTime;
+            string skillKind = pair.Key;
+            float coolTime = Managers.Resource.SkillDict[skillKind].skillCoolTime;
 
-            if (currentTime - SkillCoolTime[skillName] >= coolTime)
-                availableSkills.Add(skillName);
+            if (currentTime - SkillCoolTime[skillKind] >= coolTime)
+                availableSkills.Add(skillKind);
         }
 
         if (availableSkills.Count == 0)

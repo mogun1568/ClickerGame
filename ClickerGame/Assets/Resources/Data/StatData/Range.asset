@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bcdd3f1ac98a1d547b7e38b6a9554ce2, type: 3}
-  m_Name: Knockback
+  m_Name: Range
   m_EditorClassIdentifier: 
-  creatureType: 1
-  abilityKind: Knockback
-  abilityIcon: KnockbackIcon
-  abilityName: "\uB109\uBC31"
+  creatureType: 0
+  abilityKind: Range
+  abilityIcon: RangeIcon
+  abilityName: "\uACF5\uACA9 \uBC94\uC704"
   abilityLevel: 1
-  abilityValue: 1
-  abilityIncreaseValue: 0.2
-  statPrice: 0
-  statIncreasePrice: 0
-  skillCoolTime: 5
+  abilityValue: 1.5
+  abilityIncreaseValue: 0.01
+  statPrice: 10
+  statIncreasePrice: 2
+  skillCoolTime: 0

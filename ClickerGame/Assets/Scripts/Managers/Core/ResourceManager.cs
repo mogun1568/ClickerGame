@@ -4,6 +4,26 @@ using UnityEngine;
 
 public class ResourceManager
 {
+    public Dictionary<string, AbilityData> StatDict = new Dictionary<string, AbilityData>();
+    public Dictionary<string, AbilityData> SkillDict = new Dictionary<string, AbilityData>();
+
+    public void Init()
+    {
+        AbilityData[] StatDataAssets = Resources.LoadAll<AbilityData>("Data/StatData");
+        AbilityData[] SkillDataAssets = Resources.LoadAll<AbilityData>("Data/SkillData");
+
+        foreach (AbilityData data in StatDataAssets)
+        {
+            AbilityData copy = data.Copy(Define.AbilityType.Stat);
+            StatDict[copy.abilityKind] = copy;
+        }
+        foreach (AbilityData data in SkillDataAssets)
+        {
+            AbilityData copy = data.Copy(Define.AbilityType.Skill);
+            SkillDict[copy.abilityKind] = copy;
+        }
+    }
+
     public T Load<T>(string path) where T : Object
     {
         if (typeof(T) == typeof(GameObject))

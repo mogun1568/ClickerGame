@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcdd3f1ac98a1d547b7e38b6a9554ce2, type: 3}
   m_Name: Slow
   m_EditorClassIdentifier: 
-  skillData:
-    skillType: Slow
-    skillIcon: SlowIcon
-    skillLevel: 1
-    skillName: "\uC2AC\uB85C\uC6B0"
-    skillValue: 0.8
-    skillIncreaseValue: -0.05
-    skillCoolTime: 5
+  creatureType: 1
+  abilityKind: Slow
+  abilityIcon: SlowIcon
+  abilityName: "\uC2AC\uB85C\uC6B0"
+  abilityLevel: 1
+  abilityValue: 0.8
+  abilityIncreaseValue: -0.05
+  statPrice: 0
+  statIncreasePrice: 0
+  skillCoolTime: 5

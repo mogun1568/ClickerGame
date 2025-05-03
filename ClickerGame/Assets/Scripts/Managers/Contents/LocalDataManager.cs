@@ -10,6 +10,8 @@ public class LocalDataManager
     private string _TestFileName = "GameDataTest";
     private string _filePath;
 
+    private Dictionary<string, AbilityData> _statDict;
+
     public T LoadLocalData<T>()
     {
         _filePath = Path.Combine(Application.persistentDataPath, $"{_fileName}.json");
@@ -52,6 +54,8 @@ public class LocalDataManager
     // 해킹 방지로 하드 코딩과 암호화 중에 고민 중
     public Data.GameData CreateDefaultGameData()
     {
+        _statDict = Managers.Resource.StatDict;
+
         return new Data.GameData
         {
             info = new Data.Info
@@ -63,18 +67,25 @@ public class LocalDataManager
             },
             stats = new Dictionary<string, Data.StatInfo>
             {
-                { "MaxHP", new Data.StatInfo { statType = "MaxHP", statIcon = "HPIcon", statLevel = 1, statName = "최대 체력",
-                    statValue = 100.0f, statIncreaseValue = 10.0f, statPrice = 1, statIncreasePrice = 1 }},
-                { "Regeneration", new Data.StatInfo { statType = "Regeneration", statIcon = "RegenerationIcon", statLevel = 1, statName = "자연 회복",
-                    statValue = 5.0f, statIncreaseValue = 1.0f, statPrice = 10, statIncreasePrice = 10 }},
-                { "ATK", new Data.StatInfo { statType = "ATK", statIcon = "ATKIcon", statLevel = 1, statName = "공격력",
-                    statValue = 10.0f, statIncreaseValue = 0.5f, statPrice = 1, statIncreasePrice = 2 }},
-                { "DEF", new Data.StatInfo { statType = "DEF", statIcon = "DEFIcon", statLevel = 1, statName = "방어력",
-                    statValue = 1.0f, statIncreaseValue = 0.5f, statPrice = 10, statIncreasePrice = 10 }},
-                { "AttackSpeed", new Data.StatInfo { statType = "AttackSpeed", statIcon = "AttackSpeedIcon", statLevel = 1, statName = "공격 속도",
-                    statValue = 1.0f, statIncreaseValue = 0.01f, statPrice = 10, statIncreasePrice = 2 }},
-                { "Range", new Data.StatInfo { statType = "Range", statIcon = "RangeIcon", statLevel = 1, statName = "공격 범위",
-                    statValue = 1.5f, statIncreaseValue = 0.01f, statPrice = 10, statIncreasePrice = 2 }}
+                { "MaxHP", CreateDefaultStatData("MaxHP") },
+                { "Regeneration", CreateDefaultStatData("Regeneration") },
+                { "ATK", CreateDefaultStatData("ATK") },
+                { "DEF", CreateDefaultStatData("DEF") },
+                { "AttackSpeed", CreateDefaultStatData("AttackSpeed") },
+                { "Range", CreateDefaultStatData("Range") }
+
+                //{ "MaxHP", new Data.StatInfo { statType = "MaxHP", statIcon = "MaxHPIcon", statLevel = 1, statName = "최대 체력",
+                //    statValue = 100.0f, statIncreaseValue = 10.0f, statPrice = 1, statIncreasePrice = 1 }},
+                //{ "Regeneration", new Data.StatInfo { statType = "Regeneration", statIcon = "RegenerationIcon", statLevel = 1, statName = "자연 회복",
+                //    statValue = 5.0f, statIncreaseValue = 1.0f, statPrice = 10, statIncreasePrice = 10 }},
+                //{ "ATK", new Data.StatInfo { statType = "ATK", statIcon = "ATKIcon", statLevel = 1, statName = "공격력",
+                //    statValue = 10.0f, statIncreaseValue = 0.5f, statPrice = 1, statIncreasePrice = 2 }},
+                //{ "DEF", new Data.StatInfo { statType = "DEF", statIcon = "DEFIcon", statLevel = 1, statName = "방어력",
+                //    statValue = 1.0f, statIncreaseValue = 0.5f, statPrice = 10, statIncreasePrice = 10 }},
+                //{ "AttackSpeed", new Data.StatInfo { statType = "AttackSpeed", statIcon = "AttackSpeedIcon", statLevel = 1, statName = "공격 속도",
+                //    statValue = 1.0f, statIncreaseValue = 0.01f, statPrice = 10, statIncreasePrice = 2 }},
+                //{ "Range", new Data.StatInfo { statType = "Range", statIcon = "RangeIcon", statLevel = 1, statName = "공격 범위",
+                //    statValue = 1.5f, statIncreaseValue = 0.01f, statPrice = 10, statIncreasePrice = 2 }}
             },
             skills = new Dictionary<string, Data.SkillInfo>
             {
@@ -86,7 +97,17 @@ public class LocalDataManager
             }
         };
     }
-    
+
+    public Data.StatInfo CreateDefaultStatData(string statKind)
+    {
+        return new Data.StatInfo
+        {
+            statLevel = _statDict[statKind].abilityLevel,
+            statValue = _statDict[statKind].abilityValue,
+            statPrice = _statDict[statKind].statPrice,
+        };
+    }
+
     public void DeleteData()
     {
         // 로컬 데이터가 저장된 파일 경로

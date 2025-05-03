@@ -1,7 +1,6 @@
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using TMPro;
-using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -26,7 +25,8 @@ public class StatLevelUpButton : UI_Base
         Text_StatPrice
     }
     
-    private Dictionary<string, Data.StatInfo> _statDict;
+    private Dictionary<string, Data.StatInfo> _myPlayerStatDict;
+    private Dictionary<string, AbilityData> _statDict;
     string _statName;
 
     private float _statIncreaseValue;
@@ -52,16 +52,17 @@ public class StatLevelUpButton : UI_Base
     {
         await UniTask.WaitUntil(() => Managers.Data.GameDataReady);
 
-        _statDict = Managers.Data.MyPlayerStatDict;
+        _myPlayerStatDict = Managers.Data.MyPlayerStatDict;
+        _statDict = Managers.Resource.StatDict;
         _statName = gameObject.name;
 
-        _statIncreaseValue = _statDict[_statName].statIncreaseValue;
+        _statIncreaseValue = _statDict[_statName].abilityIncreaseValue;
         _statIncreasePrice = _statDict[_statName].statIncreasePrice;
 
         //Image icon = GetImage((int)Images.Icon_Stat);
         //icon.sprite = Managers.Resource.Load<Sprite>($"Icon/{}");
-        GetText((int)Texts.Text_StatName).text = _statDict[_statName].statName.ToString();
-        GetText((int)Texts.Text_StatIncreaseValue).text = "+" + _statDict[_statName].statIncreaseValue.ToString();
+        GetText((int)Texts.Text_StatName).text = _statDict[_statName].abilityName.ToString();
+        GetText((int)Texts.Text_StatIncreaseValue).text = "+" + _statIncreaseValue.ToString();
         HUDUpdate();
     }
 
@@ -116,14 +117,14 @@ public class StatLevelUpButton : UI_Base
 
     private void DetailStatUpdate()
     {
-        _statDict[_statName].statLevel++;
-        _statDict[_statName].statPrice += _statIncreasePrice;
+        _myPlayerStatDict[_statName].statLevel++;
+        _myPlayerStatDict[_statName].statPrice += _statIncreasePrice;
     }
 
     private void HUDUpdate()
     {
-        GetText((int)Texts.Text_StatLevel).text = _statDict[_statName].statLevel.ToString();
-        GetText((int)Texts.Text_StatValue).text = _statDict[_statName].statValue.ToString();
-        GetText((int)Texts.Text_StatPrice).text = _statDict[_statName].statPrice.ToString();
+        GetText((int)Texts.Text_StatLevel).text = _myPlayerStatDict[_statName].statLevel.ToString();
+        GetText((int)Texts.Text_StatValue).text = _myPlayerStatDict[_statName].statValue.ToString();
+        GetText((int)Texts.Text_StatPrice).text = _myPlayerStatDict[_statName].statPrice.ToString();
     }
 }
