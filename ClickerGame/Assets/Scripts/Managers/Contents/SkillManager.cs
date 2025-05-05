@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class SkillManager
 {
@@ -8,6 +10,8 @@ public class SkillManager
     private Dictionary<string, float> SkillCoolTime = new(); // 스킬 쿨타임 관리용
     private Dictionary<string, Data.SkillInfo> MyPlayerSkillDict;
     private float _skillDropChance;
+
+    public event Action<string> OnSkillAcquired;
 
     public void Init()
     {
@@ -45,6 +49,8 @@ public class SkillManager
             MyPlayerSkillDict.Add(randomSkill, CreateDefaultSkillData(randomSkill));
             SkillCoolTime[randomSkill] = -999f;
         }
+
+        OnSkillAcquired?.Invoke(randomSkill);
     }
 
     public Data.SkillInfo CreateDefaultSkillData(string skillKind)
