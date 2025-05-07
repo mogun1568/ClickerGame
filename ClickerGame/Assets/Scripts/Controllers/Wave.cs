@@ -45,6 +45,9 @@ public class Wave : MonoBehaviour
 
     IEnumerator SpawnEnemyWave()
     {
+        Managers.Data.MyPlayerInfo.Round++;
+        Managers.Data.UpdateInfo("Round");
+
         _enemyCount += _waveCount;
 
         yield return new WaitForSeconds(1f);

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class HUD : UI_Base
 {
-    public enum InfoType { Coin, HP }
+    public enum InfoType { Coin, Round, HP }
     [SerializeField]
     InfoType _type;
 
@@ -30,8 +30,12 @@ public class HUD : UI_Base
         switch (_type)
         {
             case InfoType.Coin:
-                int MyPlayerCoin = Managers.Game.MyPlayer.StatInfo.Coin;
+                int MyPlayerCoin = Managers.Data.MyPlayerInfo.Coin;
                 _Text.text = MyPlayerCoin.ToString("N0");
+                break;
+            case InfoType.Round:
+                int MyPlayerRound = Managers.Data.MyPlayerInfo.Round;
+                _Text.text = $"{MyPlayerRound} ¶ó¿îµå";
                 break;
             case InfoType.HP:
                 float curHP = Managers.Game.MyPlayer.HP;

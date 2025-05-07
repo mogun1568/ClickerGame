@@ -60,7 +60,9 @@ public class LocalDataManager
         {
             info = new Data.Info
             {
+                Reincarnation = 0,
                 Coin = 10000,
+                Round = 0,
                 HP = 100.0f,
                 LastTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
                 OfflineReward = 0

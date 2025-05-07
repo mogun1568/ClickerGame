@@ -47,12 +47,6 @@ public class TapGroup : UI_Base
         _curTapMenu.CloseTap();
         _curTap.SetActive(false);
 
-        if (_chooseSkillTap && TapName != "TapMenu_Skill")
-        {
-            _chooseSkillTap = false;
-            _alert.SetActive(false);
-        }
-
         switch (TapName)
         {
             case "TapMenu_Stat":
@@ -69,12 +63,20 @@ public class TapGroup : UI_Base
                 _curTap = GetObject((int)GameObjects.Tap_Shop);
                 break;
         }
-
         _curTap.SetActive(true);
+
+        if (_chooseSkillTap)
+        {
+            _chooseSkillTap = false;
+            _alert.SetActive(false);
+        }
     }
 
     private void OnSkillAcquired(string skillKind)
     {
+        if (_curTap.name == "Tap_Skill")
+            _chooseSkillTap = true;
+
         _alert.SetActive(true);
     }
 }

@@ -5,15 +5,29 @@ namespace Data
     [Serializable]
     public class Info
     {
+        private int _reincarnation; // È¯»ý
         private int _coin;
+        private int _round;
         private float _hp;
         private long _lastTime;
         private int _offlineReward;
+
+        public int Reincarnation
+        {
+            get => _reincarnation;
+            set => SetValue(ref _reincarnation, value, nameof(Reincarnation));
+        }
 
         public int Coin
         {
             get => _coin;
             set => SetValue(ref _coin, value, nameof(Coin));
+        }
+
+        public int Round
+        {
+            get => _round;
+            set => SetValue(ref _round, value, nameof(Round));
         }
 
         public float HP
