@@ -196,6 +196,34 @@ public class DataManager
         return false;
     }
 
+    public void DoReincarnation()
+    {
+        MyPlayerInfo.Reincarnation++;
+
+        RestoreStat("MaxHP");
+        RestoreStat("Regeneration");
+        RestoreStat("ATK");
+        RestoreStat("DEF");
+        RestoreStat("AttackSpeed");
+        RestoreStat("Range");
+
+        SaveGameData();
+
+        Managers.Scene.LoadScene(Define.Scene.GamePlay);
+    }
+
+    private void RestoreStat(string statKind)
+    {
+        MyPlayerStatDict[statKind].statLevel = Managers.Resource.StatDict[statKind].abilityLevel;
+        MyPlayerStatDict[statKind].statValue = ReincarnationStatValue(statKind);
+        MyPlayerStatDict[statKind].statPrice = Managers.Resource.StatDict[statKind].statPrice;
+    }
+
+    private float ReincarnationStatValue(string statKind)
+    {
+        return Managers.Resource.StatDict[statKind].abilityValue + 5 * Managers.Resource.StatDict[statKind].abilityIncreaseValue;
+    }
+
     public void Clear()
     {
         GameDataReady = false;
