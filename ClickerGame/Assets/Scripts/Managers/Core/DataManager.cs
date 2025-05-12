@@ -221,7 +221,8 @@ public class DataManager
 
     private float ReincarnationStatValue(string statKind)
     {
-        return Managers.Resource.StatDict[statKind].abilityValue + 5 * Managers.Resource.StatDict[statKind].abilityIncreaseValue;
+        return Managers.Resource.StatDict[statKind].abilityValue + 
+            5 * MyPlayerInfo.Reincarnation * Managers.Resource.StatDict[statKind].abilityIncreaseValue;
     }
 
     public void Clear()

@@ -6,12 +6,12 @@ public class TapGroup : UI_Base
     {
         TapMenu_Stat,
         TapMenu_Skill,
-        TapMenu_Inventory,
         TapMenu_Shop,
+        TapMenu_Ranking,
         Tap_Stat,
         Tap_Skill,
-        Tap_Inventory,
-        Tap_Shop
+        Tap_Shop,
+        Tap_Ranking
     }
 
     [HideInInspector]
@@ -38,8 +38,8 @@ public class TapGroup : UI_Base
 
         _alert.SetActive(false);
         GetObject((int)GameObjects.Tap_Skill).SetActive(false);
-        GetObject((int)GameObjects.Tap_Inventory).SetActive(false);
         GetObject((int)GameObjects.Tap_Shop).SetActive(false);
+        GetObject((int)GameObjects.Tap_Ranking).SetActive(false);
     }
 
     public void SelectTap(string TapName)
@@ -57,7 +57,7 @@ public class TapGroup : UI_Base
                 _chooseSkillTap = true;
                 break;
             case "TapMenu_Inventory":
-                _curTap = GetObject((int)GameObjects.Tap_Inventory);
+                _curTap = GetObject((int)GameObjects.Tap_Ranking);
                 break;
             case "TapMenu_Shop":
                 _curTap = GetObject((int)GameObjects.Tap_Shop);
