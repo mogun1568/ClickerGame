@@ -16,9 +16,11 @@ MonoBehaviour:
   abilityKind: AttackSpeed
   abilityIcon: AttackSpeedIcon
   abilityName: "\uACF5\uACA9 \uC18D\uB3C4"
+  abilityInfo: 
   abilityLevel: 1
+  abilityMaxLevel: 100
   abilityValue: 1
-  abilityIncreaseValue: 0.01
+  abilityIncreaseValue: 0.05
   statPrice: 10
-  statIncreasePrice: 2
+  statIncreasePrice: 3
   skillCoolTime: 0

@@ -71,6 +71,9 @@ public class StatLevelUpButton : UI_Base
         if (!CheckCoin())
             return;
 
+        if (!CheckLevel())
+            return;
+
         DetailStatUpdate();
 
         switch (_statName)
@@ -110,7 +113,15 @@ public class StatLevelUpButton : UI_Base
         if (_statDict[_statName].statPrice > Managers.Game.MyPlayer.StatInfo.Coin)
             return false;
 
-        Managers.Game.MyPlayer.StatInfo.Coin -= _statDict[_statName].statPrice;
+        Managers.Game.MyPlayer.StatInfo.Coin -= _myPlayerStatDict[_statName].statPrice;
+
+        return true;
+    }
+
+    private bool CheckLevel()
+    {
+        if (_myPlayerStatDict[_statName].statLevel >= _statDict[_statName].abilityMaxLevel)
+            return false;
 
         return true;
     }
@@ -125,6 +136,10 @@ public class StatLevelUpButton : UI_Base
     {
         GetText((int)Texts.Text_StatLevel).text = _myPlayerStatDict[_statName].statLevel.ToString();
         GetText((int)Texts.Text_StatValue).text = _myPlayerStatDict[_statName].statValue.ToString();
-        GetText((int)Texts.Text_StatPrice).text = _myPlayerStatDict[_statName].statPrice.ToString();
+
+        if (_myPlayerStatDict[_statName].statLevel < _statDict[_statName].abilityMaxLevel)
+            GetText((int)Texts.Text_StatPrice).text = _myPlayerStatDict[_statName].statPrice.ToString();
+        else
+            GetText((int)Texts.Text_StatPrice).text = "최대 레벨";
     }
 }

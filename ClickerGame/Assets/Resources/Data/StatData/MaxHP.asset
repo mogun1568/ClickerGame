@@ -16,9 +16,11 @@ MonoBehaviour:
   abilityKind: MaxHP
   abilityIcon: MaxHPIcon
   abilityName: "\uCD5C\uB300 \uCCB4\uB825"
+  abilityInfo: 
   abilityLevel: 1
+  abilityMaxLevel: 100
   abilityValue: 100
-  abilityIncreaseValue: 10
+  abilityIncreaseValue: 5
   statPrice: 1
-  statIncreasePrice: 1
+  statIncreasePrice: 2
   skillCoolTime: 0

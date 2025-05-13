@@ -89,4 +89,8 @@ public class SkillManager
         return availableSkills[randIndex];
     }
 
+    public void Clear()
+    {
+        OnSkillAcquired = null;
+    }
 }

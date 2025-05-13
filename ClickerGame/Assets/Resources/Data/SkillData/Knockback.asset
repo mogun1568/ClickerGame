@@ -16,9 +16,11 @@ MonoBehaviour:
   abilityKind: Knockback
   abilityIcon: KnockbackIcon
   abilityName: "\uB109\uBC31"
+  abilityInfo: 
   abilityLevel: 1
+  abilityMaxLevel: 100
   abilityValue: 1
-  abilityIncreaseValue: 0.2
+  abilityIncreaseValue: 0.05
   statPrice: 0
   statIncreasePrice: 0
   skillCoolTime: 5

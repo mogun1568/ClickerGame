@@ -198,7 +198,15 @@ public class DataManager
 
     public void DoReincarnation()
     {
-        MyPlayerInfo.Reincarnation++;
+        MyPlayerInfo = new Data.Info
+        {
+            Reincarnation = MyPlayerInfo.Reincarnation + 1,
+            Coin = 10000,
+            Round = 0,
+            HP = 100.0f,
+            LastTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+            OfflineReward = 0
+        };
 
         RestoreStat("MaxHP");
         RestoreStat("Regeneration");
@@ -206,6 +214,8 @@ public class DataManager
         RestoreStat("DEF");
         RestoreStat("AttackSpeed");
         RestoreStat("Range");
+
+        // 적도 초기화
 
         SaveGameData();
 

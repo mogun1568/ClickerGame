@@ -131,8 +131,9 @@ public class EnemyController : CreatureController
     {
         base.UpdateDie();
 
+        int roundCoin = Mathf.Max(Managers.Data.MyPlayerInfo.Round / 10, 1);
+        Managers.Game.MyPlayer.StatInfo.Coin += StatInfo.Coin * roundCoin;
         Managers.Game.Wave._enemyCount--;
-        Managers.Game.MyPlayer.StatInfo.Coin += StatInfo.Coin;
         Managers.Skill.RandomAddSkill();
 
         DeadMove(-7f, _defaultMoveSpeed);

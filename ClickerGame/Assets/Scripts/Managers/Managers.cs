@@ -77,6 +77,7 @@ public class Managers : MonoBehaviour
         Scene.Clear();
         UI.Clear();
         Pool.Clear();
+        Skill.Clear();
 
         DOTween.KillAll(true);    // 모든 트윈 강제 종료
         DOTween.Clear();          // 메모리에서 DOTween 데이터까지 완전 정리

@@ -75,19 +75,6 @@ public class LocalDataManager
                 { "DEF", CreateDefaultStatData("DEF") },
                 { "AttackSpeed", CreateDefaultStatData("AttackSpeed") },
                 { "Range", CreateDefaultStatData("Range") }
-
-                //{ "MaxHP", new Data.StatInfo { statType = "MaxHP", statIcon = "MaxHPIcon", statLevel = 1, statName = "최대 체력",
-                //    statValue = 100.0f, statIncreaseValue = 10.0f, statPrice = 1, statIncreasePrice = 1 }},
-                //{ "Regeneration", new Data.StatInfo { statType = "Regeneration", statIcon = "RegenerationIcon", statLevel = 1, statName = "자연 회복",
-                //    statValue = 5.0f, statIncreaseValue = 1.0f, statPrice = 10, statIncreasePrice = 10 }},
-                //{ "ATK", new Data.StatInfo { statType = "ATK", statIcon = "ATKIcon", statLevel = 1, statName = "공격력",
-                //    statValue = 10.0f, statIncreaseValue = 0.5f, statPrice = 1, statIncreasePrice = 2 }},
-                //{ "DEF", new Data.StatInfo { statType = "DEF", statIcon = "DEFIcon", statLevel = 1, statName = "방어력",
-                //    statValue = 1.0f, statIncreaseValue = 0.5f, statPrice = 10, statIncreasePrice = 10 }},
-                //{ "AttackSpeed", new Data.StatInfo { statType = "AttackSpeed", statIcon = "AttackSpeedIcon", statLevel = 1, statName = "공격 속도",
-                //    statValue = 1.0f, statIncreaseValue = 0.01f, statPrice = 10, statIncreasePrice = 2 }},
-                //{ "Range", new Data.StatInfo { statType = "Range", statIcon = "RangeIcon", statLevel = 1, statName = "공격 범위",
-                //    statValue = 1.5f, statIncreaseValue = 0.01f, statPrice = 10, statIncreasePrice = 2 }}
             },
             skills = new Dictionary<string, Data.SkillInfo>
             {
@@ -95,7 +82,7 @@ public class LocalDataManager
             enemys = new Dictionary<string, Data.EnemyInfo>
             {
                 { "HeavyBandit", new Data.EnemyInfo { enemyType = "HeavyBandit", enemyName = "HeavyBandit",
-                    enemyMaxHP = 30.0f, enemyATK = 10.0f, enemyDEF = 0.0f, enemyAttackSpeed = 1.0f, enemyRange = 1.5f, enemyMoveSpeed = 2.5f, enemyCoin = 10 }}
+                    enemyMaxHP = 30.0f, enemyATK = 10.0f, enemyDEF = 0.0f, enemyAttackSpeed = 1.0f, enemyRange = 1.5f, enemyMoveSpeed = 2.5f, enemyCoin = 1 }}
             }
         };
     }

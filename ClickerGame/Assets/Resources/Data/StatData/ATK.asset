@@ -16,9 +16,11 @@ MonoBehaviour:
   abilityKind: ATK
   abilityIcon: ATKIcon
   abilityName: "\uACF5\uACA9\uB825"
+  abilityInfo: 
   abilityLevel: 1
+  abilityMaxLevel: 100
   abilityValue: 10
   abilityIncreaseValue: 0.5
-  statPrice: 1
-  statIncreasePrice: 2
+  statPrice: 2
+  statIncreasePrice: 3
   skillCoolTime: 0

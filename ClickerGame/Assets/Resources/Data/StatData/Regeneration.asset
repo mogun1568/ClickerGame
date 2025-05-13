@@ -16,9 +16,11 @@ MonoBehaviour:
   abilityKind: Regeneration
   abilityIcon: RegenerationIcon
   abilityName: "\uC790\uC5F0 \uD68C\uBCF5"
+  abilityInfo: 
   abilityLevel: 1
+  abilityMaxLevel: 10
   abilityValue: 5
-  abilityIncreaseValue: 1
-  statPrice: 10
-  statIncreasePrice: 10
+  abilityIncreaseValue: 5
+  statPrice: 100
+  statIncreasePrice: 100
   skillCoolTime: 0

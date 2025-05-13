@@ -11,7 +11,9 @@ public class AbilityData : ScriptableObject
     public string abilityKind;
     public string abilityIcon;
     public string abilityName;
+    public string abilityInfo;
     public int abilityLevel;
+    public int abilityMaxLevel;
     public float abilityValue;
     public float abilityIncreaseValue;
 
@@ -29,7 +31,9 @@ public class AbilityData : ScriptableObject
         copied.abilityKind = this.abilityKind;
         copied.abilityIcon = this.abilityIcon;
         copied.abilityName = this.abilityName;
+        copied.abilityInfo = this.abilityInfo;
         copied.abilityLevel = this.abilityLevel;
+        copied.abilityMaxLevel = this.abilityMaxLevel;
         copied.abilityValue = this.abilityValue;
         copied.abilityIncreaseValue = this.abilityIncreaseValue;
 
