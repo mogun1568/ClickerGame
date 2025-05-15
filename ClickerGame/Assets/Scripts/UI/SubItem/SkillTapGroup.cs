@@ -26,6 +26,11 @@ public class SkillTapGroup : UI_Base
         Init();
     }
 
+    private void Start()
+    {
+        GetObject((int)GameObjects.CommonSkill).SetActive(false);
+    }
+
     public override void Init()
     {
         Managers.Skill.OnSkillAcquired -= OnSkillAcquired;
@@ -41,8 +46,7 @@ public class SkillTapGroup : UI_Base
         BindEvent(GetButton((int)Buttons.Button_Common).gameObject, (PointerEventData data) => { SelectTap("Common"); }, Define.UIEvent.Click);
 
         _classAlert.SetActive(false);
-        _commomAlert.SetActive(false);
-        GetObject((int)GameObjects.CommonSkill).SetActive(false);
+        _commomAlert.SetActive(false); 
     }
 
     public void SelectTap(string TapName)

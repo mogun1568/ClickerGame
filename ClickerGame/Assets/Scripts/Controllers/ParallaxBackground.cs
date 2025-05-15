@@ -57,7 +57,7 @@ public class ParallaxBackground : MonoBehaviour
         if (!Managers.Data.GameDataReady)
             return;
 
-        if (Managers.Game.MyPlayer.isMove)
+        if (Managers.Game.MyPlayer._onlyPlayerMove)
         {
             if (scrollTween.IsPlaying()) scrollTween.Pause();
             return;

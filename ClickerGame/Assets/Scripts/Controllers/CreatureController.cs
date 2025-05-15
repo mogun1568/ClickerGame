@@ -171,22 +171,24 @@ public class CreatureController : MonoBehaviour
         if (GetPriority(tweenType) < GetPriority(_tweenType))
             return; // 더 낮은 우선순위면 무시
 
+        _tweenType = tweenType;
+
         if (MoveTween != null)
             MoveTween.Kill();
 
-        _tweenType = tweenType;
-
         float duration = Mathf.Abs(transform.position.x - endPosX) / moveSpeed;
 
-        MoveTween = transform.DOMoveX(endPosX, duration)
+        Tween newTween = null;
+        newTween = transform.DOMoveX(endPosX, duration)
             .SetEase(Ease.Linear)
             .SetAutoKill(true)
             .OnKill(() =>
             {
-                MoveTween = null;
+                if (MoveTween == newTween)
+                    MoveTween = null;
 
                 // Knockback 끝났으면 Slow 재적용
-                if (_tweenType == Define.TweenType.Knockback)
+                if (tweenType == Define.TweenType.Knockback)
                 {
                     if (_debuff == Define.Debuff.Slow)
                     {
@@ -205,6 +207,8 @@ public class CreatureController : MonoBehaviour
                 // 이동 완료 시 호출
                 TweenComplete();
             });
+
+        MoveTween = newTween;
     }
 
     protected virtual void TweenComplete()

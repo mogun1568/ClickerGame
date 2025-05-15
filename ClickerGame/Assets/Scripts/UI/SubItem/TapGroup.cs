@@ -25,6 +25,13 @@ public class TapGroup : UI_Base
         Init();
     }
 
+    private void Start()
+    {
+        GetObject((int)GameObjects.Tap_Skill).SetActive(false);
+        GetObject((int)GameObjects.Tap_Shop).SetActive(false);
+        GetObject((int)GameObjects.Tap_Ranking).SetActive(false);
+    }
+
     public override void Init()
     {
         Managers.Skill.OnSkillAcquired -= OnSkillAcquired;
@@ -36,10 +43,7 @@ public class TapGroup : UI_Base
         _curTap = GetObject((int)GameObjects.Tap_Stat);
         _alert = GetObject((int)GameObjects.TapMenu_Skill).transform.GetChild(1).gameObject;
 
-        _alert.SetActive(false);
-        GetObject((int)GameObjects.Tap_Skill).SetActive(false);
-        GetObject((int)GameObjects.Tap_Shop).SetActive(false);
-        GetObject((int)GameObjects.Tap_Ranking).SetActive(false);
+        _alert.SetActive(false); 
     }
 
     public void SelectTap(string TapName)
@@ -56,11 +60,11 @@ public class TapGroup : UI_Base
                 _curTap = GetObject((int)GameObjects.Tap_Skill);
                 _chooseSkillTap = true;
                 break;
-            case "TapMenu_Inventory":
-                _curTap = GetObject((int)GameObjects.Tap_Ranking);
-                break;
             case "TapMenu_Shop":
                 _curTap = GetObject((int)GameObjects.Tap_Shop);
+                break;
+            case "TapMenu_Ranking":
+                _curTap = GetObject((int)GameObjects.Tap_Ranking);
                 break;
         }
         _curTap.SetActive(true);

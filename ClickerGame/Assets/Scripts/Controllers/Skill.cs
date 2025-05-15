@@ -16,7 +16,6 @@ public class Skill : MonoBehaviour
     public virtual void Knockback(GameObject target)
     {
         CreatureController controller = target.GetComponent<CreatureController>();
-        controller._tweenType = Define.TweenType.Knockback;
 
         float endPosX = target.transform.position.x + MyPlayerSkillDict["Knockback"].skillValue;
         float moveSpeed = 10f;

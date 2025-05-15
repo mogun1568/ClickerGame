@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,6 +28,7 @@ public class UI_Skill : UI_Base
     private void Awake()
     {
         Init();
+        DataInitAsync().Forget();
     }
 
     public override void Init()
@@ -42,25 +44,26 @@ public class UI_Skill : UI_Base
         _blue = GetComponent<Image>().color;
         _glay = Color.gray;
 
-        GetText((int)Texts.Text_SkillName).text = Managers.Resource.SkillDict[_goName].abilityName;
-
-        if (CheckSkill())
-            HUDUpdate();
-
         GetObject((int)GameObjects.Alert_s_Red).SetActive(false);
     }
 
-    private bool CheckSkill()
+    private async UniTask DataInitAsync()
     {
+        await UniTask.WaitUntil(() => Managers.Data.GameDataReady);
+
+        //Image icon = GetImage((int)Images.Icon_Skill);
+        //icon.sprite = Managers.Resource.Load<Sprite>($"Icon/{}");
+
         if (Managers.Data.MyPlayerSkillDict.ContainsKey(_goName))
-            return true;
+        {
+            GetText((int)Texts.Text_SkillName).text = Managers.Resource.SkillDict[_goName].abilityName;
+            HUDUpdate();
+        }
         else
         {
             GetComponent<Image>().color = _glay;
             GetText((int)Texts.Text_SkillLevel).text = "0";
             GetText((int)Texts.Text_SkillValue).text = "0";
-
-            return false;
         }
     }
 

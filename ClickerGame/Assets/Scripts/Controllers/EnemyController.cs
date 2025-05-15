@@ -52,17 +52,17 @@ public class EnemyController : CreatureController
 
         base.Update();
 
-        if (MoveTween != null)
-        {
-            if (State == Define.State.Hurt)
-            {
-                if (MoveTween.IsPlaying()) MoveTween.Pause();
-            }
-            else
-            {
-                if (!MoveTween.IsPlaying()) MoveTween.Play();
-            }
-        }
+        //if (MoveTween != null)
+        //{
+        //    if (State == Define.State.Hurt)
+        //    {
+        //        if (MoveTween.IsPlaying()) MoveTween.Pause();
+        //    }
+        //    else
+        //    {
+        //        if (!MoveTween.IsPlaying()) MoveTween.Play();
+        //    }
+        //}
     }
 
     protected override void TargetIsNull()
@@ -76,25 +76,27 @@ public class EnemyController : CreatureController
             return;
         }
 
+        if (Managers.Game.MyPlayer._onlyPlayerMove)
+            return;
+
+        if (_tweenType == Define.TweenType.Knockback)
+            return;
+
         if (Managers.Game.MyPlayer.State == Define.State.Run)
         {
             if (_playerFirstAttack)
             {
+                State = Define.State.Run;
                 if (!_isPlayerMove)
                 {
                     _isPlayerMove = true;
                     Move(_endPosX, _moveSpeed + _defaultMoveSpeed, Define.TweenType.Run);
                 }
-
-                return;
             }
-
-            State = Define.State.Idle;
         }
         else
         {
             State = Define.State.Run;
-
             if (!_playerFirstAttack)
             {
                 _playerFirstAttack = true;
@@ -125,6 +127,14 @@ public class EnemyController : CreatureController
     {
         base.UpdateAttacking();
         _AttackCoroutine = StartCoroutine(CheckAnimationTime(0.5f, StatInfo.ATK));
+    }
+
+    protected override void UpdateHurt()
+    {
+        base.UpdateHurt();
+        _playerFirstAttack = true;
+        _isPlayerMove = false;
+        _moveSpeed = ((EnemyStat)StatInfo).MoveSpeed;
     }
 
     protected override void UpdateDie()

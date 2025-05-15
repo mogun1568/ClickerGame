@@ -5,7 +5,7 @@ using UnityEngine;
 public class MyPlayerController : CreatureController
 {
     // 플레이어가 죽었을 때 배경 움직임 위함
-    public bool isMove;
+    public bool _onlyPlayerMove;
 
     public float Regeneration
     {
@@ -34,12 +34,12 @@ public class MyPlayerController : CreatureController
 
         if (transform.position.x == -2)
         {
-            isMove = false;
+            _onlyPlayerMove = false;
             InvokeRepeating(nameof(UpdateTarget), 0f, 0.1f);
         }
         else
         {
-            isMove = true;
+            _onlyPlayerMove = true;
             _endPosX = -2f;
             Move(_endPosX, _moveSpeed, Define.TweenType.Run);
         }
@@ -51,6 +51,7 @@ public class MyPlayerController : CreatureController
     {
         base.TargetIsNull();
 
+        // 초기화하면 너무 사기같아서 고민 중
         if (StatInfo.AttackCountdown != 0)
             StatInfo.AttackCountdown = 0;
         State = Define.State.Run;
@@ -58,7 +59,7 @@ public class MyPlayerController : CreatureController
 
     protected override void TweenComplete()
     {
-        isMove = false;
+        _onlyPlayerMove = false;
         base.TweenComplete();
     }
 

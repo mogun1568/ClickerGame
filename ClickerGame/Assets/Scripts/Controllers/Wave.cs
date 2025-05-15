@@ -47,6 +47,7 @@ public class Wave : MonoBehaviour
     {
         Managers.Data.MyPlayerInfo.Round++;
         Managers.Data.UpdateInfo("Round");
+        Managers.Game.MyPlayer.StatInfo.AttackCountdown = 0;
 
         _enemyCount += _waveCount;
 
