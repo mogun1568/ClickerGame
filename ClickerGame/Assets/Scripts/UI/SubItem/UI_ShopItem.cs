@@ -47,11 +47,21 @@ public class UI_ShopItem : UI_Base
             case "Reincarnation":
                 Reincarnation();
                 break;
+            case "GiveUp":
+                GiveUp();
+                break;
         }
     }
 
     private void Reincarnation()
     {
-        Managers.Data.DoReincarnation();
+        // 조건 추가 예정
+
+        Managers.Data.DoReincarnation(true);
+    }
+
+    private void GiveUp()
+    {
+        Managers.Data.DoReincarnation(false);
     }
 }

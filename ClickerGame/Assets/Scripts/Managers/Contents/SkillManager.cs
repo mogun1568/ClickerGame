@@ -34,7 +34,6 @@ public class SkillManager
     private void AddSkill()
     {
         int idx = Random.Range(0, AllSkills.Count);
-    
         string randomSkill = AllSkills[idx];
 
         Debug.Log($"Drop {randomSkill}");
@@ -49,6 +48,10 @@ public class SkillManager
             MyPlayerSkillDict.Add(randomSkill, CreateDefaultSkillData(randomSkill));
             SkillCoolTime[randomSkill] = -999f;
         }
+
+        // 최대 레벨 스킬 제거, 환생하면 스킬도 초기화할 지 고민 중
+        if (MyPlayerSkillDict[randomSkill].skillLevel >= Managers.Resource.SkillDict[randomSkill].abilityMaxLevel)
+            AllSkills.Remove(randomSkill);
 
         OnSkillAcquired?.Invoke(randomSkill);
     }

@@ -52,8 +52,8 @@ public class MyPlayerController : CreatureController
         base.TargetIsNull();
 
         // 초기화하면 너무 사기같아서 고민 중
-        if (StatInfo.AttackCountdown != 0)
-            StatInfo.AttackCountdown = 0;
+        //if (StatInfo.AttackCountdown != 0)
+        //    StatInfo.AttackCountdown = 0;
         State = Define.State.Run;
     }
 

@@ -47,11 +47,12 @@ public class Wave : MonoBehaviour
     {
         Managers.Data.MyPlayerInfo.Round++;
         Managers.Data.UpdateInfo("Round");
-        Managers.Game.MyPlayer.StatInfo.AttackCountdown = 0;
 
         _enemyCount += _waveCount;
 
         yield return new WaitForSeconds(1f);
+
+        Managers.Game.MyPlayer.StatInfo.AttackCountdown = 0;
 
         for (int i = 0; i < _waveCount; i++)
         {

@@ -22,7 +22,8 @@ public class StatLevelUpButton : UI_Base
         Text_StatName,
         Text_StatValue,
         Text_StatIncreaseValue,
-        Text_StatPrice
+        Text_StatPrice,
+        Text_StatMaxLevel
     }
     
     private Dictionary<string, Data.StatInfo> _myPlayerStatDict;
@@ -31,6 +32,7 @@ public class StatLevelUpButton : UI_Base
 
     private float _statIncreaseValue;
     private int _statIncreasePrice;
+    private int _statMaxLevel;
 
     private void Start()
     {
@@ -45,24 +47,26 @@ public class StatLevelUpButton : UI_Base
         Bind<TextMeshProUGUI>(typeof(Texts));
 
         // Bind를 Button을로 했기 때문에 GetObject로 안됨
-        BindEvent(GetButton((int)Buttons.LevelUp_Button).gameObject, (PointerEventData data) => { StatUpdate(); }, Define.UIEvent.Click); 
-    }
+        BindEvent(GetButton((int)Buttons.LevelUp_Button).gameObject, (PointerEventData data) => { StatUpdate(); }, Define.UIEvent.Click);
 
-    private async UniTask DataInitAsync()
-    {
-        await UniTask.WaitUntil(() => Managers.Data.GameDataReady);
-
-        _myPlayerStatDict = Managers.Data.MyPlayerStatDict;
-        _statDict = Managers.Resource.StatDict;
         _statName = gameObject.name;
+        _statDict = Managers.Resource.StatDict;
 
         _statIncreaseValue = _statDict[_statName].abilityIncreaseValue;
         _statIncreasePrice = _statDict[_statName].statIncreasePrice;
+        _statMaxLevel = _statDict[_statName].abilityMaxLevel;
 
         //Image icon = GetImage((int)Images.Icon_Stat);
         //icon.sprite = Managers.Resource.Load<Sprite>($"Icon/{}");
         GetText((int)Texts.Text_StatName).text = _statDict[_statName].abilityName.ToString();
         GetText((int)Texts.Text_StatIncreaseValue).text = "+" + _statIncreaseValue.ToString();
+        GetText((int)Texts.Text_StatMaxLevel).text = "최대 레벨\n" + _statMaxLevel.ToString();
+    }
+
+    private async UniTask DataInitAsync()
+    {
+        await UniTask.WaitUntil(() => Managers.Data.GameDataReady);
+        _myPlayerStatDict = Managers.Data.MyPlayerStatDict;
         HUDUpdate();
     }
 
@@ -110,7 +114,7 @@ public class StatLevelUpButton : UI_Base
 
     private bool CheckCoin()
     {
-        if (_statDict[_statName].statPrice > Managers.Game.MyPlayer.StatInfo.Coin)
+        if (_myPlayerStatDict[_statName].statPrice > Managers.Game.MyPlayer.StatInfo.Coin)
             return false;
 
         Managers.Game.MyPlayer.StatInfo.Coin -= _myPlayerStatDict[_statName].statPrice;

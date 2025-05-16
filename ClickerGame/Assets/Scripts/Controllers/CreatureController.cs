@@ -21,7 +21,8 @@ public class CreatureController : MonoBehaviour
                 StopCoroutine(_AttackCoroutine);
 
             _state = value;
-            //if (gameObject.tag != "Player") Debug.Log(_state);
+            //if (gameObject.tag == "Player")
+            //    Debug.Log($"{_state}: {Time.realtimeSinceStartup:F4} seconds");
 
             UpdateAnimation();
             UpdateController();
@@ -287,8 +288,8 @@ public class CreatureController : MonoBehaviour
             State = Define.State.Attack;
             StatInfo.AttackCountdown = 1 / StatInfo.AttackSpeed;
         }
-
-        StatInfo.AttackCountdown -= Time.deltaTime;
+        else
+            StatInfo.AttackCountdown -= Time.deltaTime;
 
         //UpdateController();
     }

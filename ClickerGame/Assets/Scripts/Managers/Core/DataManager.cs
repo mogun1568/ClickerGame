@@ -196,17 +196,20 @@ public class DataManager
         return false;
     }
 
-    public void DoReincarnation()
+    public void DoReincarnation(bool isReincarnation)
     {
         MyPlayerInfo = new Data.Info
         {
-            Reincarnation = MyPlayerInfo.Reincarnation + 1,
+            Reincarnation = MyPlayerInfo.Reincarnation,
             Coin = 10000,
             Round = 0,
             HP = 100.0f,
             LastTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
             OfflineReward = 0
         };
+
+        if (isReincarnation)
+            MyPlayerInfo.Reincarnation++;
 
         RestoreStat("MaxHP");
         RestoreStat("Regeneration");
