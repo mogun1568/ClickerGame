@@ -56,6 +56,8 @@ public class UI_ShopItem : UI_Base
     private void Reincarnation()
     {
         // 조건 추가 예정
+        if (Managers.Data.MyPlayerInfo.Round < 100)
+            return;
 
         Managers.Data.DoReincarnation(true);
     }
