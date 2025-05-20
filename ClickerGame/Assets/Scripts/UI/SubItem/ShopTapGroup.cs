@@ -31,7 +31,7 @@ public class ShopTapGroup : UI_Base
         BindEvent(GetButton((int)Buttons.Button_Class).gameObject, (PointerEventData data) => { SelectTap("Class"); }, Define.UIEvent.Click);
         BindEvent(GetButton((int)Buttons.Button_Common).gameObject, (PointerEventData data) => { SelectTap("Common"); }, Define.UIEvent.Click);
 
-        GetObject((int)GameObjects.CommonShop).SetActive(false);
+        GetObject((int)GameObjects.ClassShop).SetActive(false);
     }
 
     public void SelectTap(string TapName)

@@ -53,8 +53,6 @@ public class UI_Skill : UI_Base
         _blue = GetComponent<Image>().color;
         _glay = Color.gray;
 
-        GetObject((int)GameObjects.Alert_s_Red).SetActive(false);
-
         //Image icon = GetImage((int)Images.Icon_Skill);
         //icon.sprite = Managers.Resource.Load<Sprite>($"Icon/{}");
         GetText((int)Texts.Text_SkillName).text = _skillDict[_skillName].abilityName;
@@ -73,6 +71,8 @@ public class UI_Skill : UI_Base
             HUDUpdate();
         else
             GetComponent<Image>().color = _glay;
+
+        GetObject((int)GameObjects.Alert_s_Red).SetActive(false);
     }
 
     private void OnSkillAcquired(string skillKind)

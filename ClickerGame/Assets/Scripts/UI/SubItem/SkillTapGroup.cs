@@ -28,7 +28,7 @@ public class SkillTapGroup : UI_Base
 
     private void Start()
     {
-        GetObject((int)GameObjects.CommonSkill).SetActive(false);
+        GetObject((int)GameObjects.ClassSkill).SetActive(false);
     }
 
     public override void Init()
