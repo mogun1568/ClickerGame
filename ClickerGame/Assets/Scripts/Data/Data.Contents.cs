@@ -53,4 +53,14 @@ namespace Data
         public Dictionary<string, EnemyInfo> enemys = new Dictionary<string, EnemyInfo>();
     }
     #endregion
+
+    #region Ranking
+    public class RankingData
+    {
+        public string userId;
+        public string nickname;
+        public int reincarnation;
+        public int round;
+    }
+    #endregion
 }

@@ -202,4 +202,42 @@ public class FirebaseDataManager
             Debug.LogError($"Failed to add enemy: {e.Message}");
         }
     }
+
+    public async UniTask<List<Data.RankingData>> FetchAllUsersRankingData()
+    {
+        List<Data.RankingData> rankingList = new List<Data.RankingData>();
+
+        try
+        {
+            DataSnapshot snapshot = await dbReference.Child("users").GetValueAsync().AsUniTask();
+
+            foreach (DataSnapshot userSnapshot in snapshot.Children)
+            {
+                string userId = userSnapshot.Key;
+                var infoSnapshot = userSnapshot.Child("info");
+
+                if (infoSnapshot.Exists &&
+                    infoSnapshot.HasChild("Nickname") &&
+                    infoSnapshot.HasChild("Reincarnation") &&
+                    infoSnapshot.HasChild("Round"))
+                {
+                    Data.RankingData data = new Data.RankingData
+                    {
+                        userId = userId,
+                        nickname = infoSnapshot.Child("Nickname").Value.ToString(),
+                        reincarnation = int.TryParse(infoSnapshot.Child("Reincarnation").Value.ToString(), out var re) ? re : 0,
+                        round = int.TryParse(infoSnapshot.Child("Round").Value.ToString(), out var ro) ? ro : 0
+                    };
+
+                    rankingList.Add(data);
+                }
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Failed to fetch ranking data: {e.Message}");
+        }
+
+        return rankingList;
+    }
 }

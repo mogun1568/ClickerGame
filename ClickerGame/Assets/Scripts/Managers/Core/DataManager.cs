@@ -28,6 +28,7 @@ public class DataManager
         MyPlayerSkillDict = gameData.skills;
         EnemyDict = gameData.enemys;
         Managers.Skill.Init();
+        await Managers.Ranking.InitAsync();
         GameDataReady = true;
     }
 
@@ -236,6 +237,11 @@ public class DataManager
     {
         return Managers.Resource.StatDict[statKind].abilityValue + 
             5 * MyPlayerInfo.Reincarnation * Managers.Resource.StatDict[statKind].abilityIncreaseValue;
+    }
+
+    public async UniTask<List<Data.RankingData>> LoadRanking()
+    {
+        return await _firebaseData.FetchAllUsersRankingData();
     }
 
     public void Clear()

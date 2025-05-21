@@ -60,6 +60,7 @@ public class LocalDataManager
         {
             info = new Data.Info
             {
+                Nickname = "Guest",
                 Reincarnation = 0,
                 Coin = 10000,
                 Round = 0,

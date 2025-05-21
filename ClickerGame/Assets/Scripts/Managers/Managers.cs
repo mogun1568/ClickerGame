@@ -13,10 +13,12 @@ public class Managers : MonoBehaviour
     GameManager _game = new GameManager();
     FirebaseManager _firebase = new FirebaseManager();
     SkillManager _skill = new SkillManager();
+    RankingManager _ranking = new RankingManager();
 
     public static GameManager Game { get { return Instance._game; } }
     public static FirebaseManager Firebase { get { return Instance._firebase; } }
     public static SkillManager Skill { get { return Instance._skill; } }
+    public static RankingManager Ranking { get { return Instance._ranking; } }
     #endregion
 
     #region Core

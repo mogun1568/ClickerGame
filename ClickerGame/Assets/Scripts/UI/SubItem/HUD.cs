@@ -27,6 +27,9 @@ public class HUD : UI_Base
         if (!Managers.Data.GameDataReady)
             return;
 
+        if (Managers.Game.MyPlayer == null)
+            return;
+
         switch (_type)
         {
             case InfoType.Coin:

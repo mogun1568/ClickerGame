@@ -5,12 +5,19 @@ namespace Data
     [Serializable]
     public class Info
     {
+        private string _nickname;
         private int _reincarnation; // È¯»ý
         private int _coin;
         private int _round;
         private float _hp;
         private long _lastTime;
         private int _offlineReward;
+
+        public string Nickname
+        {
+            get => _nickname;
+            set => SetValue(ref _nickname, value, nameof(Nickname));
+        }
 
         public int Reincarnation
         {
