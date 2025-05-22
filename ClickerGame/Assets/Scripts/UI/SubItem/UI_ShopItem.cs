@@ -11,7 +11,7 @@ public class UI_ShopItem : UI_Base
 
     enum Images
     {
-        Icon_Shop
+        Icon_Item
     }
 
     enum Texts
