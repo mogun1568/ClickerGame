@@ -47,7 +47,9 @@ public class RankingUIController : UI_Base
     private void RankObjectManagement()
     {
         int currentCount = _content.childCount;
-        int targetCount = Managers.Ranking.RankingList.Count;
+
+        // 혹시 몰라 최대 10개로 제한
+        int targetCount = Mathf.Min(Managers.Ranking.RankingList.Count, 10);
 
         if (currentCount < targetCount)
         {

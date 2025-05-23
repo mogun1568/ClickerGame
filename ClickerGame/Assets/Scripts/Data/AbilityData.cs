@@ -1,11 +1,8 @@
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
 
 [CreateAssetMenu(fileName = "Ability", menuName = "ScriptableObject/AbilityData")]
 public class AbilityData : ScriptableObject
 {
-    public enum Type { Stat, Skill }
-
     [Header("# Public Info")]
     public Define.AbilityType creatureType;
     public string abilityKind;

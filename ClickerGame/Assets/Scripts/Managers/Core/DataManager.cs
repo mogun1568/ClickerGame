@@ -201,6 +201,7 @@ public class DataManager
     {
         MyPlayerInfo = new Data.Info
         {
+            Nickname = MyPlayerInfo.Nickname,
             Reincarnation = MyPlayerInfo.Reincarnation,
             Coin = 10000,
             Round = 0,

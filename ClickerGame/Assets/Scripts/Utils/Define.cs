@@ -47,6 +47,11 @@ public class Define
         Skill
     }
 
+    public enum EnemyType
+    {
+        General
+    }
+
     public enum Debuff
     {
         None,
