@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5a0d82360083945039a386d0b8ed300f
+guid: 63385bec4f48c4a7cbf0f567b4e04bd3
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -63,7 +63,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
-  cookieLightType: 1
+  cookieLightType: 0
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -137,6 +137,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 176695
   packageName: GUI Pro - Casual Game
-  packageVersion: 4.0.7
-  assetPath: Assets/Layer Lab/GUI Pro-CasualGame/ResourcesData/Sprites/Components/Icon_ItemIcons/Original/Icon_Potion02_Red.Png
-  uploadId: 720804
+  packageVersion: 4.1.1
+  assetPath: Assets/Layer Lab/GUI Pro-CasualGame/ResourcesData/Sprites/Components/Icon_ItemIcons/Original/Icon_Potion02_Red.png
+  uploadId: 754818

@@ -211,26 +211,40 @@ public class FirebaseDataManager
         {
             DataSnapshot snapshot = await dbReference.Child("users").GetValueAsync().AsUniTask();
 
+            if (!snapshot.Exists || snapshot.ChildrenCount == 0)
+                return rankingList;
+
             foreach (DataSnapshot userSnapshot in snapshot.Children)
             {
                 string userId = userSnapshot.Key;
+
                 var infoSnapshot = userSnapshot.Child("info");
-
-                if (infoSnapshot.Exists &&
-                    infoSnapshot.HasChild("Nickname") &&
-                    infoSnapshot.HasChild("Reincarnation") &&
-                    infoSnapshot.HasChild("Round"))
+                if (!infoSnapshot.Exists)
                 {
-                    Data.RankingData data = new Data.RankingData
-                    {
-                        userId = userId,
-                        nickname = infoSnapshot.Child("Nickname").Value.ToString(),
-                        reincarnation = int.TryParse(infoSnapshot.Child("Reincarnation").Value.ToString(), out var re) ? re : 0,
-                        round = int.TryParse(infoSnapshot.Child("Round").Value.ToString(), out var ro) ? ro : 0
-                    };
-
-                    rankingList.Add(data);
+                    Debug.LogWarning($"User '{userId}'에 'info' 노드가 없습니다.");
+                    continue;
                 }
+
+                if (!(infoSnapshot.HasChild("Nickname") && infoSnapshot.HasChild("Reincarnation")
+                    && infoSnapshot.HasChild("Round")))
+                {
+                    Debug.LogWarning($"User '{userId}'에 'info' 노드에 키가 없습니다.");
+                    continue;
+                }
+
+                string nickname = infoSnapshot.Child("Nickname").Value?.ToString() ?? "";
+                int reincarnation = int.TryParse(infoSnapshot.Child("Reincarnation").Value?.ToString(), out var r1) ? r1 : 0;
+                int round = int.TryParse(infoSnapshot.Child("Round").Value?.ToString(), out var r2) ? r2 : 0;
+
+                rankingList.Add(new Data.RankingData
+                {
+                    userId = userId,
+                    nickname = nickname,
+                    reincarnation = reincarnation,
+                    round = round
+                });
+
+                Debug.Log("Successfully fetched ranking data.");
             }
         }
         catch (System.Exception e)

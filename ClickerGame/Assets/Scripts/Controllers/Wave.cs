@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Wave : MonoBehaviour
@@ -7,7 +6,7 @@ public class Wave : MonoBehaviour
     public int _enemyCount;
     private int _waveCount;
 
-    private void Start()
+    void Start()
     {
         Init();
     }
@@ -46,7 +45,6 @@ public class Wave : MonoBehaviour
     IEnumerator SpawnEnemyWave()
     {
         Managers.Data.MyPlayerInfo.Round++;
-        Managers.Data.UpdateInfo("Round");
 
         _enemyCount += _waveCount;
 

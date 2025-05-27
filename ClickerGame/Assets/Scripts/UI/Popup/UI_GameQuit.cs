@@ -10,7 +10,7 @@ public class UI_GameQuit : UI_Popup
         Button_Cancel
     }
 
-    private void Awake()
+    void Awake()
     {
         Init();
     }

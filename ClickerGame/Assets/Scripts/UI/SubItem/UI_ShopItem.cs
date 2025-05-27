@@ -23,7 +23,8 @@ public class UI_ShopItem : UI_Base
 
     private string _goName;
 
-    private void Start()
+    // Start
+    void Awake()
     {
         Init();
     }

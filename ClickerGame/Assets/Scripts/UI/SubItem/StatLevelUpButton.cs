@@ -34,7 +34,8 @@ public class StatLevelUpButton : UI_Base
     private int _statIncreasePrice;
     private int _statMaxLevel;
 
-    private void Start()
+    // Start
+    void Awake()
     {
         Init();
         DataInitAsync().Forget();

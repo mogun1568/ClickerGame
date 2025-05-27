@@ -28,7 +28,7 @@ public class DataManager
         MyPlayerSkillDict = gameData.skills;
         EnemyDict = gameData.enemys;
         Managers.Skill.Init();
-        await Managers.Ranking.InitAsync();
+        //await Managers.Ranking.InitAsync();
         GameDataReady = true;
     }
 

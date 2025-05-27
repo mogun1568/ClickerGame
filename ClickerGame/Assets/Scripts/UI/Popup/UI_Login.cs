@@ -19,7 +19,7 @@ public class UI_Login : UI_Popup
 
     private string _loginText, _infoText;
 
-    private void Awake()
+    void Awake()
     {
         Init();
     }

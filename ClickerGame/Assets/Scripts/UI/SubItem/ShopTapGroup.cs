@@ -18,7 +18,7 @@ public class ShopTapGroup : UI_Base
         CommonShop
     }
 
-    private void Awake()
+    void Awake()
     {
         Init();
     }

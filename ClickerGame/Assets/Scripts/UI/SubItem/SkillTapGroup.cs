@@ -21,12 +21,12 @@ public class SkillTapGroup : UI_Base
     private GameObject _classAlert, _commomAlert;
     bool _isClass, _isCommon;
 
-    private void Awake()
+    void Awake()
     {
         Init();
     }
 
-    private void Start()
+    void Start()
     {
         GetObject((int)GameObjects.ClassSkill).SetActive(false);
     }

@@ -17,7 +17,7 @@ public class UI_Start : UI_Scene
         Welcome
     }
 
-    private void Awake()
+    void Awake()
     {
         Init();
     }

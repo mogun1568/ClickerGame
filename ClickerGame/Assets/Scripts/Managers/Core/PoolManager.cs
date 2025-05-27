@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -38,7 +37,7 @@ public class PoolManager
                 return;
             }
 
-            poolable.transform.parent = Root;
+            poolable.transform.SetParent(Root, false);
             poolable.gameObject.SetActive(false);
             poolable.IsUsing = false;
 
@@ -52,7 +51,8 @@ public class PoolManager
             if (_poolStack.Count > 0)
             {
                 poolable = _poolStack.Pop();
-            } else
+            }
+            else
             {
                 poolable = Create(position, parent);
             }
@@ -63,10 +63,14 @@ public class PoolManager
             // DontDestroyOnLoad 해제 용도
             if (parent == null)
             {
-                poolable.transform.parent = Managers.Scene.CurrentScene.transform;
+                // parent 직접 지정에서 아래로 변경
+                poolable.transform.SetParent(Managers.Scene.CurrentScene.transform, false);
+            }
+            else
+            {
+                poolable.transform.SetParent(parent, false);
             }
 
-            poolable.transform.parent = parent;
             poolable.IsUsing = true;
 
             return poolable;

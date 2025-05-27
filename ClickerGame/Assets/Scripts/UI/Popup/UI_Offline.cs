@@ -1,5 +1,4 @@
 using TMPro;
-using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -21,7 +20,7 @@ public class UI_Offline : UI_Popup
         Text_Gold
     }
 
-    private void Awake()
+    void Awake()
     {
         Init();
     }

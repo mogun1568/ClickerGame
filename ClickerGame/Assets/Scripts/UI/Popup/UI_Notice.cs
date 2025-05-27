@@ -1,5 +1,4 @@
 using TMPro;
-using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -16,7 +15,7 @@ public class UI_Notice : UI_Popup
         Button_Cancel
     }
 
-    private void Awake()
+    void Awake()
     {
         Init();
     }

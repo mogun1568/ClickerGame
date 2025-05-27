@@ -20,12 +20,12 @@ public class TapGroup : UI_Base
     private GameObject _alert;
     private bool _chooseSkillTap;
 
-    private void Awake()
+    void Awake()
     {
         Init();
     }
 
-    private void Start()
+    void Start()
     {
         GetObject((int)GameObjects.Tap_Skill).SetActive(false);
         GetObject((int)GameObjects.Tap_Shop).SetActive(false);

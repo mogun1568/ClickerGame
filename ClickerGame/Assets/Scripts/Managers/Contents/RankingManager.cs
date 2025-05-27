@@ -4,11 +4,9 @@ using System.Collections.Generic;
 public class RankingManager
 {
     public List<Data.RankingData> RankingList = new List<Data.RankingData>();
-    public bool _updateDone;
 
     public async UniTask InitAsync()
     {
-        _updateDone = false;
         await UpdateRankingAsync();
     }
 
@@ -30,7 +28,5 @@ public class RankingManager
             // Reincarnation이 같다면 Round 높은 순
             return b.round.CompareTo(a.round);
         });
-
-        _updateDone = true;
     }
 }

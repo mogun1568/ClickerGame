@@ -17,7 +17,7 @@ public class RankingUIController : UI_Base
 
     private Transform _content;
 
-    private void Awake()
+    void Awake()
     {
         Init();
         InitAsync().Forget();
@@ -34,14 +34,14 @@ public class RankingUIController : UI_Base
 
     private async UniTask InitAsync()
     {
-        await UniTask.WaitUntil(() => Managers.Ranking._updateDone);
-        RankObjectManagement();
+        await UniTask.WaitUntil(() => Managers.Firebase.CheckFirebaseDone);
+        await RankingRefresh();
     }
 
     private async UniTask RankingRefresh()
     {
-        Managers.Ranking._updateDone = false;
-        await InitAsync();
+        await Managers.Ranking.InitAsync();
+        RankObjectManagement();
     }
 
     private void RankObjectManagement()
@@ -53,10 +53,12 @@ public class RankingUIController : UI_Base
 
         if (currentCount < targetCount)
         {
+            GameObject go;
             int toCreate = targetCount - currentCount;
             for (int i = 0; i < toCreate; i++)
             {
-                Managers.Resource.Instantiate("UI/SubItem/Rank", default, _content);
+                go = Managers.Resource.Instantiate("UI/SubItem/Rank", default, _content);
+                go.GetComponent<UI_Rank>().Init();
             }
         }
         else if (currentCount > targetCount)

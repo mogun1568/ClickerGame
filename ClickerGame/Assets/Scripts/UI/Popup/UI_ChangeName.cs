@@ -19,7 +19,7 @@ public class UI_ChangeName : UI_Popup
     private UI_Nickname _nickname;
     private TMP_InputField inputField;
 
-    private void Awake()
+    void Awake()
     {
         Init();
     }

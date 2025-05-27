@@ -14,7 +14,7 @@ public class ParallaxBackground : MonoBehaviour
 
     private Tween scrollTween;
 
-    private void Start()
+    void Start()
     {
         StartScrolling();
     }
@@ -55,6 +55,9 @@ public class ParallaxBackground : MonoBehaviour
     private void Update()
     {
         if (!Managers.Data.GameDataReady)
+            return;
+
+        if (Managers.Game.MyPlayer == null)
             return;
 
         if (Managers.Game.MyPlayer._onlyPlayerMove)

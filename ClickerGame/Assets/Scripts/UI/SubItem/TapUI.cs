@@ -1,7 +1,6 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class TapUI : UI_Base
 {
@@ -14,7 +13,7 @@ public class TapUI : UI_Base
     private TextMeshProUGUI _text;
     private Color _open, _close;
 
-    private void Awake()
+    void Awake()
     {
         Init();
     }

@@ -11,7 +11,7 @@ public class UI_Setting : UI_Popup
         Button_Close
     }
 
-    private void Awake()
+    void Awake()
     {
         Init();
     }

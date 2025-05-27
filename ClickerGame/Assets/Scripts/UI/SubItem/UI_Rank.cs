@@ -18,10 +18,11 @@ public class UI_Rank : UI_Base
 
     //Data.RankingData _rank;
 
-    private void Awake()
-    {
-        Init();
-    }
+    // 생성되어도 부모가 비활성화 상태여서 실행되지 않음 RankingUIController에서 생성 후 강제 실행되도록 변경 함
+    //void Awake()
+    //{
+    //    Init();
+    //}
 
     public override void Init()
     {
@@ -38,9 +39,9 @@ public class UI_Rank : UI_Base
 
         //Image icon = GetImage((int)Images.Icon_Player);
         //icon.sprite = Managers.Resource.Load<Sprite>($"Icon/{}");
-        
         GetText((int)Texts.Text_Nickname).text = rank.nickname;
         GetText((int)Texts.Text_ReincarnationRank).text = "환생: " + rank.reincarnation;
         GetText((int)Texts.Text_RoundRank).text = "라운드: " + rank.round;
+        
     }
 }

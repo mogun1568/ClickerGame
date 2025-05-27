@@ -1,6 +1,3 @@
-using Cysharp.Threading.Tasks;
-using TMPro;
-using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -11,7 +8,7 @@ public class UI_Main : UI_Scene
         Button_Menu
     }
 
-    private void Awake()
+    void Awake()
     {
         Init();
     }

@@ -15,7 +15,7 @@ public class UI_Nickname : UI_Base
         Button_Rename
     }
 
-    private void Awake()
+    void Awake()
     {
         Init();
         InitAsync().Forget();

@@ -54,6 +54,8 @@ public class SkillManager
             AllSkills.Remove(randomSkill);
 
         OnSkillAcquired?.Invoke(randomSkill);
+
+        Managers.Data.UpdateSKill(randomSkill);
     }
 
     public Data.SkillInfo CreateDefaultSkillData(string skillKind)

@@ -11,7 +11,7 @@ public class HUD : UI_Base
     Slider _slider;
     TextMeshProUGUI _Text;
 
-    private void Start()
+    void Start()
     {
         Init();
     }

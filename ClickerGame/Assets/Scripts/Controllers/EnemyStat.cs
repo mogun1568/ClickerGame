@@ -1,4 +1,3 @@
-
 public class EnemyStat : Stat
 {
     private float _moveSpeed;

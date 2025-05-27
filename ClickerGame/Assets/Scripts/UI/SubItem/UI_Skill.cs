@@ -31,7 +31,7 @@ public class UI_Skill : UI_Base
     private int _skillMaxlevel;
     private Color _blue, _glay;
 
-    private void Awake()
+    void Awake()
     {
         Init();
         DataInitAsync().Forget();
