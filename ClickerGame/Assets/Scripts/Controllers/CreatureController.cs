@@ -21,7 +21,7 @@ public class CreatureController : MonoBehaviour
                 StopCoroutine(_AttackCoroutine);
 
             _state = value;
-            //if (gameObject.tag == "Player")
+            //if (gameObject.tag != "Player")
             //    Debug.Log($"{_state}: {Time.realtimeSinceStartup:F4} seconds");
 
             UpdateAnimation();
@@ -38,33 +38,34 @@ public class CreatureController : MonoBehaviour
         {
             if (state == Define.State.Idle || state == Define.State.Run)
                 return false;
-            else
-                return true;
+
+            return true;
         }
 
-        if (_state == Define.State.Hurt)
+        if (state == Define.State.Hurt)
         {
-            // 임시
-            if (gameObject.tag == "Player")
-                return true;
+            // 랜덤으로 경직 저항
+            if(Random.value < StaggerResistance)
+                return false;
 
+            return true;
+        }
+
+        if (_state == Define.State.Attack || _state == Define.State.Hurt)
+        {
             //Debug.Log($"{_curAnimInfo.IsName("Hurt")}, {_curAnimInfo.normalizedTime}");
             if (!CheckAnim())
                 return false;
         }
 
-        if (_state == Define.State.Attack)
-        {
-            // 임시
-            // 플레이어는 피해 코드가 Attack 쪽에서 실행됨으로 상태가 Hurt로 바뀌지 않아도 된다.
-            // 현재는 Attack의 시작과 동시에 피해 코드가 실행되지만
-            // 프레임에 맞춰 수정하면 칼에 맞는 프레임 전에는 피해 코드가 실행되지 않을 것이다.
-            if (gameObject.tag != "Player" && state == Define.State.Hurt)
-                return true;
-
-            if (!CheckAnim())
-                return false;
-        }
+        //if (_state == Define.State.Attack)
+        //{
+        //    // 플레이어는 피해 코드가 Attack 쪽에서 실행됨으로 상태가 Hurt로 바뀌지 않아도 된다.
+        //    // 현재는 Attack의 시작과 동시에 피해 코드가 실행되지만
+        //    // 프레임에 맞춰 수정하면 칼에 맞는 프레임 전에는 피해 코드가 실행되지 않을 것이다.
+        //    if (gameObject.tag != "Player" && state == Define.State.Hurt)
+        //        return true;
+        //}
 
         return true;
     }
@@ -107,6 +108,12 @@ public class CreatureController : MonoBehaviour
             StatInfo.AttackSpeed = value;
             _animator.SetFloat("AttackSpeed", StatInfo.AttackSpeed);
         }
+    }
+
+    public virtual float StaggerResistance
+    {
+        get => StatInfo.StaggerResistance;
+        set => StatInfo.StaggerResistance = value;
     }
 
     protected Skill SkillInfo;
@@ -259,11 +266,6 @@ public class CreatureController : MonoBehaviour
         }
 
         _target = nearestTarget;
-
-        //if (nearestTarget != null)
-        //    _target = nearestTarget;
-        //else
-        //    _target = null;
     }
 
     protected virtual void Update()
@@ -274,6 +276,18 @@ public class CreatureController : MonoBehaviour
         // _animator의 특징때문에 즉각 적으로 반영되지 않아 _curAnimInfo가 이전 애니일 수 있음
         // 이 부분을 해결해야 애니가 매끄러워짐 -> 실행 중인 애니와 시간을 둘 다 체크하는 방식으로 해결
         _curAnimInfo = _animator.GetCurrentAnimatorStateInfo(0);
+
+        // 목적지에 도착 전에 피격 받는 경우
+        if (MoveTween != null)
+        {
+            if (State == Define.State.Hurt)
+            {
+                if (_tweenType == Define.TweenType.Run || _tweenType == Define.TweenType.Slow)
+                    if (MoveTween.IsPlaying()) MoveTween.Pause();
+            }
+            else
+                if (!MoveTween.IsPlaying()) MoveTween.Play();
+        }
 
         if (_target == null)
         {
@@ -291,7 +305,9 @@ public class CreatureController : MonoBehaviour
         else
             StatInfo.AttackCountdown -= Time.deltaTime;
 
-        //UpdateController();
+        
+
+        
     }
 
     protected virtual void TargetIsNull()
@@ -379,7 +395,6 @@ public class CreatureController : MonoBehaviour
 
     }
 
-        //_animator = null;
     protected virtual void UpdateDie()
     {
         _AttackCoroutine = null;
@@ -404,9 +419,6 @@ public class CreatureController : MonoBehaviour
             //Debug.Log($"{gameObject.tag}, {_curAnimInfo.normalizedTime % 1}");
             _target.GetComponent<CreatureController>().Hurt(amount);
 
-            // 이 부분에서 스킬을 써야 할 듯
-            // 스킬들 중 1렙 이상인 것들중에 랜덤으로 하나 쓰도록 해야 함
-            // 뭔가 스킬이 늦게 써지는 느낌이 있음
             Skill();
         }
     }

@@ -27,22 +27,6 @@ namespace Data
     }
     #endregion
 
-    #region Enemy
-    [Serializable]
-    public class EnemyInfo
-    {
-        public string enemyType;
-        public string enemyName;
-        public float enemyMaxHP;
-        public float enemyATK;
-        public float enemyDEF;
-        public float enemyAttackSpeed;
-        public float enemyRange;
-        public float enemyMoveSpeed;
-        public int enemyCoin;
-    }
-    #endregion
-
     #region Game
     [Serializable]
     public class GameData
@@ -50,7 +34,6 @@ namespace Data
         public Info info = new Info();
         public Dictionary<string, StatInfo> stats = new Dictionary<string, StatInfo>();
         public Dictionary<string, SkillInfo> skills = new Dictionary<string, SkillInfo>();
-        public Dictionary<string, EnemyInfo> enemys = new Dictionary<string, EnemyInfo>();
     }
     #endregion
 

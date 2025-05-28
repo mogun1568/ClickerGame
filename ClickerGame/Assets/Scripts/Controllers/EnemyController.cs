@@ -17,7 +17,8 @@ public class EnemyController : CreatureController
         if (goName.EndsWith("(Clone)"))
             goName = goName.Substring(0, goName.Length - 7).Trim();
 
-        StatInfo = new EnemyStat(Managers.Data.EnemyDict[goName]);
+        State = Define.State.Idle;
+        StatInfo = new EnemyStat(goName);
         SkillInfo = GetComponent<Skill>();
         SkillInfo.Init();
         _animator.SetFloat("AttackSpeed", AttackSpeed);
@@ -129,9 +130,9 @@ public class EnemyController : CreatureController
         _AttackCoroutine = StartCoroutine(CheckAnimationTime(0.5f, StatInfo.ATK));
     }
 
-    protected override void UpdateHurt()
+    protected override void Hurt(float damage)
     {
-        base.UpdateHurt();
+        base.Hurt(damage);
         _playerFirstAttack = true;
         _isPlayerMove = false;
         _moveSpeed = ((EnemyStat)StatInfo).MoveSpeed;
@@ -141,8 +142,7 @@ public class EnemyController : CreatureController
     {
         base.UpdateDie();
 
-        int roundCoin = Mathf.Max(Managers.Data.MyPlayerInfo.Round / 10, 1);
-        Managers.Game.MyPlayer.StatInfo.Coin += StatInfo.Coin * roundCoin;
+        Managers.Game.MyPlayer.StatInfo.Coin += StatInfo.Coin;
         Managers.Game.Wave._enemyCount--;
         Managers.Skill.RandomAddSkill();
 

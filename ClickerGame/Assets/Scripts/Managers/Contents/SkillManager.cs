@@ -42,6 +42,8 @@ public class SkillManager
             MyPlayerSkillDict[randomSkill].skillLevel++;
             MyPlayerSkillDict[randomSkill].skillValue
                 += Managers.Resource.SkillDict[randomSkill].abilityIncreaseValue;
+            MyPlayerSkillDict[randomSkill].skillValue
+                = Mathf.Round(MyPlayerSkillDict[randomSkill].skillValue * 100f) / 100f;
         }
         else
         {

@@ -63,7 +63,7 @@ public class LocalDataManager
                 Nickname = "Guest",
                 Reincarnation = 0,
                 Coin = 10000,
-                Round = 0,
+                Round = 1,
                 HP = 100.0f,
                 LastTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
                 OfflineReward = 0
@@ -79,11 +79,6 @@ public class LocalDataManager
             },
             skills = new Dictionary<string, Data.SkillInfo>
             {
-            },
-            enemys = new Dictionary<string, Data.EnemyInfo>
-            {
-                { "HeavyBandit", new Data.EnemyInfo { enemyType = "HeavyBandit", enemyName = "HeavyBandit",
-                    enemyMaxHP = 30.0f, enemyATK = 10.0f, enemyDEF = 0.0f, enemyAttackSpeed = 1.0f, enemyRange = 1.5f, enemyMoveSpeed = 2.5f, enemyCoin = 1 }}
             }
         };
     }

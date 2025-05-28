@@ -42,6 +42,7 @@ public class Wave : MonoBehaviour
         
     }
 
+    // 적 종류 추가 방식은 플레이어의 Reincarnation과 Round를 이용해 할 예정
     IEnumerator SpawnEnemyWave()
     {
         Managers.Data.MyPlayerInfo.Round++;

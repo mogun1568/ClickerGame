@@ -9,6 +9,7 @@ public class Stat
     private float _def;
     private float _attackSpeed;
     private float _range;
+    private float _staggerResistance;   // 경직 저항
     private float _attackCountdown = 0f;
 
     public virtual int Coin
@@ -56,6 +57,12 @@ public class Stat
     {
         get => _range;
         set => _range = RoundToTwoDecimals(value);
+    }
+
+    public virtual float StaggerResistance
+    {
+        get => _staggerResistance;
+        set => _staggerResistance = RoundToTwoDecimals(value);
     }
 
     public virtual float AttackCountdown

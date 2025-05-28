@@ -13,8 +13,7 @@ public class DataManager
     public Data.Info MyPlayerInfo { get; private set; } = new Data.Info();
     public Dictionary<string, Data.StatInfo> MyPlayerStatDict { get; private set; } = new Dictionary<string, Data.StatInfo>();
     public Dictionary<string, Data.SkillInfo> MyPlayerSkillDict { get; private set; } = new Dictionary<string, Data.SkillInfo>();
-    public Dictionary<string, Data.EnemyInfo> EnemyDict { get; private set; } = new Dictionary<string, Data.EnemyInfo>();
-
+    
     public bool GameDataReady { get; private set; } = false;
     public bool CheckSaveDataDone { get; set; } = false;
 
@@ -26,9 +25,9 @@ public class DataManager
         MyPlayerInfo = gameData.info;
         MyPlayerStatDict = gameData.stats;
         MyPlayerSkillDict = gameData.skills;
-        EnemyDict = gameData.enemys;
         Managers.Skill.Init();
         //await Managers.Ranking.InitAsync();
+        MyPlayerInfo.Round--;
         GameDataReady = true;
     }
 
@@ -167,8 +166,7 @@ public class DataManager
         {
             info = MyPlayerInfo,
             stats = MyPlayerStatDict,
-            skills = MyPlayerSkillDict,
-            enemys = EnemyDict
+            skills = MyPlayerSkillDict
         };
     }
 

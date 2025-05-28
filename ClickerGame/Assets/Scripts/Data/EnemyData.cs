@@ -10,6 +10,7 @@ public class EnemyData : ScriptableObject
     public float enemyDEF;
     public float enemyAttackSpeed;
     public float enemyRange;
+    public float enemyStaggerResistance;
     public float enemyMoveSpeed;
     public int enemyCoin;
 
@@ -23,6 +24,7 @@ public class EnemyData : ScriptableObject
         copied.enemyDEF = this.enemyDEF;
         copied.enemyAttackSpeed = this.enemyAttackSpeed;
         copied.enemyRange = this.enemyRange;
+        copied.enemyStaggerResistance = this.enemyStaggerResistance;
         copied.enemyMoveSpeed = this.enemyMoveSpeed;
         copied.enemyCoin = this.enemyCoin;
 

@@ -20,7 +20,6 @@ public class MyPlayerController : CreatureController
         Managers.Game.MyPlayer = this;
 
         State = Define.State.Run;
-
         StatInfo = new PlayerStat(Managers.Data.MyPlayerStatDict);
         SkillInfo = GetComponent<PlayerSkill>();
         SkillInfo.Init();

@@ -17,6 +17,8 @@ public class PlayerStat : Stat
         _statDEF = statDict["DEF"];
         _statAttackSpeed = statDict["AttackSpeed"];
         _statRange = statDict["Range"];
+
+        StaggerResistance = 1f;
     }
 
     public override int Coin

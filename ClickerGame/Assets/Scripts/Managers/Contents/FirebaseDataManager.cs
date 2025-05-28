@@ -176,33 +176,6 @@ public class FirebaseDataManager
         }
     }
 
-    // 적 추가 (enemyName을 Key로 사용)
-    public void AddNewEnemy(Data.EnemyInfo newEnemy)
-    {
-        FirebaseUser user = auth.CurrentUser;
-        if (user == null) return;
-
-        string userId = user.UserId;
-
-        AddNewEnemyAsync(userId, newEnemy).Forget();
-    }
-
-    private async UniTask AddNewEnemyAsync(string userId, Data.EnemyInfo newEnemy)
-    {
-        try
-        {
-            DatabaseReference enemiesRef = dbReference.Child("users").Child(userId).Child("enemys");
-
-            await enemiesRef.Child(newEnemy.enemyName).SetValueAsync(newEnemy).AsUniTask();
-
-            Debug.Log($"Enemy '{newEnemy.enemyName}' added successfully.");
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError($"Failed to add enemy: {e.Message}");
-        }
-    }
-
     public async UniTask<List<Data.RankingData>> FetchAllUsersRankingData()
     {
         List<Data.RankingData> rankingList = new List<Data.RankingData>();
