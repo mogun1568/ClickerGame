@@ -33,7 +33,7 @@ public class Define
         Idle,
         Run,
         Attack,
-        Hurt,
+        Stagger,    // °æÁ÷
         Death
     }
 

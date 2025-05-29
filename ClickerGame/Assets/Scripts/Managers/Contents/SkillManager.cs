@@ -20,7 +20,7 @@ public class SkillManager
         foreach (var skill in MyPlayerSkillDict)
             SkillCoolTime[skill.Key] = -999f;
 
-        _skillDropChance = 0.1f;
+        _skillDropChance = 0.05f;
     }
 
     public void RandomAddSkill()

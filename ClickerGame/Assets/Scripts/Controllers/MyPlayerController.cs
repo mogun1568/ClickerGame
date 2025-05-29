@@ -40,7 +40,7 @@ public class MyPlayerController : CreatureController
         {
             _onlyPlayerMove = true;
             _endPosX = -2f;
-            Move(_endPosX, _moveSpeed, Define.TweenType.Run);
+            Move(_endPosX, _backgroundMoveSpeed, Define.TweenType.Run);
         }
 
         InvokeRepeating(nameof(Regenerate), 1f, 1f);

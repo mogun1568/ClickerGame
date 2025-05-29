@@ -1,12 +1,10 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using UnityEngine;
 
 public class EnemyController : CreatureController
 {
     private Tween deadMoveTween;
-    private bool _playerFirstAttack; // 플레이어가 첫타를 때렸는 지 확인
-    private bool _isPlayerMove;
+    private bool _playerFirstAttack; // 플레이어가 첫타를 때렸는지 확인
 
     protected override async UniTask InitAsync()
     {
@@ -29,9 +27,9 @@ public class EnemyController : CreatureController
         StopAllCoroutines();
         deadMoveTween.Kill();
         _playerFirstAttack = false;
-        _isPlayerMove = false;
+        _moveSpeed = ((EnemyStat)StatInfo).MoveSpeed;
 
-        Move(_endPosX, _moveSpeed, Define.TweenType.Idle);
+        Move(_endPosX, _backgroundMoveSpeed, Define.TweenType.Idle);
     }
 
     protected override void Update()
@@ -52,18 +50,6 @@ public class EnemyController : CreatureController
         }
 
         base.Update();
-
-        //if (MoveTween != null)
-        //{
-        //    if (State == Define.State.Hurt)
-        //    {
-        //        if (MoveTween.IsPlaying()) MoveTween.Pause();
-        //    }
-        //    else
-        //    {
-        //        if (!MoveTween.IsPlaying()) MoveTween.Play();
-        //    }
-        //}
     }
 
     protected override void TargetIsNull()
@@ -72,8 +58,8 @@ public class EnemyController : CreatureController
 
         if (Managers.Game.MyPlayer.State == Define.State.Death)
         {
-            // 넉백 후 오는 중에 플레이어가 죽으면 Idle 상태로 이동할 수도
-            State = Define.State.Idle;
+            if (MoveTween == null) 
+                State = Define.State.Idle;
             return;
         }
 
@@ -83,28 +69,27 @@ public class EnemyController : CreatureController
         if (_tweenType == Define.TweenType.Knockback)
             return;
 
+        if (_playerFirstAttack)
+            State = Define.State.Run;
+
         if (Managers.Game.MyPlayer.State == Define.State.Run)
         {
-            if (_playerFirstAttack)
-            {
-                State = Define.State.Run;
-                if (!_isPlayerMove)
-                {
-                    _isPlayerMove = true;
-                    Move(_endPosX, _moveSpeed + _defaultMoveSpeed, Define.TweenType.Run);
-                }
-            }
+            if (!_playerFirstAttack)
+                return;
+
+            if (_debuff == Define.Debuff.Slow)
+                Move(_endPosX, _moveSpeed + _backgroundMoveSpeed, Define.TweenType.Slow);
+            else
+                Move(_endPosX, _moveSpeed + _backgroundMoveSpeed, Define.TweenType.Run);
         }
         else
         {
-            State = Define.State.Run;
-            if (!_playerFirstAttack)
-            {
-                _playerFirstAttack = true;
-                _moveSpeed = ((EnemyStat)StatInfo).MoveSpeed;
+            _playerFirstAttack = true;
+
+            if (_debuff == Define.Debuff.Slow)
+                Move(_endPosX, _moveSpeed, Define.TweenType.Slow);
+            else
                 Move(_endPosX, _moveSpeed, Define.TweenType.Run);
-            }
-            _isPlayerMove = false;
         }
     }
 
@@ -134,8 +119,6 @@ public class EnemyController : CreatureController
     {
         base.Hurt(damage);
         _playerFirstAttack = true;
-        _isPlayerMove = false;
-        _moveSpeed = ((EnemyStat)StatInfo).MoveSpeed;
     }
 
     protected override void UpdateDie()
@@ -146,6 +129,6 @@ public class EnemyController : CreatureController
         Managers.Game.Wave._enemyCount--;
         Managers.Skill.RandomAddSkill();
 
-        DeadMove(-7f, _defaultMoveSpeed);
+        DeadMove(-7f, _backgroundMoveSpeed);
     }
 }

@@ -22,7 +22,7 @@ public class CreatureController : MonoBehaviour
 
             _state = value;
             //if (gameObject.tag != "Player")
-            //    Debug.Log($"{_state}: {Time.realtimeSinceStartup:F4} seconds");
+            //    Debug.Log($"{_state}");
 
             UpdateAnimation();
             UpdateController();
@@ -34,6 +34,9 @@ public class CreatureController : MonoBehaviour
         if (state == Define.State.Death)
             return true;
 
+        //if (gameObject.tag != "Player")
+        //    Debug.Log($"{_state} || {state}");
+
         if (state == _state)
         {
             if (state == Define.State.Idle || state == Define.State.Run)
@@ -42,30 +45,21 @@ public class CreatureController : MonoBehaviour
             return true;
         }
 
-        if (state == Define.State.Hurt)
+        if (state == Define.State.Stagger)
         {
             // 랜덤으로 경직 저항
-            if(Random.value < StaggerResistance)
+            if (Random.value < StaggerResistance)
                 return false;
 
             return true;
         }
 
-        if (_state == Define.State.Attack || _state == Define.State.Hurt)
+        if (_state == Define.State.Attack || _state == Define.State.Stagger)
         {
-            //Debug.Log($"{_curAnimInfo.IsName("Hurt")}, {_curAnimInfo.normalizedTime}");
+            //Debug.Log($"{_curAnimInfo.IsName("Stagger")}, {_curAnimInfo.normalizedTime}");
             if (!CheckAnim())
                 return false;
         }
-
-        //if (_state == Define.State.Attack)
-        //{
-        //    // 플레이어는 피해 코드가 Attack 쪽에서 실행됨으로 상태가 Hurt로 바뀌지 않아도 된다.
-        //    // 현재는 Attack의 시작과 동시에 피해 코드가 실행되지만
-        //    // 프레임에 맞춰 수정하면 칼에 맞는 프레임 전에는 피해 코드가 실행되지 않을 것이다.
-        //    if (gameObject.tag != "Player" && state == Define.State.Hurt)
-        //        return true;
-        //}
 
         return true;
     }
@@ -132,8 +126,9 @@ public class CreatureController : MonoBehaviour
 
     public Tween MoveTween;
     public float _endPosX;
-    public float _defaultMoveSpeed;
+    public float _backgroundMoveSpeed;
     public float _moveSpeed;
+    public float _curMoveSpeed;
     private bool _isUpdateTargetRunning;
 
     private void OnEnable()
@@ -152,8 +147,7 @@ public class CreatureController : MonoBehaviour
         _debuff = Define.Debuff.None;
         _tweenType = Define.TweenType.Idle;
         MoveTween.Kill();
-        _defaultMoveSpeed = 2.5f;
-        _moveSpeed = _defaultMoveSpeed;
+        _backgroundMoveSpeed = 2.5f;
         _isUpdateTargetRunning = false;
 
         await UniTask.WaitUntil(() => Managers.Data.GameDataReady);
@@ -179,7 +173,13 @@ public class CreatureController : MonoBehaviour
         if (GetPriority(tweenType) < GetPriority(_tweenType))
             return; // 더 낮은 우선순위면 무시
 
+        if (moveSpeed == _curMoveSpeed)
+            return;
+
+        _curMoveSpeed = moveSpeed;
         _tweenType = tweenType;
+
+        //Debug.Log($"{moveSpeed}, {tweenType}");
 
         if (MoveTween != null)
             MoveTween.Kill();
@@ -199,15 +199,9 @@ public class CreatureController : MonoBehaviour
                 if (tweenType == Define.TweenType.Knockback)
                 {
                     if (_debuff == Define.Debuff.Slow)
-                    {
                         _tweenType = Define.TweenType.Slow;
-                        Move(_endPosX, _moveSpeed, Define.TweenType.Slow);
-                    }
                     else
-                    {
                         _tweenType = Define.TweenType.Run;
-                        Move(_endPosX, _moveSpeed, Define.TweenType.Run);
-                    }
                 }
             })
             .OnComplete(() =>
@@ -280,13 +274,19 @@ public class CreatureController : MonoBehaviour
         // 목적지에 도착 전에 피격 받는 경우
         if (MoveTween != null)
         {
-            if (State == Define.State.Hurt)
+            if (State == Define.State.Stagger)
             {
                 if (_tweenType == Define.TweenType.Run || _tweenType == Define.TweenType.Slow)
-                    if (MoveTween.IsPlaying()) MoveTween.Pause();
+                {
+                    if (MoveTween.IsPlaying())
+                        MoveTween.Pause();
+                }
             }
             else
-                if (!MoveTween.IsPlaying()) MoveTween.Play();
+            {
+                if (!MoveTween.IsPlaying())
+                    MoveTween.Play();
+            }
         }
 
         if (_target == null)
@@ -304,10 +304,6 @@ public class CreatureController : MonoBehaviour
         }
         else
             StatInfo.AttackCountdown -= Time.deltaTime;
-
-        
-
-        
     }
 
     protected virtual void TargetIsNull()
@@ -329,8 +325,8 @@ public class CreatureController : MonoBehaviour
             case Define.State.Attack:
                 UpdateAttacking();
                 break;
-            case Define.State.Hurt:
-                UpdateHurt();
+            case Define.State.Stagger:
+                UpdateStagger();
                 break;
             case Define.State.Death:
                 UpdateDie();
@@ -358,12 +354,12 @@ public class CreatureController : MonoBehaviour
                 _animator.Play("Attack");
                 //_animator.SetBool("IsAttack", true);
                 break;
-            case Define.State.Hurt:
+            case Define.State.Stagger:
                 // 임시
-                if (gameObject.tag == "Player")
-                    return;
+                //if (gameObject.tag == "Player")
+                //    return;
 
-                _animator.Play("Hurt");
+                _animator.Play("Stagger");
                 //_animator.SetTrigger("HurtTrigger");
                 break;
             case Define.State.Death:
@@ -390,7 +386,7 @@ public class CreatureController : MonoBehaviour
         //Debug.Log("Attack!");
     }
 
-    protected virtual void UpdateHurt()
+    protected virtual void UpdateStagger()
     {
 
     }
@@ -440,7 +436,7 @@ public class CreatureController : MonoBehaviour
         if (HP <= 0)
             State = Define.State.Death;
         else
-            State = Define.State.Hurt;
+            State = Define.State.Stagger;
     }
 
     protected virtual IEnumerator DeadAnim(float delay)
