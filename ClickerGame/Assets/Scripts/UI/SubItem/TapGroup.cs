@@ -34,8 +34,8 @@ public class TapGroup : UI_Base
 
     public override void Init()
     {
-        Managers.Skill.OnSkillAcquired -= OnSkillAcquired;
-        Managers.Skill.OnSkillAcquired += OnSkillAcquired;
+        Managers.Alert.OnAlertAcquired -= OnSkillAcquired;
+        Managers.Alert.OnAlertAcquired += OnSkillAcquired;
 
         Bind<GameObject>(typeof(GameObjects));
 

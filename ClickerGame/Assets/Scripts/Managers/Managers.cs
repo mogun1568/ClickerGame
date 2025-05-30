@@ -11,11 +11,13 @@ public class Managers : MonoBehaviour
     FirebaseManager _firebase = new FirebaseManager();
     SkillManager _skill = new SkillManager();
     RankingManager _ranking = new RankingManager();
+    AlertManager _alert = new AlertManager();
 
     public static GameManager Game { get { return Instance._game; } }
     public static FirebaseManager Firebase { get { return Instance._firebase; } }
     public static SkillManager Skill { get { return Instance._skill; } }
     public static RankingManager Ranking { get { return Instance._ranking; } }
+    public static AlertManager Alert { get { return Instance._alert; } }
     #endregion
 
     #region Core
@@ -76,7 +78,7 @@ public class Managers : MonoBehaviour
         Scene.Clear();
         UI.Clear();
         Pool.Clear();
-        Skill.Clear();
+        Alert.Clear();
 
         DOTween.KillAll(true);    // 모든 트윈 강제 종료
         DOTween.Clear();          // 메모리에서 DOTween 데이터까지 완전 정리

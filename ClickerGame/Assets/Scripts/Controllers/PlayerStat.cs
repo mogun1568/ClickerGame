@@ -98,7 +98,9 @@ public class PlayerStat : Stat
         if (!Equals(field, newValue))
         {
             field = newValue;
-            Managers.Data.UpdateStat(key);
+
+            if (Managers.Data.GameDataReady)
+                Managers.Data.UpdateStat(key);
         }
     }
 }

@@ -60,9 +60,10 @@ namespace Data
             if (!Equals(field, newValue))
             {
                 field = newValue;
-                Managers.Data.UpdateInfo(key, newValue);
+
+                if (Managers.Data.GameDataReady)
+                    Managers.Data.UpdateInfo(key, newValue);
             }
         }
     }
 }
-

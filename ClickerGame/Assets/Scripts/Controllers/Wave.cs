@@ -32,7 +32,7 @@ public class Wave : MonoBehaviour
 
     public void RespawnPlayer()
     {
-        StartCoroutine(Respawn(1f));
+        StartCoroutine(Respawn(0f));
     }
 
     protected IEnumerator Respawn(float delay)
@@ -48,6 +48,7 @@ public class Wave : MonoBehaviour
         Managers.Data.MyPlayerInfo.Round++;
 
         _enemyCount += _waveCount;
+        //Debug.Log(_enemyCount);
 
         yield return new WaitForSeconds(1f);
 

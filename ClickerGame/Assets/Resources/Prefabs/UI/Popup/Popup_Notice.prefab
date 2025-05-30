@@ -812,7 +812,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8403567505427392180}
   m_Layer: 5
-  m_Name: Game_Quit
+  m_Name: Notice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

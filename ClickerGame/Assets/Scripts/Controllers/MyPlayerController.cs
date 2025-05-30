@@ -85,15 +85,13 @@ public class MyPlayerController : CreatureController
     protected override void UpdateDie()
     {
         base.UpdateDie();
-
         CancelInvoke(nameof(Regenerate));
-        StatInfo.Coin /= 2;
     }
 
     protected override IEnumerator DeadAnim(float delay)
     {
         yield return new WaitForSeconds(delay); // 지정한 시간만큼 대기
-        Managers.Game.Wave.RespawnPlayer();
+        Managers.UI.ShowPopupUI<UI_Resurrection>("Popup_Resurrection");
         Managers.Resource.Destroy(gameObject);
     }
 }

@@ -39,8 +39,8 @@ public class UI_Skill : UI_Base
 
     public override void Init()
     {
-        Managers.Skill.OnSkillAcquired -= OnSkillAcquired;
-        Managers.Skill.OnSkillAcquired += OnSkillAcquired;
+        Managers.Alert.OnAlertAcquired -= OnSkillAcquired;
+        Managers.Alert.OnAlertAcquired += OnSkillAcquired;
 
         Bind<Image>(typeof(Images));
         Bind<TextMeshProUGUI>(typeof(Texts));

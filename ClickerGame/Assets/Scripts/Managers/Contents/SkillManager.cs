@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -10,8 +9,6 @@ public class SkillManager
     private Dictionary<string, float> SkillCoolTime = new(); // 스킬 쿨타임 관리용
     private Dictionary<string, Data.SkillInfo> MyPlayerSkillDict;
     private float _skillDropChance;
-
-    public event Action<string> OnSkillAcquired;
 
     public void Init()
     {
@@ -55,9 +52,10 @@ public class SkillManager
         if (MyPlayerSkillDict[randomSkill].skillLevel >= Managers.Resource.SkillDict[randomSkill].abilityMaxLevel)
             AllSkills.Remove(randomSkill);
 
-        OnSkillAcquired?.Invoke(randomSkill);
+        Managers.Alert.InvokeAlert(randomSkill);
 
-        Managers.Data.UpdateSKill(randomSkill);
+        if (Managers.Data.GameDataReady)
+            Managers.Data.UpdateSKill(randomSkill);
     }
 
     public Data.SkillInfo CreateDefaultSkillData(string skillKind)
@@ -94,10 +92,5 @@ public class SkillManager
 
         SkillCoolTime[availableSkills[randIndex]] = currentTime;
         return availableSkills[randIndex];
-    }
-
-    public void Clear()
-    {
-        OnSkillAcquired = null;
     }
 }
