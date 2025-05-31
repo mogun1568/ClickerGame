@@ -3,54 +3,40 @@ using UnityEngine;
 
 public class ParallaxBackground : MonoBehaviour
 {
-    [SerializeField]
-    private Transform target;                               // 현재 배경과 이어지는 배경
-    [SerializeField]
-    private float scrollAmount = 16;                        // 이어지는 두 배경 사이의 거리
+    private float scrollAmount = 15;                        // 이어지는 두 배경 사이의 거리
     [SerializeField]
     private float moveSpeed;                                // 이동 속도
-    [SerializeField]
-    private float moveDirX = -1;  // 이동 방향
 
     private Tween scrollTween;
+    Vector3 startPos;
+    Vector3 endPos;
 
     void Start()
     {
+        Init();
+    }
+
+    private void Init()
+    {
+        startPos = new Vector3(scrollAmount, transform.position.y, transform.position.z);
+        endPos = new Vector3(-scrollAmount, transform.position.y, transform.position.z);
+
         StartScrolling();
     }
 
     private void StartScrolling()
     {
-        // 끝점 계산
-        float endPosX = transform.position.x + moveDirX * scrollAmount;
+        float distance = Vector3.Distance(transform.position, endPos);
+        float duration = distance / moveSpeed;
 
-        // DOTween으로 트윈 생성
-        scrollTween = transform.DOMoveX(endPosX, scrollAmount / moveSpeed)
-            .SetEase(Ease.Linear) // 일정 속도로 이동
-            .SetLoops(-1, LoopType.Restart) // 무한 반복
-            .OnStepComplete(() =>
-            {
-                // 위치 재설정
-                transform.position = target.position;
-            })
-            .Pause();
-    }
-
-    // 감속 기능(추후 추가)
-    /*private void StartDeceleration()
-    {
-        // 끝점 계산
-        float endPosX = transform.position.x + moveDirX * moveSpeed;
-
-        // DOTween으로 트윈 생성
-        scrollTween = transform.DOMoveX(endPosX, 1f)
-            .SetEase(Ease.InSine)
+        scrollTween = transform.DOMove(endPos, duration)
+            .SetEase(Ease.Linear)
             .OnComplete(() =>
             {
-                // 위치 재설정
-                //transform.position = target.position;
+                transform.position = startPos;
+                StartScrolling(); // 반복
             });
-    }*/
+    }
 
     private void Update()
     {

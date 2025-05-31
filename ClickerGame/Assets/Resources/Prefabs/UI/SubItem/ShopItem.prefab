@@ -664,7 +664,7 @@ GameObject:
   - component: {fileID: 3199740997738020488}
   - component: {fileID: 4735005606417770775}
   m_Layer: 5
-  m_Name: Purchase_Button
+  m_Name: Button_Purchase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

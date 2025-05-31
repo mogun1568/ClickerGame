@@ -148,6 +148,7 @@ public class CreatureController : MonoBehaviour
         _tweenType = Define.TweenType.Idle;
         MoveTween.Kill();
         _backgroundMoveSpeed = 2.5f;
+        _curMoveSpeed = 0;
         _isUpdateTargetRunning = false;
 
         await UniTask.WaitUntil(() => Managers.Data.GameDataReady);
@@ -179,7 +180,8 @@ public class CreatureController : MonoBehaviour
         _curMoveSpeed = moveSpeed;
         _tweenType = tweenType;
 
-        //Debug.Log($"{moveSpeed}, {tweenType}");
+        //if (gameObject.tag != "Player")
+        //    Debug.Log($"{moveSpeed}, {tweenType}");
 
         if (MoveTween != null)
             MoveTween.Kill();

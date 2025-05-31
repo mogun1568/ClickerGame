@@ -144,7 +144,7 @@ Transform:
   m_GameObject: {fileID: 43641383}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 16, y: 0, z: 5}
+  m_LocalPosition: {x: 15, y: 0, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -255,10 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a49e88552d7cee94c861733aad252f3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1527596305}
-  scrollAmount: 16
   moveSpeed: 1.5
-  moveDirX: -1
 --- !u!1 &203631573
 GameObject:
   m_ObjectHideFlags: 0
@@ -359,10 +356,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a49e88552d7cee94c861733aad252f3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 378029189}
-  scrollAmount: 16
   moveSpeed: 1
-  moveDirX: -1
 --- !u!1 &378029188
 GameObject:
   m_ObjectHideFlags: 0
@@ -463,10 +457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a49e88552d7cee94c861733aad252f3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 203631574}
-  scrollAmount: 16
   moveSpeed: 1
-  moveDirX: -1
 --- !u!1 &440881627
 GameObject:
   m_ObjectHideFlags: 0
@@ -870,10 +861,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a49e88552d7cee94c861733aad252f3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1780256791}
-  scrollAmount: 16
   moveSpeed: 0.5
-  moveDirX: -1
 --- !u!1 &1256336401
 GameObject:
   m_ObjectHideFlags: 0
@@ -1362,10 +1350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a49e88552d7cee94c861733aad252f3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1989401618}
-  scrollAmount: 16
   moveSpeed: 2.5
-  moveDirX: -1
 --- !u!1 &1372860393
 GameObject:
   m_ObjectHideFlags: 0
@@ -1466,10 +1451,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a49e88552d7cee94c861733aad252f3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1456583055}
-  scrollAmount: 16
   moveSpeed: 2
-  moveDirX: -1
 --- !u!1 &1435735232
 GameObject:
   m_ObjectHideFlags: 0
@@ -1642,10 +1624,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a49e88552d7cee94c861733aad252f3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1372860394}
-  scrollAmount: 16
   moveSpeed: 2
-  moveDirX: -1
 --- !u!1 &1489937835
 GameObject:
   m_ObjectHideFlags: 0
@@ -1746,10 +1725,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a49e88552d7cee94c861733aad252f3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1614861109}
-  scrollAmount: 16
   moveSpeed: 2.5
-  moveDirX: -1
 --- !u!1 &1527596304
 GameObject:
   m_ObjectHideFlags: 0
@@ -1850,10 +1826,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a49e88552d7cee94c861733aad252f3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 95218996}
-  scrollAmount: 16
   moveSpeed: 1.5
-  moveDirX: -1
 --- !u!1 &1542999874
 GameObject:
   m_ObjectHideFlags: 0
@@ -1988,10 +1961,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a49e88552d7cee94c861733aad252f3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1489937836}
-  scrollAmount: 16
   moveSpeed: 2.5
-  moveDirX: -1
 --- !u!1 &1780256790
 GameObject:
   m_ObjectHideFlags: 0
@@ -2092,10 +2062,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a49e88552d7cee94c861733aad252f3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1002850308}
-  scrollAmount: 16
   moveSpeed: 0.5
-  moveDirX: -1
 --- !u!1 &1989401617
 GameObject:
   m_ObjectHideFlags: 0
@@ -2124,7 +2091,7 @@ Transform:
   m_GameObject: {fileID: 1989401617}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 16, y: 0, z: 0}
+  m_LocalPosition: {x: 15, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2584,10 +2551,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a49e88552d7cee94c861733aad252f3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1256336402}
-  scrollAmount: 16
   moveSpeed: 2.5
-  moveDirX: -1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
