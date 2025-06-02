@@ -34,6 +34,6 @@ public class UI_Setting : UI_Popup
 
     private void PopupSound()
     {
-        //Managers.UI.ShowPopupUI<>("");
+        Managers.UI.ShowPopupUI<UI_Sound>("Popup_Sound");
     }
 }
