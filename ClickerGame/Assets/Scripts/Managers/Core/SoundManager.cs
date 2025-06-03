@@ -4,7 +4,7 @@ using UnityEngine.Audio;
 
 public class SoundManager
 {
-    AudioMixer audioMixer;
+    public AudioMixer audioMixer;
     AudioMixerGroup bgmGroup;
     AudioMixerGroup sfxGroup;
 
