@@ -34,7 +34,7 @@ public class UI_ChangeName : UI_Popup
         inputField = GetObject((int)GameObjects.InputField_NickName).GetComponent<TMP_InputField>();
         inputField.text = Managers.Data.MyPlayerInfo.Nickname;
 
-        BindEvent(GetButton((int)Buttons.Button_Close).gameObject, (PointerEventData data) => { Managers.UI.ClosePopupUI(); }, Define.UIEvent.Click);
+        BindEvent(GetButton((int)Buttons.Button_Close).gameObject, (PointerEventData data) => { ClosePopupUI(); }, Define.UIEvent.Click);
         BindEvent(GetButton((int)Buttons.Button_Change).gameObject, (PointerEventData data) => { ChangeName(); }, Define.UIEvent.Click);
     }
 
@@ -55,6 +55,6 @@ public class UI_ChangeName : UI_Popup
 
         Managers.Data.MyPlayerInfo.Nickname = newName;
         _nickname.Rename();
-        Managers.UI.ClosePopupUI();
+        ClosePopupUI();
     }
 }

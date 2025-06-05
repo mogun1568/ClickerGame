@@ -98,15 +98,13 @@ public class UI_ShopItem : UI_Base
     private void GiveUp()
     {
         // ±¤°í
-
-        Managers.Data.DoReincarnation(false);
+        Managers.GoogleAd.ShowRewardedAd(Define.RewardAdType.GiveUp, () => { Managers.Data.DoReincarnation(false); });
     }
 
     // ÇÏ·ç È½¼ö Á¦ÇÑ ÇÊ¿ä
     private void AddCoin()
     {
         // ±¤°í
-
-        Managers.Game.MyPlayer.StatInfo.Coin += _addCoin;
+        Managers.GoogleAd.ShowRewardedAd(Define.RewardAdType.AddCoin, () => { Managers.Game.MyPlayer.StatInfo.Coin += _addCoin; });
     }
 }

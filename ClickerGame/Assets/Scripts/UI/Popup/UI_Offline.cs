@@ -35,7 +35,7 @@ public class UI_Offline : UI_Popup
 
         // Bind를 Button을로 했기 때문에 GetObject로 안됨
         BindEvent(GetButton((int)Buttons.Button_Collect).gameObject, (PointerEventData data) => { GetReward(); }, Define.UIEvent.Click);
-        BindEvent(GetButton((int)Buttons.Button_x2Collect).gameObject, (PointerEventData data) => { GetReward(2); }, Define.UIEvent.Click);
+        BindEvent(GetButton((int)Buttons.Button_x2Collect).gameObject, (PointerEventData data) => { Advertising(); }, Define.UIEvent.Click);
 
         //Image icon = GetImage((int)Images.Icon_Gold);
         //icon.sprite = Managers.Resource.Load<Sprite>($"Icon/{}");
@@ -45,6 +45,12 @@ public class UI_Offline : UI_Popup
     public void StatInit()
     {
         GetText((int)Texts.Text_Gold).text = Managers.Data.MyPlayerInfo.OfflineReward.ToString();
+    }
+
+    private void Advertising()
+    {
+        // 광고
+        Managers.GoogleAd.ShowRewardedAd(Define.RewardAdType.Offline, () => { GetReward(2); });
     }
 
     private void GetReward(int amount = 1)

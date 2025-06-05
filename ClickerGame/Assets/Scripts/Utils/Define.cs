@@ -61,4 +61,12 @@ public class Define
         Knockback,
         Slow
     }
+
+    public enum RewardAdType
+    {
+        Respawn,
+        Offline,
+        GiveUp,
+        AddCoin
+    }
 }
