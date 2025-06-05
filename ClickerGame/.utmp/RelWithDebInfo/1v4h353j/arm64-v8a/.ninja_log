@@ -1,0 +1,23 @@
+# ninja log v5
+683	912	7639958757823582	C:/Users/kmg3329/Documents/GitHub/ClickerGame/ClickerGame/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/1v4h353j/obj/arm64-v8a/libswappywrapper.so	5962b33d685ec06a
+1	1555	7639958764205619	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	d50c141a06c718c7
+38	681	7639958755238300	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	efdb02b9e29a1dde
+21	1100	7639958759546513	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	151eee32ddf109e1
+33	1128	7639958759812500	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	3aa253b99500d483
+9	1102	7639958759576736	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	f8dbf1aec0f02cbc
+13	1122	7639958759782492	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	4f48e3dfae348b56
+6	1190	7639958760549338	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	4071e989800c1ec3
+27	1138	7639958759982876	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	6969524dc28aa710
+17	1364	7639958762313175	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	ed3ab5dae9f38dac
+1555	1650	7639958765170613	C:/Users/kmg3329/Documents/GitHub/ClickerGame/ClickerGame/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/1v4h353j/obj/arm64-v8a/libgame.so	22856cc2d7825e2d
+32	141	7639977670953391	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	efdb02b9e29a1dde
+142	235	7639977671903402	C:/Users/kmg3329/Documents/GitHub/ClickerGame/ClickerGame/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/1v4h353j/obj/arm64-v8a/libswappywrapper.so	5962b33d685ec06a
+10	530	7639977674779833	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	151eee32ddf109e1
+20	575	7639977675241973	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	4f48e3dfae348b56
+7	576	7639977675241973	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	f8dbf1aec0f02cbc
+28	605	7639977675554972	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	3aa253b99500d483
+17	623	7639977675746619	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	6969524dc28aa710
+14	635	7639977675879544	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	4071e989800c1ec3
+24	767	7639977677195467	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	ed3ab5dae9f38dac
+2	812	7639977677641894	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	d50c141a06c718c7
+812	878	7639977678340009	C:/Users/kmg3329/Documents/GitHub/ClickerGame/ClickerGame/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/1v4h353j/obj/arm64-v8a/libgame.so	22856cc2d7825e2d

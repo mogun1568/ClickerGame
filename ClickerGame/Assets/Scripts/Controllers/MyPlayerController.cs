@@ -1,123 +1,70 @@
-using Data;
-using DG.Tweening;
+using Cysharp.Threading.Tasks;
 using System.Collections;
-using System.Collections.Generic;
-using System.Data;
 using UnityEngine;
 
 public class MyPlayerController : CreatureController
 {
-    private Dictionary<string, Data.Stat> _statDict;
-    public bool isMove;
+    // 플레이어가 죽었을 때 배경 움직임 위함
+    public bool _onlyPlayerMove;
 
     public float Regeneration
     {
-        get { return _statDict["Regeneration"].statValue; }
-        set { _statDict["Regeneration"].statValue = value; }
+        get { return ((PlayerStat)StatInfo).Regeneration; }
+        set { ((PlayerStat)StatInfo).Regeneration = value; }
     }
 
-    protected override void Init()
+    protected override async UniTask InitAsync()
     {
-        base.Init();
+        await base.InitAsync();
 
         Managers.Game.MyPlayer = this;
 
-        //State = Define.State.Run;
-
-        _statDict = Managers.Data.MyPlayerStatDict;
-        UpdateStat();
-        HP = MaxHP;
-        UpdateDict();
-        StatInfo.AttackCountdown = 0;
+        State = Define.State.Run;
+        StatInfo = new PlayerStat(Managers.Data.MyPlayerStatDict);
+        SkillInfo = GetComponent<PlayerSkill>();
+        SkillInfo.Init();
+        _animator.SetFloat("AttackSpeed", AttackSpeed);
 
         _targetTag = "Enemy";
+        StopAllCoroutines();
+
+        // Stat의 _maxHP에 값을 주기 위함, 스폰할 때마다 자동 풀피 기능도 됨
+        MaxHP = Managers.Data.MyPlayerStatDict["MaxHP"].statValue;
 
         if (transform.position.x == -2)
         {
-            isMove = false;
-            InvokeRepeating("UpdateTarget", 0f, 0.1f);
+            _onlyPlayerMove = false;
+            InvokeRepeating(nameof(UpdateTarget), 0f, 0.1f);
         }
         else
         {
-            isMove = true;
-            Move(-2f, _moveSpeed);
+            _onlyPlayerMove = true;
+            _endPosX = -2f;
+            Move(_endPosX, _backgroundMoveSpeed, Define.TweenType.Run);
         }
 
-        InvokeRepeating("Regenerate", 1f, 1f);
+        InvokeRepeating(nameof(Regenerate), 1f, 1f);
     }
 
     protected override void TargetIsNull()
     {
         base.TargetIsNull();
 
-        if (StatInfo.AttackCountdown != 0)
-            StatInfo.AttackCountdown = 0;
+        // 초기화하면 너무 사기같아서 고민 중
+        //if (StatInfo.AttackCountdown != 0)
+        //    StatInfo.AttackCountdown = 0;
         State = Define.State.Run;
     }
 
-    protected override void Move(float endPosX, float moveSpeed)
+    protected override void TweenComplete()
     {
-        float duration = Mathf.Abs(transform.position.x - endPosX) / moveSpeed;
-
-        transform.DOMoveX(endPosX, duration)
-            .SetEase(Ease.Linear)
-            .OnComplete(() =>
-            {
-                // 이동 완료 시 호출
-                isMove = false;
-                InvokeRepeating("UpdateTarget", 0f, 0.1f);
-            });
-    }
-
-    protected override void UpdateStat()
-    {
-        StatInfo.Coin = (int)_statDict["Coin"].statValue;
-        MaxHP = _statDict["MaxHP"].statValue;
-        HP = _statDict["HP"].statValue;
-        Regeneration = _statDict["Regeneration"].statValue;
-        StatInfo.ATK = _statDict["ATK"].statValue;
-        StatInfo.DEF = _statDict["DEF"].statValue;
-        AttackSpeed = _statDict["AttackSpeed"].statValue;
-        StatInfo.Range = _statDict["Range"].statValue;
-    }
-
-    public override void UpdateDict()
-    {
-        base.UpdateDict();
-
-        _statDict["Coin"].statValue = StatInfo.Coin;
-        _statDict["MaxHP"].statValue = MaxHP;
-        _statDict["HP"].statValue = HP;
-        _statDict["Regeneration"].statValue = Regeneration;
-        _statDict["ATK"].statValue = StatInfo.ATK;
-        _statDict["DEF"].statValue = StatInfo.DEF;
-        _statDict["AttackSpeed"].statValue = AttackSpeed;
-        _statDict["Range"].statValue = StatInfo.Range;
-
-        Data.StatData statData = new Data.StatData
-        {
-            stats = new List<Data.Stat>(Managers.Data.MyPlayerStatDict.Values)
-        };
-        Managers.Data.SaveJson(statData, "MyPlayerStatDataTest");
-    }
-
-    // 플레이어의 Stat에 맞게 적들 Stat도 변경할 코드 예정
-    // 다른 스크립로 이동할 수도
-    private void UpdateEnemyDict()
-    {
-        // 몬스터 체력이나 공격력을 플레이어의 스탯에 따라 변화하게 할 지
-        // 아니면 시간? 라운드? 등에 따라 다르게 할 지 고민 중
-
-        Data.EnemyData enemyData = new Data.EnemyData
-        {
-            enemys = new List<Data.Enemy>(Managers.Data.EnemyDict.Values)
-        };
-        Managers.Data.SaveJson(enemyData, "EnemyDataTest");
+        _onlyPlayerMove = false;
+        base.TweenComplete();
     }
 
     public void Regenerate()
     {
-        if (HP + Regeneration > MaxHP)
+        if (HP == MaxHP)
             return;
 
         HP += Regeneration;
@@ -125,23 +72,26 @@ public class MyPlayerController : CreatureController
 
     protected override void UpdateAttacking()
     {
-        base.UpdateHurt();
+        base.UpdateAttacking();
         _AttackCoroutine = StartCoroutine(CheckAnimationTime(0.167f, StatInfo.ATK));
+    }
+
+    protected override void Skill()
+    {
+        base.Skill();
+        ((PlayerSkill)SkillInfo).UseSkill(_target);
     }
 
     protected override void UpdateDie()
     {
         base.UpdateDie();
-
-        CancelInvoke("Regenerate");
-        StatInfo.Coin /= 2;
-        UpdateDict();
+        CancelInvoke(nameof(Regenerate));
     }
 
     protected override IEnumerator DeadAnim(float delay)
     {
         yield return new WaitForSeconds(delay); // 지정한 시간만큼 대기
-        Managers.Game.Wave.RespawnPlayer();
+        Managers.UI.ShowPopupUI<UI_Resurrection>("Popup_Resurrection");
         Managers.Resource.Destroy(gameObject);
     }
 }

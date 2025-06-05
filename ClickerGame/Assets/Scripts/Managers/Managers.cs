@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using DG.Tweening;
 using UnityEngine;
 
 public class Managers : MonoBehaviour
@@ -9,8 +8,16 @@ public class Managers : MonoBehaviour
 
     #region Contents
     GameManager _game = new GameManager();
+    FirebaseManager _firebase = new FirebaseManager();
+    SkillManager _skill = new SkillManager();
+    RankingManager _ranking = new RankingManager();
+    AlertManager _alert = new AlertManager();
 
     public static GameManager Game { get { return Instance._game; } }
+    public static FirebaseManager Firebase { get { return Instance._firebase; } }
+    public static SkillManager Skill { get { return Instance._skill; } }
+    public static RankingManager Ranking { get { return Instance._ranking; } }
+    public static AlertManager Alert { get { return Instance._alert; } }
     #endregion
 
     #region Core
@@ -31,7 +38,7 @@ public class Managers : MonoBehaviour
     public static UIManager UI { get { return Instance._ui; } }
     #endregion
 
-    void Awake()
+    void Start()
     {
         Init();
     }
@@ -55,19 +62,25 @@ public class Managers : MonoBehaviour
             DontDestroyOnLoad(go);
             s_instance = go.GetComponent<Managers>();
 
-            s_instance._data.Init();
+            s_instance._firebase.Init();
+            s_instance._input.Init();
             s_instance._pool.Init();
             s_instance._sound.Init();
+            s_instance._resource.Init();
         }
     }
 
     public static void Clear()
     {
         // Data는 클리어 안해도 됨
-        Input.Clear();
+        Data.Clear(); // 원래는 그렇지만 로그인/아웃에 필요, 조건문이 추가될 지도
         Sound.Clear();
         Scene.Clear();
         UI.Clear();
         Pool.Clear();
+        Alert.Clear();
+
+        DOTween.KillAll(true);    // 모든 트윈 강제 종료
+        DOTween.Clear();          // 메모리에서 DOTween 데이터까지 완전 정리
     }
 }

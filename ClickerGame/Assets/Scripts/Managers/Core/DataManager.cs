@@ -1,49 +1,251 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
-
-public interface ILoader<Key, Value>
-{
-    Dictionary<Key, Value> MakeDict();
-}
 
 public class DataManager
 {
-    public Dictionary<string, Data.Stat> MyPlayerStatDict { get; private set; } = new Dictionary<string, Data.Stat>();
-    public Dictionary<string, Data.Enemy> EnemyDict { get; private set; } = new Dictionary<string, Data.Enemy>();
+    #region Datas
+    private LocalDataManager _localData = new LocalDataManager();
+    private FirebaseDataManager _firebaseData = new FirebaseDataManager();
+    #endregion
+
+    public Data.Info MyPlayerInfo { get; private set; } = new Data.Info();
+    public Dictionary<string, Data.StatInfo> MyPlayerStatDict { get; private set; } = new Dictionary<string, Data.StatInfo>();
+    public Dictionary<string, Data.SkillInfo> MyPlayerSkillDict { get; private set; } = new Dictionary<string, Data.SkillInfo>();
     
-    private string _path;
+    public bool GameDataReady { get; private set; } = false;
+    public bool CheckSaveDataDone { get; set; } = false;
 
-    public void Init()
+    public async UniTask InitAsync()
     {
-        MyPlayerStatDict = LoadJson<Data.StatData, string, Data.Stat>("MyPlayerStatData").MakeDict();
-        EnemyDict = LoadJson<Data.EnemyData, string, Data.Enemy>("EnemyData").MakeDict();
-        _path = Application.persistentDataPath;
+        CheckSaveDataDone = false;
+        await UniTask.WaitUntil(() => Managers.Firebase.CheckFirebaseDone);
+        Data.GameData gameData = await LoadGameData();
+        MyPlayerInfo = gameData.info;
+        MyPlayerStatDict = gameData.stats;
+        MyPlayerSkillDict = gameData.skills;
+        Managers.Skill.Init();
+        //await Managers.Ranking.InitAsync();
+        MyPlayerInfo.Round--;
+        GameDataReady = true;
     }
 
-    // 이 부분 잘 모르겠음
-    Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>
+    public void FirebaseDataInit()
     {
-        //string textAsset = File.ReadAllText(Path.Combine(_path, $"{path}.json"));
-        TextAsset textAsset = Managers.Resource.Load<TextAsset>($"Data/{path}");
-        return JsonUtility.FromJson<Loader>(textAsset.text);
+        _firebaseData.Init();
     }
 
-    // SaveJson<Loader, Key, Value>(Loader data, string path)
-    public void SaveJson<T>(T data, string path)
+    public async UniTask<Data.GameData> LoadGameData()
     {
-        // 객체를 JSON 문자열로 변환
-        string jsonString = JsonUtility.ToJson(data, true);
+        Data.GameData gameData = null;
 
-        // 저장할 파일 경로 설정
-        //string filePath = Path.Combine(Application.persistentDataPath, $"{path}.json");
-        string filePath = Path.Combine(Application.dataPath, $"Resources/Data/{path}.json");
+        if (Managers.Firebase.IsLogIn)
+        {
+            gameData = await _firebaseData.LoadGameData();
+            if (gameData == null)
+            {
+                Debug.LogError("Firebase 데이터가 없습니다.");
 
-        // JSON 파일로 저장
-        File.WriteAllText(filePath, jsonString);
+                gameData = LoadLocalData();
+                if (gameData != null)
+                {
+                    CheckSaveDataDone = false;
+                    SaveGameData();
+                    await UniTask.WaitUntil(() => CheckSaveDataDone);
+                }
+                else
+                {
+                    Debug.LogError("로컬 데이터를 생성하지 못했습니다.");
+                }
+            }
 
-        //Debug.Log($"JSON 저장 완료: {filePath}");
+            _localData.DeleteData();
+
+            return gameData;
+        }
+
+        gameData = LoadLocalData();
+        if (gameData != null)
+            return gameData;
+
+        return null;
+    }
+
+    private Data.GameData LoadLocalData()
+    {
+        Data.GameData gameData = null;
+
+        gameData = _localData.LoadLocalData<Data.GameData>();
+        if (gameData != null)
+            return gameData;
+
+        Debug.Log("저장된 데이터가 없습니다. 기본 데이터를 생성합니다.");
+        gameData = _localData.CreateDefaultGameData();
+        if (gameData != null)
+            return gameData;
+
+        Debug.LogWarning("기본 데이터 생성을 실패했습니다.");
+        return null;
+    }
+
+    public void SaveGameData()
+    {
+        UpdateLastTime();
+
+        if (Managers.Firebase.IsLogIn)
+        {
+            _firebaseData.SaveGameData(ReturnGameData()).Forget();  // UniTask 변환
+        }
+        else
+        {
+            _localData.SaveLocalData(ReturnGameData());  // 로컬 저장
+        }
+    }
+
+    public void UpdateInfo(string infoType, object infoValue = null)
+    {
+        if (Managers.Firebase.IsLogIn)
+        {
+            _firebaseData.UpdateInfo(infoType, infoValue).Forget();
+        }
+        else
+            SaveGameData();
+    }
+
+    private void UpdateFirebaseStat(string statType)
+    {
+        Dictionary<string, object> StatValues = new Dictionary<string, object>
+        {
+            { "statLevel", MyPlayerStatDict[statType].statLevel },
+            { "statValue", MyPlayerStatDict[statType].statValue },
+            { "statPrice", MyPlayerStatDict[statType].statPrice }
+        };
+        _firebaseData.UpdateStat(statType, StatValues).Forget();
+    }
+
+    public void UpdateStat(string statType = "")
+    {
+        if (Managers.Firebase.IsLogIn)
+        {
+            if (statType == "")
+                SaveGameData();
+            else
+                UpdateFirebaseStat(statType);
+        }
+        else
+            SaveGameData();
+    }
+
+    private void UpdateFirebaseSkill(string skillType)
+    {
+        Dictionary<string, object> SKillValues = new Dictionary<string, object>
+        {
+            { "skillLevel", MyPlayerSkillDict[skillType].skillLevel },
+            { "skillValue", MyPlayerSkillDict[skillType].skillValue }
+        };
+        _firebaseData.UpdateSkill(skillType, SKillValues).Forget();
+    }
+
+    public void UpdateSKill(string skillType = "")
+    {
+        if (Managers.Firebase.IsLogIn)
+        {
+            if (skillType == "")
+                SaveGameData();
+            else
+                UpdateFirebaseSkill(skillType);
+        }
+        else
+            SaveGameData();
+    }
+
+    private Data.GameData ReturnGameData()
+    {
+        return new Data.GameData
+        {
+            info = MyPlayerInfo,
+            stats = MyPlayerStatDict,
+            skills = MyPlayerSkillDict
+        };
+    }
+
+    public void UpdateLastTime()
+    {
+        MyPlayerInfo.LastTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+    }
+
+    // 에디터에서는 test json 파일에 저장되어서 빌드 후에 테스트 필요
+    public void OfflineReward()
+    {
+        long currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        int diffTime = (int)(currentTime - MyPlayerInfo.LastTime);
+
+        // 1분(60초) 이상 차이가 나면 오프라인 보상 UI 띄우기
+        if (diffTime < 60 && MyPlayerInfo.OfflineReward <= 0)
+            return;
+
+        MyPlayerInfo.OfflineReward += (diffTime / 60 * 1);
+        Managers.UI.ShowPopupUI<UI_Offline>("Popup_Offline").StatInit();
+    }
+
+    public bool HasLocalData()
+    {
+        if (_localData.HasData()) return true;
+        return false;
+    }
+
+    public void DoReincarnation(bool isReincarnation)
+    {
+        MyPlayerInfo = new Data.Info
+        {
+            Nickname = MyPlayerInfo.Nickname,
+            Reincarnation = MyPlayerInfo.Reincarnation,
+            Coin = 10000,
+            Round = 0,
+            HP = 100.0f,
+            LastTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+            OfflineReward = 0
+        };
+
+        if (isReincarnation)
+            MyPlayerInfo.Reincarnation++;
+
+        RestoreStat("MaxHP");
+        RestoreStat("Regeneration");
+        RestoreStat("ATK");
+        RestoreStat("DEF");
+        RestoreStat("AttackSpeed");
+        RestoreStat("Range");
+
+        // 적도 초기화
+
+        SaveGameData();
+
+        Managers.Scene.LoadScene(Define.Scene.GamePlay);
+    }
+
+    private void RestoreStat(string statKind)
+    {
+        MyPlayerStatDict[statKind].statLevel = Managers.Resource.StatDict[statKind].abilityLevel;
+        MyPlayerStatDict[statKind].statValue = ReincarnationStatValue(statKind);
+        MyPlayerStatDict[statKind].statPrice = Managers.Resource.StatDict[statKind].statPrice;
+    }
+
+    private float ReincarnationStatValue(string statKind)
+    {
+        return Managers.Resource.StatDict[statKind].abilityValue + 
+            5 * MyPlayerInfo.Reincarnation * Managers.Resource.StatDict[statKind].abilityIncreaseValue;
+    }
+
+    public async UniTask<List<Data.RankingData>> LoadRanking()
+    {
+        return await _firebaseData.FetchAllUsersRankingData();
+    }
+
+    public void Clear()
+    {
+        GameDataReady = false;
+        CheckSaveDataDone = false;
     }
 }

@@ -1,7 +1,4 @@
-using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class TapGroup : UI_Base
 {
@@ -9,36 +6,44 @@ public class TapGroup : UI_Base
     {
         TapMenu_Stat,
         TapMenu_Skill,
-        TapMenu_Inventory,
         TapMenu_Shop,
+        TapMenu_Ranking,
         Tap_Stat,
         Tap_Skill,
-        Tap_Inventory,
-        Tap_Shop
+        Tap_Shop,
+        Tap_Ranking
     }
 
     [HideInInspector]
     public TapUI _curTapMenu;
     private GameObject _curTap;
+    private GameObject _alert;
+    private bool _chooseSkillTap;
 
-    private void Awake()
+    void Awake()
     {
-        Bind<GameObject>(typeof(GameObjects));
-
-        _curTapMenu = GetObject((int)GameObjects.TapMenu_Stat).GetComponent<TapUI>();
-        _curTap = GetObject((int)GameObjects.Tap_Stat);
-
         Init();
+    }
+
+    void Start()
+    {
+        GetObject((int)GameObjects.Tap_Skill).SetActive(false);
+        GetObject((int)GameObjects.Tap_Shop).SetActive(false);
+        GetObject((int)GameObjects.Tap_Ranking).SetActive(false);
     }
 
     public override void Init()
     {
-        GetObject((int)GameObjects.TapMenu_Skill).GetComponent<TapUI>().CloseTap();
-        GetObject((int)GameObjects.TapMenu_Inventory).GetComponent<TapUI>().CloseTap();
-        GetObject((int)GameObjects.TapMenu_Shop).GetComponent<TapUI>().CloseTap();
-        GetObject((int)GameObjects.Tap_Skill).SetActive(false);
-        GetObject((int)GameObjects.Tap_Inventory).SetActive(false);
-        GetObject((int)GameObjects.Tap_Shop).SetActive(false);
+        Managers.Alert.OnAlertAcquired -= OnSkillAcquired;
+        Managers.Alert.OnAlertAcquired += OnSkillAcquired;
+
+        Bind<GameObject>(typeof(GameObjects));
+
+        _curTapMenu = GetObject((int)GameObjects.TapMenu_Stat).GetComponent<TapUI>();
+        _curTap = GetObject((int)GameObjects.Tap_Stat);
+        _alert = GetObject((int)GameObjects.TapMenu_Skill).transform.GetChild(1).gameObject;
+
+        _alert.SetActive(false); 
     }
 
     public void SelectTap(string TapName)
@@ -53,15 +58,29 @@ public class TapGroup : UI_Base
                 break;
             case "TapMenu_Skill":
                 _curTap = GetObject((int)GameObjects.Tap_Skill);
-                break;
-            case "TapMenu_Inventory":
-                _curTap = GetObject((int)GameObjects.Tap_Inventory);
+                _chooseSkillTap = true;
                 break;
             case "TapMenu_Shop":
                 _curTap = GetObject((int)GameObjects.Tap_Shop);
                 break;
+            case "TapMenu_Ranking":
+                _curTap = GetObject((int)GameObjects.Tap_Ranking);
+                break;
         }
-
         _curTap.SetActive(true);
+
+        if (_chooseSkillTap)
+        {
+            _chooseSkillTap = false;
+            _alert.SetActive(false);
+        }
+    }
+
+    private void OnSkillAcquired(string skillKind)
+    {
+        if (_curTap.name == "Tap_Skill")
+            _chooseSkillTap = true;
+
+        _alert.SetActive(true);
     }
 }

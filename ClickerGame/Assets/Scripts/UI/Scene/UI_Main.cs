@@ -1,5 +1,3 @@
-using TMPro;
-using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -10,16 +8,22 @@ public class UI_Main : UI_Scene
         Button_Menu
     }
 
-    private void Awake()
+    void Awake()
     {
-        Bind<Button>(typeof(Buttons));
+        Init();
+    }
 
+    public override void Init()
+    {
+        base.Init();
+
+        Bind<Button>(typeof(Buttons));
         // Bind를 Button을로 했기 때문에 GetObject로 안됨
         BindEvent(GetButton((int)Buttons.Button_Menu).gameObject, (PointerEventData data) => { OpenMenu(); }, Define.UIEvent.Click);
     }
 
     private void OpenMenu()
     {
-        Managers.UI.ShowPopupUI<UI_Login>();
+        Managers.UI.ShowPopupUI<UI_Setting>("Popup_Setting");
     }
 }

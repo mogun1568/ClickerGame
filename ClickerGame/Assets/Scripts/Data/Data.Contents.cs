@@ -1,68 +1,49 @@
 using System.Collections.Generic;
 using System;
-using UnityEngine;
 
 namespace Data
 {
+    // Info´Â Data.Contents.Info¿¡ Á¤¸®
+    // StatÀÌ¶û SkillÀÌ¶û class ºñ½ÁÇØ¼­ ÇÕÄ¥±î °í¹Î
+
     #region Stat
     [Serializable]
-    public class Stat
+    public class StatInfo
     {
-        public string statType;
-        public string statIcon;
+        //public string statType;
         public int statLevel;
-        public string statName;
         public float statValue;
-        public float statIncreaseValue;
         public int statPrice;
-        public int statIncreasePrice;
-    }
-
-    [Serializable]
-    public class StatData : ILoader<string, Stat>
-    {
-        public List<Stat> stats = new List<Stat>();
-
-        public Dictionary<string, Stat> MakeDict()
-        {
-            Dictionary<string, Stat> dict = new Dictionary<string, Stat>();
-            foreach (Stat stat in stats)
-            {
-                dict.Add(stat.statType, stat);
-            }
-            return dict;
-        }
     }
     #endregion
 
-    #region Enemy
+    #region SkillInfo
     [Serializable]
-    public class Enemy
+    public class SkillInfo
     {
-        public string enemyType;
-        public string enemyName;
-        public float enemyMaxHP;
-        public float enemyATK;
-        public float enemyDEF;
-        public float enemyAttackSpeed;
-        public float enemyRange;
-        public int enemyCoin;
+        //public string skillType;
+        public int skillLevel;
+        public float skillValue;
     }
+    #endregion
 
+    #region Game
     [Serializable]
-    public class EnemyData : ILoader<string, Enemy>
+    public class GameData
     {
-        public List<Enemy> enemys = new List<Enemy>();
+        public Info info = new Info();
+        public Dictionary<string, StatInfo> stats = new Dictionary<string, StatInfo>();
+        public Dictionary<string, SkillInfo> skills = new Dictionary<string, SkillInfo>();
+    }
+    #endregion
 
-        public Dictionary<string, Enemy> MakeDict()
-        {
-            Dictionary<string, Enemy> dict = new Dictionary<string, Enemy>();
-            foreach (Enemy enemy in enemys)
-            {
-                dict.Add(enemy.enemyName, enemy);
-            }
-            return dict;
-        }
+    #region Ranking
+    public class RankingData
+    {
+        public string userId;
+        public string nickname;
+        public int reincarnation;
+        public int round;
     }
     #endregion
 }

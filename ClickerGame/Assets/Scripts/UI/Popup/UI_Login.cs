@@ -1,5 +1,5 @@
+using Cysharp.Threading.Tasks;
 using TMPro;
-using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -13,11 +13,21 @@ public class UI_Login : UI_Popup
 
     enum Texts
     {
+        Text_Login,
         Text_Info
     }
 
-    private void Awake()
+    private string _loginText, _infoText;
+
+    void Awake()
     {
+        Init();
+    }
+
+    public override void Init()
+    {
+        base.Init();
+
         Bind<Button>(typeof(Buttons));
         Bind<TextMeshProUGUI>(typeof(Texts));
 
@@ -35,12 +45,36 @@ public class UI_Login : UI_Popup
     private void Log()
     {
         if (Managers.Firebase.auth.CurrentUser == null)
+            Login();
+        else
+            Managers.Firebase.OnSignOut();
+    }
+
+    private void Login()
+    {
+        string str = "연동 계정의 데이터가 존재할 경우 게스트 데이터가 삭제됩니다. 계속하시겠습니까?";
+        Managers.UI.ShowPopupUI<UI_Notice>("Popup_Notice").UIInit(str);
+    }
+
+    public async UniTask TextInitAsync()
+    {
+        //if (_infoText != "")
+        //    return;
+
+        await UniTask.WaitUntil(() => Managers.Firebase.CheckFirebaseDone);
+
+        if (Managers.Firebase.auth.CurrentUser == null)
         {
-            Managers.Firebase.OnSignIn();
+            _loginText = "GOOGLE 로그인";
+            _infoText = "로그인되어 있지 않습니다.";
         }
         else
         {
-            Managers.Firebase.OnSignOut();
+            _loginText = "GOOGLE 로그아웃";
+            _infoText = "환영합니다";
         }
+
+        GetText((int)Texts.Text_Login).text = _loginText;
+        GetText((int)Texts.Text_Info).text = _infoText;
     }
 }

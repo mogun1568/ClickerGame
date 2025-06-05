@@ -1,21 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class Define
 {
     public enum Scene
     {
         Unknown,
         Login,
-        Lobby,
-        Game,
+        GamePlay,
     }
 
     public enum Sound
     {
-        Bgm,
-        Effect,
+        BGM,
+        SFX,
         MaxCount,
     }
 
@@ -27,12 +22,6 @@ public class Define
         EndDrag,
     }
 
-    public enum MouseEvent
-    {
-        Press,
-        Click,
-    }
-
     public enum CameraMode
     {
         QuarterView,
@@ -40,10 +29,36 @@ public class Define
 
     public enum State
     {
+        None,
         Idle,
         Run,
         Attack,
-        Hurt,
+        Stagger,    // °æÁ÷
         Death
+    }
+
+    public enum AbilityType
+    {
+        Stat,
+        Skill
+    }
+
+    public enum EnemyType
+    {
+        General
+    }
+
+    public enum Debuff
+    {
+        None,
+        Slow
+    }
+
+    public enum TweenType
+    {
+        Idle,
+        Run,
+        Knockback,
+        Slow
     }
 }

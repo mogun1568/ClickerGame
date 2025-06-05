@@ -1,47 +1,58 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class InputManager
 {
-    public Action KeyAction = null;
-    public Action<Define.MouseEvent> MouseAction = null;
+    public Action BackButton = null;
+    public Action TouchAction = null;
 
-    bool _pressed = false;
+    public void Init()
+    {
+        BackButton -= OnBackButtonHandler;
+        BackButton += OnBackButtonHandler;
+
+        TouchAction -= OnTouchHandler;
+        TouchAction += OnTouchHandler;
+    }
 
     public void OnUpdate()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
+        //if (EventSystem.current.IsPointerOverGameObject())
+        //{
+        //    return;
+        //}
+
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            return;
+            BackButton?.Invoke();
         }
 
-        if (Input.anyKey && KeyAction != null)
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
-            KeyAction.Invoke();
-        } 
-
-        if (MouseAction != null)
-        {
-            if (Input.GetMouseButton(0))
+            if (Managers.Scene.CurrentScene.SceneType == Define.Scene.Login)
             {
-                MouseAction.Invoke(Define.MouseEvent.Press);
-                _pressed = true;
-            }
-            else
-            {
-                if (_pressed)
-                    MouseAction.Invoke(Define.MouseEvent.Click);
-                _pressed = false;
-            }
+                if (Managers.Firebase.IsLogIn || Managers.Data.HasLocalData())
+                    TouchAction?.Invoke();
+            }    
         }
     }
 
-    public void Clear()
+    private void OnBackButtonHandler()
     {
-        KeyAction = null;
-        MouseAction = null;
+        if (Managers.UI.IsPopupActive())
+        {
+            Managers.UI.ClosePopupUI();
+        }
+        else
+        {
+            Managers.UI.ShowPopupUI<UI_GameQuit>("Popup_GameQuit");
+        }
+    }
+
+    private void OnTouchHandler()
+    {
+        Debug.Log("È­¸é ÅÍÄ¡µÊ!");
+        Managers.Scene.LoadScene(Define.Scene.GamePlay);
     }
 }

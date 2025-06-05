@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcdd3f1ac98a1d547b7e38b6a9554ce2, type: 3}
+  m_Name: Range
+  m_EditorClassIdentifier: 
+  creatureType: 0
+  abilityKind: Range
+  abilityIcon: RangeIcon
+  abilityName: "\uACF5\uACA9 \uBC94\uC704"
+  abilityInfo: 
+  abilityLevel: 1
+  abilityMaxLevel: 100
+  abilityValue: 1.5
+  abilityIncreaseValue: 0.01
+  statPrice: 10
+  statIncreasePrice: 3
+  skillCoolTime: 0

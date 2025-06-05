@@ -1,97 +1,97 @@
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyController : CreatureController
 {
-    private Tween MoveTween;
     private Tween deadMoveTween;
-    private Data.Enemy _enemyStat;
+    private bool _playerFirstAttack; // 플레이어가 첫타를 때렸는지 확인
 
-    protected override void Init()
+    protected override async UniTask InitAsync()
     {
-        base.Init();
+        await base.InitAsync();
 
         // (Clone)을 수정하기 전에 호출됨
         string goName = gameObject.name;
         if (goName.EndsWith("(Clone)"))
             goName = goName.Substring(0, goName.Length - 7).Trim();
 
-        _enemyStat = Managers.Data.EnemyDict[goName];
-        UpdateStat();
-        StatInfo.AttackCountdown = 0;
+        State = Define.State.Idle;
+        StatInfo = new EnemyStat(goName);
+        SkillInfo = GetComponent<Skill>();
+        SkillInfo.Init();
+        _animator.SetFloat("AttackSpeed", AttackSpeed);
 
         _targetTag = "Player";
+        _endPosX = -0.51f;
+
         StopAllCoroutines();
-        MoveTween = null;
-        deadMoveTween = null;
+        deadMoveTween.Kill();
+        _playerFirstAttack = false;
+        _moveSpeed = ((EnemyStat)StatInfo).MoveSpeed;
 
-        Move(-0.5f, _moveSpeed);
-    }
-
-    protected override void UpdateStat()
-    {
-        MaxHP = _enemyStat.enemyMaxHP;
-        HP = _enemyStat.enemyMaxHP;
-        StatInfo.ATK = _enemyStat.enemyATK;
-        StatInfo.DEF = _enemyStat.enemyDEF;
-        AttackSpeed = _enemyStat.enemyAttackSpeed;
-        StatInfo.Range = _enemyStat.enemyRange;
-        StatInfo.Coin = _enemyStat.enemyCoin;
+        Move(_endPosX, _backgroundMoveSpeed, Define.TweenType.Idle);
     }
 
     protected override void Update()
     {
         if (State == Define.State.Death)
         {
-            if (Managers.Game.MyPlayer.State == Define.State.Run)
+            if (deadMoveTween != null)
             {
-                if (!deadMoveTween.IsPlaying()) deadMoveTween.Play();
-            }
-            else
-            {
-                if (deadMoveTween.IsPlaying()) deadMoveTween.Pause();
+                if (Managers.Game.MyPlayer.State == Define.State.Run)
+                {
+                    if (!deadMoveTween.IsPlaying()) deadMoveTween.Play();
+                }
+                else
+                {
+                    if (deadMoveTween.IsPlaying()) deadMoveTween.Pause();
+                }
             }
         }
 
         base.Update();
-
-        if (MoveTween != null)
-        {
-            if (State == Define.State.Hurt)
-            {
-                if (MoveTween.IsPlaying()) MoveTween.Pause();
-            }
-            else
-            {
-                if (!MoveTween.IsPlaying()) MoveTween.Play();
-            }
-        }
     }
 
     protected override void TargetIsNull()
     {
         base.TargetIsNull();
 
-        if (Managers.Game.MyPlayer.State == Define.State.Run || Managers.Game.MyPlayer.State == Define.State.Death)
-            State = Define.State.Idle;
-        else
+        if (Managers.Game.MyPlayer.State == Define.State.Death)
+        {
+            if (MoveTween == null) 
+                State = Define.State.Idle;
+            return;
+        }
+
+        if (Managers.Game.MyPlayer._onlyPlayerMove)
+            return;
+
+        if (_tweenType == Define.TweenType.Knockback)
+            return;
+
+        if (_playerFirstAttack)
             State = Define.State.Run;
-    }
 
-    protected override void Move(float endPosX, float moveSpeed)
-    {
-        float duration = Mathf.Abs(transform.position.x - endPosX) / moveSpeed;
+        if (Managers.Game.MyPlayer.State == Define.State.Run)
+        {
+            if (!_playerFirstAttack)
+                return;
 
-        MoveTween = transform.DOMoveX(endPosX, duration)
-            .SetEase(Ease.Linear)
-            .OnComplete(() =>
-            {
-                // 이동 완료 시 호출
-                InvokeRepeating("UpdateTarget", 0f, 0.1f);
-                MoveTween = null;
-            });
+            if (_debuff == Define.Debuff.Slow)
+                Move(_endPosX, _moveSpeed + _backgroundMoveSpeed, Define.TweenType.Slow);
+            else
+                Move(_endPosX, _moveSpeed + _backgroundMoveSpeed, Define.TweenType.Run);
+        }
+        else
+        {
+            _playerFirstAttack = true;
+
+            if (_debuff == Define.Debuff.Slow)
+                Move(_endPosX, _moveSpeed, Define.TweenType.Slow);
+            else
+                Move(_endPosX, _moveSpeed, Define.TweenType.Run);
+        }
     }
 
     private void DeadMove(float endPosX, float moveSpeed)
@@ -99,34 +99,38 @@ public class EnemyController : CreatureController
         if (MoveTween != null)
         {
             MoveTween.Kill();
-            MoveTween = null;
         }
 
         float duration = (transform.position.x - endPosX) / moveSpeed;
 
         deadMoveTween = transform.DOMoveX(endPosX, duration)
             .SetEase(Ease.Linear)
+            .SetAutoKill(true)
+            .OnKill(() => deadMoveTween = null)
             .Pause();
     }
 
     protected override void UpdateAttacking()
     {
-        base.UpdateHurt();
+        base.UpdateAttacking();
         _AttackCoroutine = StartCoroutine(CheckAnimationTime(0.5f, StatInfo.ATK));
+    }
+
+    protected override void Hurt(float damage)
+    {
+        base.Hurt(damage);
+        _playerFirstAttack = true;
     }
 
     protected override void UpdateDie()
     {
         base.UpdateDie();
 
-        Managers.Game.Wave._enemyCount--;
-        //Debug.Log(Managers.Game._enemyCount);
-
         Managers.Game.MyPlayer.StatInfo.Coin += StatInfo.Coin;
-        Managers.Game.MyPlayer.UpdateDict();
-        Debug.Log(Managers.Game.MyPlayer.StatInfo.Coin);
+        Managers.Game.Wave._enemyCount--;
+        //Debug.Log(Managers.Game.Wave._enemyCount);
+        Managers.Skill.RandomAddSkill();
 
-        DeadMove(-7f, _moveSpeed);
-        //StartCoroutine(DeadAnim(1.1f));
+        DeadMove(-7f, _backgroundMoveSpeed);
     }
 }

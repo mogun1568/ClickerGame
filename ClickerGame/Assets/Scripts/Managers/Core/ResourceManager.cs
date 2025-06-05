@@ -1,9 +1,35 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ResourceManager
 {
+    public Dictionary<string, AbilityData> StatDict = new Dictionary<string, AbilityData>();
+    public Dictionary<string, AbilityData> SkillDict = new Dictionary<string, AbilityData>();
+    public Dictionary<string, EnemyData> EnemyDict = new Dictionary<string, EnemyData>();
+
+    public void Init()
+    {
+        AbilityData[] StatDataAssets = Resources.LoadAll<AbilityData>("Data/StatData");
+        AbilityData[] SkillDataAssets = Resources.LoadAll<AbilityData>("Data/SkillData");
+        EnemyData[] EnemyDataAssets = Resources.LoadAll<EnemyData>("Data/EnemyData");
+
+        foreach (AbilityData data in StatDataAssets)
+        {
+            AbilityData copy = data.Copy(Define.AbilityType.Stat);
+            StatDict[copy.abilityKind] = copy;
+        }
+        foreach (AbilityData data in SkillDataAssets)
+        {
+            AbilityData copy = data.Copy(Define.AbilityType.Skill);
+            SkillDict[copy.abilityKind] = copy;
+        }
+        foreach (EnemyData data in EnemyDataAssets)
+        {
+            EnemyData copy = data.Copy();
+            EnemyDict[copy.enemyName] = copy;
+        }
+    }
+
     public T Load<T>(string path) where T : Object
     {
         if (typeof(T) == typeof(GameObject))

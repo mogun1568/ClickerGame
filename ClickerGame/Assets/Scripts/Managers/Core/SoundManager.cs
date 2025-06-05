@@ -1,12 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.UI;
 
 public class SoundManager
 {
-    public AudioMixerGroup audioMixerGroup;
+    public AudioMixer audioMixer;
+    AudioMixerGroup bgmGroup;
+    AudioMixerGroup sfxGroup;
 
     AudioSource[] _audioSources = new AudioSource[(int)Define.Sound.MaxCount];
     Dictionary<string, AudioClip> _audioClips = new Dictionary<string, AudioClip>();
@@ -23,16 +23,22 @@ public class SoundManager
             root = new GameObject { name = "@Sound" };
             Object.DontDestroyOnLoad(root);
 
+            audioMixer = Managers.Resource.Load<AudioMixer>("Sounds/NewAudioMixer");
+            bgmGroup = audioMixer.FindMatchingGroups("BGM")[0];
+            sfxGroup = audioMixer.FindMatchingGroups("SFX")[0];
+
             string[] soundNames = System.Enum.GetNames(typeof(Define.Sound));
             for (int i = 0; i < soundNames.Length - 1; i++)
             {
                 GameObject go = new GameObject { name = soundNames[i] };
                 _audioSources[i] = go.AddComponent<AudioSource>();
-                go.GetComponent<AudioSource>().outputAudioMixerGroup = audioMixerGroup;
                 go.transform.parent = root.transform;
+
+                // BGM과 SFX에 따라 그룹 지정
+                _audioSources[i].outputAudioMixerGroup = (Define.Sound)i == Define.Sound.BGM ? bgmGroup : sfxGroup;
             }
 
-            _audioSources[(int)Define.Sound.Bgm].loop = true;
+            _audioSources[(int)Define.Sound.BGM].loop = true;
         }
     }
 
@@ -47,22 +53,22 @@ public class SoundManager
     }
 
     // 같은 함수지만 다른 버전을 물고 있는 경우도 생각해야 편함
-    public void Play(string path, Define.Sound type = Define.Sound.Effect, float pitch = 1.0f)
+    public void Play(string path, Define.Sound type = Define.Sound.SFX, float pitch = 1.0f)
     {
         AudioClip audioClip = GetOrAddAudioClip(path, type);
         Play(audioClip, type, pitch);
     }
 
-    public void Play(AudioClip audioClip, Define.Sound type = Define.Sound.Effect, float pitch = 1.0f)
+    public void Play(AudioClip audioClip, Define.Sound type = Define.Sound.SFX, float pitch = 1.0f)
     {
         if (audioClip == null)
         {
             return;
         }
 
-        if (type == Define.Sound.Bgm)
+        if (type == Define.Sound.BGM)
         {
-            AudioSource audioSource = _audioSources[(int)Define.Sound.Bgm];
+            AudioSource audioSource = _audioSources[(int)Define.Sound.BGM];
             if (audioSource.isPlaying)
             {
                 audioSource.Stop();
@@ -74,13 +80,13 @@ public class SoundManager
         }
         else
         {
-            AudioSource audioSource = _audioSources[(int)Define.Sound.Effect];
+            AudioSource audioSource = _audioSources[(int)Define.Sound.SFX];
             audioSource.pitch = pitch;
             audioSource.PlayOneShot(audioClip);
         }
     }
 
-    AudioClip GetOrAddAudioClip(string path, Define.Sound type = Define.Sound.Effect)
+    AudioClip GetOrAddAudioClip(string path, Define.Sound type = Define.Sound.SFX)
     {
         if (path.Contains("Sounds/") == false)
         {
@@ -89,7 +95,7 @@ public class SoundManager
 
         AudioClip audioClip = null;
 
-        if (type == Define.Sound.Bgm)
+        if (type == Define.Sound.BGM)
         {
             audioClip = Managers.Resource.Load<AudioClip>(path);
         }

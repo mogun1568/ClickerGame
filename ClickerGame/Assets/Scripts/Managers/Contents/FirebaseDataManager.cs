@@ -1,0 +1,230 @@
+using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using Firebase.Auth;
+using Firebase.Database;
+using UnityEngine;
+using Newtonsoft.Json;
+
+public class FirebaseDataManager
+{
+    private FirebaseAuth auth;
+    private DatabaseReference dbReference;
+
+    public void Init()
+    {
+        auth = FirebaseAuth.DefaultInstance;
+        dbReference = FirebaseDatabase.DefaultInstance.RootReference;
+    }
+
+    // 전체 데이터 불러오기
+    public async UniTask<Data.GameData> LoadGameData()
+    {
+        FirebaseUser user = auth.CurrentUser;
+        if (user == null) return null;
+
+        string userId = user.UserId;
+
+        try
+        {
+            DataSnapshot snapshot = await dbReference.Child("users").Child(userId).GetValueAsync().AsUniTask();
+            if (snapshot.Exists)
+            {
+                string json = snapshot.GetRawJsonValue();
+                Data.GameData gameData = JsonConvert.DeserializeObject<Data.GameData>(json);
+                Debug.Log("Game data loaded successfully.");
+                return gameData;
+            }
+            else
+            {
+                Debug.LogWarning("No game data found.");
+                return null;
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Failed to load game data: {e.Message}");
+            return null;
+        }
+    }
+
+    // 전체 데이터 저장
+    public async UniTask SaveGameData(Data.GameData data)
+    {
+        FirebaseUser user = auth.CurrentUser;
+        if (user == null) return;
+
+        string userId = user.UserId;
+        string jsonData = JsonConvert.SerializeObject(data);
+
+        try
+        {
+            await dbReference.Child("users").Child(userId).SetRawJsonValueAsync(jsonData).AsUniTask();
+            Debug.Log("Game data saved successfully.");
+            Managers.Data.CheckSaveDataDone = true;
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Failed to save game data: {e.Message}");
+        }
+    }
+
+    // 특정 인포 업데이트
+    public async UniTask UpdateInfo(string fieldName, object fieldValue)
+    {
+        FirebaseUser user = auth.CurrentUser;
+        if (user == null) return;
+
+        string userId = user.UserId;
+
+        try
+        {
+            await dbReference.Child("users").Child(userId).Child("info").Child(fieldName)
+                .SetValueAsync(fieldValue).AsUniTask();
+
+            Debug.Log($"Info field '{fieldName}' updated successfully.");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Failed to update info field '{fieldName}': {e.Message}");
+        }
+    }
+
+    // 특정 스탯 업데이트
+    public async UniTask UpdateStat(string statType, Dictionary<string, object> statValues)
+    {
+        FirebaseUser user = auth.CurrentUser;
+        if (user == null) return;
+
+        string userId = user.UserId;
+
+        try
+        {
+            Dictionary<string, object> updates = new Dictionary<string, object>();
+            foreach (var kvp in statValues)
+            {
+                updates[$"{statType}/{kvp.Key}"] = kvp.Value;
+            }
+
+            await dbReference.Child("users").Child(userId).Child("stats").Child(statType)
+                .UpdateChildrenAsync(statValues).AsUniTask();
+
+            Debug.Log($"Stat '{statType}' updated successfully.");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Failed to update stat '{statType}': {e.Message}");
+        }
+    }
+
+    public async UniTask UpdateSkill(string skillType, Dictionary<string, object> skillValues)
+    {
+        FirebaseUser user = auth.CurrentUser;
+        if (user == null) return;
+
+        string userId = user.UserId;
+
+        try
+        {
+            Dictionary<string, object> updates = new Dictionary<string, object>();
+            foreach (var kvp in skillValues)
+            {
+                updates[$"{skillType}/{kvp.Key}"] = kvp.Value;
+            }
+
+            await dbReference.Child("users").Child(userId).Child("skills").Child(skillType)
+                .UpdateChildrenAsync(skillValues).AsUniTask();
+
+            Debug.Log($"Skill '{skillType}' updated successfully.");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Failed to update skill '{skillType}': {e.Message}");
+        }
+    }
+
+    // 모든 적의 특정 스탯 업데이트
+    public async UniTask UpdateAllEnemiesStat(string statName, object newValue)
+    {
+        FirebaseUser user = auth.CurrentUser;
+        if (user == null) return;
+
+        string userId = user.UserId;
+
+        try
+        {
+            DatabaseReference enemiesRef = dbReference.Child("users").Child(userId).Child("enemys");
+            DataSnapshot snapshot = await enemiesRef.GetValueAsync().AsUniTask();
+
+            if (!snapshot.Exists)
+            {
+                Debug.LogWarning("No enemies found to update.");
+                return;
+            }
+
+            Dictionary<string, object> enemyUpdates = new Dictionary<string, object>();
+            foreach (DataSnapshot enemy in snapshot.Children)
+            {
+                enemyUpdates[$"{enemy.Key}/{statName}"] = newValue;
+            }
+
+            await enemiesRef.UpdateChildrenAsync(enemyUpdates).AsUniTask();
+            Debug.Log($"Updated '{statName}' for all enemies successfully.");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Failed to update '{statName}' for all enemies: {e.Message}");
+        }
+    }
+
+    public async UniTask<List<Data.RankingData>> FetchAllUsersRankingData()
+    {
+        List<Data.RankingData> rankingList = new List<Data.RankingData>();
+
+        try
+        {
+            DataSnapshot snapshot = await dbReference.Child("users").GetValueAsync().AsUniTask();
+
+            if (!snapshot.Exists || snapshot.ChildrenCount == 0)
+                return rankingList;
+
+            foreach (DataSnapshot userSnapshot in snapshot.Children)
+            {
+                string userId = userSnapshot.Key;
+
+                var infoSnapshot = userSnapshot.Child("info");
+                if (!infoSnapshot.Exists)
+                {
+                    Debug.LogWarning($"User '{userId}'에 'info' 노드가 없습니다.");
+                    continue;
+                }
+
+                if (!(infoSnapshot.HasChild("Nickname") && infoSnapshot.HasChild("Reincarnation")
+                    && infoSnapshot.HasChild("Round")))
+                {
+                    Debug.LogWarning($"User '{userId}'에 'info' 노드에 키가 없습니다.");
+                    continue;
+                }
+
+                string nickname = infoSnapshot.Child("Nickname").Value?.ToString() ?? "";
+                int reincarnation = int.TryParse(infoSnapshot.Child("Reincarnation").Value?.ToString(), out var r1) ? r1 : 0;
+                int round = int.TryParse(infoSnapshot.Child("Round").Value?.ToString(), out var r2) ? r2 : 0;
+
+                rankingList.Add(new Data.RankingData
+                {
+                    userId = userId,
+                    nickname = nickname,
+                    reincarnation = reincarnation,
+                    round = round
+                });
+
+                Debug.Log("Successfully fetched ranking data.");
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Failed to fetch ranking data: {e.Message}");
+        }
+
+        return rankingList;
+    }
+}
