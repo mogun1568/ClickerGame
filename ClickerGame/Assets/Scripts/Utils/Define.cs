@@ -48,6 +48,12 @@ public class Define
         General
     }
 
+    public enum ShopItemType
+    {
+        Class,
+        General
+    }
+
     public enum Debuff
     {
         None,

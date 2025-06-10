@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -57,8 +58,8 @@ public class StatLevelUpButton : UI_Base
         _statIncreasePrice = _statDict[_statName].statIncreasePrice;
         _statMaxLevel = _statDict[_statName].abilityMaxLevel;
 
-        //Image icon = GetImage((int)Images.Icon_Stat);
-        //icon.sprite = Managers.Resource.Load<Sprite>($"Icon/{}");
+        Image icon = GetImage((int)Images.Icon_Stat);
+        icon.sprite = Managers.Resource.Load<Sprite>($"Icon/{_statDict[_statName].abilityIcon}");
         GetText((int)Texts.Text_StatName).text = _statDict[_statName].abilityName.ToString();
         GetText((int)Texts.Text_StatIncreaseValue).text = "+" + _statIncreaseValue.ToString();
         GetText((int)Texts.Text_StatMaxLevel).text = "최대 레벨\n" + _statMaxLevel.ToString();

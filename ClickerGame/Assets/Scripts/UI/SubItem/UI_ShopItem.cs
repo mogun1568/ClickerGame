@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -47,27 +49,24 @@ public class UI_ShopItem : UI_Base
     // 상점 데이터도 ScriptableObject로 관리할까 고민 중
     private void DataInit()
     {
-        string itemName = "", itemInfo = ""; //itemPrice = "";
+        Dictionary<string, ShopItemData> shopItemDict = Managers.Resource.ShopItemDict;
+
+        Image icon = GetImage((int)Images.Icon_Item);
+        icon.sprite = Managers.Resource.Load<Sprite>($"Icon/{shopItemDict[_goName].shopItemIcon}");
+        GetText((int)Texts.Text_ItemName).text = shopItemDict[_goName].shopItemName;
 
         switch (_goName)
         {
-            case "Reincarnation":
-                itemName = "환생";
-                itemInfo = "기초 능력이 조금 상향된 채로 \n다시 태어납니다.";
-                break;
-            case "GiveUp":
-                itemName = "포기";
-                itemInfo = "기초 능력 그대로 다시 \n태어납니다.";
-                break;
             case "AddCoin":
-                itemName = "코인 구매";
-                itemInfo = $"광고를 시청하고 \n{_addCoin} 코인를 얻습니다.";
+                GetText((int)Texts.Text_ItemInfo).text = _addCoin.ToString() + shopItemDict[_goName].shopItemInfo;
+                break;
+            default:
+                GetText((int)Texts.Text_ItemInfo).text = shopItemDict[_goName].shopItemInfo;
                 break;
         }
 
-        GetText((int)Texts.Text_ItemName).text = itemName;
-        GetText((int)Texts.Text_ItemInfo).text = itemInfo;
-        //GetText((int)Texts.Text_ItemPrice).text = itemPrice;
+        if (shopItemDict[_goName].shopItemPrice != 0)
+            GetText((int)Texts.Text_ItemPrice).text = shopItemDict[_goName].shopItemPrice.ToString();
     }
 
     private void PurchaseItem()

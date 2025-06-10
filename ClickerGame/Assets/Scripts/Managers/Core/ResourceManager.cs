@@ -6,12 +6,14 @@ public class ResourceManager
     public Dictionary<string, AbilityData> StatDict = new Dictionary<string, AbilityData>();
     public Dictionary<string, AbilityData> SkillDict = new Dictionary<string, AbilityData>();
     public Dictionary<string, EnemyData> EnemyDict = new Dictionary<string, EnemyData>();
+    public Dictionary<string, ShopItemData> ShopItemDict = new Dictionary<string, ShopItemData>();
 
     public void Init()
     {
         AbilityData[] StatDataAssets = Resources.LoadAll<AbilityData>("Data/StatData");
         AbilityData[] SkillDataAssets = Resources.LoadAll<AbilityData>("Data/SkillData");
         EnemyData[] EnemyDataAssets = Resources.LoadAll<EnemyData>("Data/EnemyData");
+        ShopItemData[] ShopItemDataAssets = Resources.LoadAll<ShopItemData>("Data/ShopItemData");
 
         foreach (AbilityData data in StatDataAssets)
         {
@@ -27,6 +29,11 @@ public class ResourceManager
         {
             EnemyData copy = data.Copy();
             EnemyDict[copy.enemyName] = copy;
+        }
+        foreach (ShopItemData data in ShopItemDataAssets)
+        {
+            ShopItemData copy = data.Copy();
+            ShopItemDict[copy.shopItemKind] = copy;
         }
     }
 

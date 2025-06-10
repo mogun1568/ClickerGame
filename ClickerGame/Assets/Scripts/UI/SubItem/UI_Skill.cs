@@ -53,8 +53,8 @@ public class UI_Skill : UI_Base
         _blue = GetComponent<Image>().color;
         _glay = Color.gray;
 
-        //Image icon = GetImage((int)Images.Icon_Skill);
-        //icon.sprite = Managers.Resource.Load<Sprite>($"Icon/{}");
+        Image icon = GetImage((int)Images.Icon_Skill);
+        icon.sprite = Managers.Resource.Load<Sprite>($"Icon/{_skillDict[_skillName].abilityIcon}");
         GetText((int)Texts.Text_SkillName).text = _skillDict[_skillName].abilityName;
         GetText((int)Texts.Text_SkillLevel).text = "0";
         GetText((int)Texts.Text_SkillValue).text = "0";
