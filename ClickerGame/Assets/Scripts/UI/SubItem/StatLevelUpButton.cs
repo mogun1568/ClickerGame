@@ -49,7 +49,7 @@ public class StatLevelUpButton : UI_Base
         Bind<TextMeshProUGUI>(typeof(Texts));
 
         // Bind를 Button을로 했기 때문에 GetObject로 안됨
-        BindEvent(GetButton((int)Buttons.LevelUp_Button).gameObject, (PointerEventData data) => { StatUpdate(); }, Define.UIEvent.Click);
+        BindEvent(GetButton((int)Buttons.LevelUp_Button).gameObject, (PointerEventData data) => { StatUpdate(); }, Define.UIEvent.Click, false);
 
         _statName = gameObject.name;
         _statDict = Managers.Resource.StatDict;
@@ -112,6 +112,8 @@ public class StatLevelUpButton : UI_Base
         }
 
         HUDUpdate();
+
+        Managers.Sound.Play("SFX_Powerup_Bright_1", Define.Sound.SFX);
     }
 
     private bool CheckCoin()

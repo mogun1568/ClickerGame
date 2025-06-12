@@ -25,6 +25,7 @@ public class SkillManager
         if (Random.value > _skillDropChance)
             return;
 
+        Managers.Sound.Play("SFX_Chest_Open_1", Define.Sound.SFX);
         AddSkill();
     }
     

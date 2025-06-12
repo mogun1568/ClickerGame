@@ -41,7 +41,7 @@ public class UI_ShopItem : UI_Base
         _goName = gameObject.name;
 
         // Bind를 Button을로 했기 때문에 GetObject로 안됨
-        BindEvent(GetButton((int)Buttons.Button_Purchase).gameObject, (PointerEventData data) => { PurchaseItem(); }, Define.UIEvent.Click);
+        BindEvent(GetButton((int)Buttons.Button_Purchase).gameObject, (PointerEventData data) => { PurchaseItem(); }, Define.UIEvent.Click, false);
 
         DataInit();
     }
@@ -105,5 +105,6 @@ public class UI_ShopItem : UI_Base
     {
         // 광고
         Managers.GoogleAd.ShowRewardedAd(Define.RewardAdType.AddCoin, () => { Managers.Game.MyPlayer.StatInfo.Coin += _addCoin; });
+        Managers.Sound.Play("SFX_Cash_Register_Buy_Click_1", Define.Sound.SFX);
     }
 }

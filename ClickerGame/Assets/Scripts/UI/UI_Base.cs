@@ -59,7 +59,7 @@ public abstract class UI_Base : MonoBehaviour
     // ¿ÃπÃ¡ˆ
     protected Image GetImage(int idx) { return Get<Image>(idx); }
 
-    public static void BindEvent(GameObject go, Action<PointerEventData> action, Define.UIEvent type = Define.UIEvent.Click)
+    public static void BindEvent(GameObject go, Action<PointerEventData> action, Define.UIEvent type = Define.UIEvent.Click, bool playSound = true)
     {
         UI_EventHandler evt = Util.GetOrAddComponent<UI_EventHandler>(go);
 
@@ -67,7 +67,12 @@ public abstract class UI_Base : MonoBehaviour
         {
             case Define.UIEvent.Click:
                 evt.OnClickHandler -= action;
-                evt.OnClickHandler += action;
+                evt.OnClickHandler += (eventData) =>
+                {
+                    if (playSound)
+                        Managers.Sound.Play("SFX_UI_Button_Click_Generic_1", Define.Sound.SFX);
+                    action?.Invoke(eventData);
+                };
                 break;
             case Define.UIEvent.Drag:
                 evt.OnDragHandler -= action;

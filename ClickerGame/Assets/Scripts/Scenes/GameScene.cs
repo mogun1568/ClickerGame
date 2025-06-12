@@ -22,6 +22,8 @@ public class GameScene : BaseScene
 
         Managers.UI.ClosePopupUI();
 
+        Managers.Sound.Play("bgm1", Define.Sound.BGM);
+
         Managers.Data.OfflineReward();
 
         InvokeRepeating(nameof(SaveLastTime), 0f, 60f);
