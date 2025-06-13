@@ -121,14 +121,14 @@ public class CreatureController : MonoBehaviour
     private bool DeadFlag;
 
     // 디버프 종류가 늘어나면 클래스 같은걸로 관리할 수도
-    public Define.Debuff _debuff;
-    public Define.TweenType _tweenType;
+    [HideInInspector] public Define.Debuff _debuff;
+    [HideInInspector] public Define.TweenType _tweenType;
 
-    public Tween MoveTween;
-    public float _endPosX;
-    public float _backgroundMoveSpeed;
-    public float _moveSpeed;
-    public float _curMoveSpeed;
+    [HideInInspector] public Tween MoveTween;
+    [HideInInspector] public float _endPosX;
+    [HideInInspector] public float _backgroundMoveSpeed;
+    [HideInInspector] public float _moveSpeed;
+    [HideInInspector] public float _curMoveSpeed;
     private bool _isUpdateTargetRunning;
 
     private void OnEnable()

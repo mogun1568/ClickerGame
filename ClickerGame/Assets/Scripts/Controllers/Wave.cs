@@ -63,6 +63,9 @@ public class Wave : MonoBehaviour
 
     void SpawnEnemy()
     {
-        Managers.Resource.Instantiate($"Enemy/HeavyBandit", new Vector3(7, 1.9f, -1));
+        if (Managers.Data.MyPlayerInfo.Round < 50)
+            Managers.Resource.Instantiate($"Enemy/LightBandit", new Vector3(7, 1.9f, -1));
+        else
+            Managers.Resource.Instantiate($"Enemy/HeavyBandit", new Vector3(7, 1.9f, -1));
     }
 }

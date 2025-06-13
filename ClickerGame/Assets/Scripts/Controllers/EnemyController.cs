@@ -7,14 +7,25 @@ public class EnemyController : CreatureController
     private Tween deadMoveTween;
     private bool _playerFirstAttack; // 플레이어가 첫타를 때렸는지 확인
 
+    private string ChangeName()
+    {
+        string goName = gameObject.name;
+
+        // (Clone)을 수정하기 전에 호출됨
+        if (goName.EndsWith("(Clone)"))
+            goName = goName.Substring(0, goName.Length - 7).Trim();
+
+        if (goName.EndsWith("Bandit"))
+            goName = "Bandit";
+
+        return goName;
+    }
+
     protected override async UniTask InitAsync()
     {
         await base.InitAsync();
 
-        // (Clone)을 수정하기 전에 호출됨
-        string goName = gameObject.name;
-        if (goName.EndsWith("(Clone)"))
-            goName = goName.Substring(0, goName.Length - 7).Trim();
+        string goName = ChangeName();
 
         State = Define.State.Idle;
         StatInfo = new EnemyStat(goName);
