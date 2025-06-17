@@ -45,7 +45,8 @@ public class Define
 
     public enum EnemyType
     {
-        General
+        General,
+        Boss
     }
 
     public enum ShopItemType
@@ -62,6 +63,7 @@ public class Define
 
     public enum TweenType
     {
+        None,
         Idle,
         Run,
         Knockback,

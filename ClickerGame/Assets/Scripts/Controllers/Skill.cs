@@ -32,12 +32,13 @@ public class Skill : MonoBehaviour
         float _preMoveSpeed = controller._moveSpeed;
         controller._moveSpeed *= MyPlayerSkillDict["Slow"].skillValue;
         controller._debuff = Define.Debuff.Slow;
-        controller.Move(controller._endPosX, controller._moveSpeed, Define.TweenType.Slow);
+        //controller.Move(controller._endPosX, controller._moveSpeed, Define.TweenType.Slow);
 
         yield return new WaitForSeconds(5);
 
         controller._moveSpeed = _preMoveSpeed;
         controller._debuff = Define.Debuff.None;
-        controller.Move(controller._endPosX, controller._moveSpeed, Define.TweenType.Run);
+        controller._tweenType = Define.TweenType.None;
+        //controller.Move(controller._endPosX, controller._moveSpeed, Define.TweenType.Run);
     }
 }

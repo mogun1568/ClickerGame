@@ -12,9 +12,19 @@ public class EnemyStat : Stat
     public EnemyStat(string enemyName)
     {
         EnemyData enemyInfo = Managers.Resource.EnemyDict[enemyName];
+        float reincarnationScale = 0f;
+        float roundScale = 0f;
 
-        float reincarnationScale = Managers.Data.MyPlayerInfo.Reincarnation * 0.1f;
-        float roundScale = (Managers.Data.MyPlayerInfo.Round - 1) * 0.05f;
+        if (enemyInfo.enemyType == Define.EnemyType.General)
+        {
+            reincarnationScale = Managers.Data.MyPlayerInfo.Reincarnation * 0.1f;
+            roundScale = (Managers.Data.MyPlayerInfo.Round - 1) * 0.05f;
+        }
+        else
+        {
+
+        }
+
         float scale = 1f + reincarnationScale + roundScale;
 
         MaxHP = enemyInfo.enemyMaxHP * scale;

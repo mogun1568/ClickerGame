@@ -145,7 +145,7 @@ public class CreatureController : MonoBehaviour
         UpdateAnimation();
 
         _debuff = Define.Debuff.None;
-        _tweenType = Define.TweenType.Idle;
+        _tweenType = Define.TweenType.None;
         MoveTween.Kill();
         _backgroundMoveSpeed = 2.5f;
         _curMoveSpeed = 0;
@@ -158,10 +158,10 @@ public class CreatureController : MonoBehaviour
     {
         return type switch
         {
-            //Define.TweenType.Idle => 0,
-            Define.TweenType.Run => 1,
-            Define.TweenType.Slow => 2,
-            Define.TweenType.Knockback => 3,
+            Define.TweenType.Idle => 1,
+            Define.TweenType.Run => 2,
+            Define.TweenType.Slow => 3,
+            Define.TweenType.Knockback => 4,
             _ => 0
         };
     }
@@ -181,7 +181,7 @@ public class CreatureController : MonoBehaviour
         _tweenType = tweenType;
 
         //if (gameObject.tag != "Player")
-        //    Debug.Log($"{moveSpeed}, {tweenType}");
+        //    Debug.Log($"{gameObject.GetInstanceID()}, {moveSpeed}, {tweenType}");
 
         if (MoveTween != null)
             MoveTween.Kill();
@@ -197,14 +197,9 @@ public class CreatureController : MonoBehaviour
                 if (MoveTween == newTween)
                     MoveTween = null;
 
-                // Knockback 场车栏搁 Slow 犁利侩
+                // Knockback 场车栏搁 Knockback 力芭
                 if (tweenType == Define.TweenType.Knockback)
-                {
-                    if (_debuff == Define.Debuff.Slow)
-                        _tweenType = Define.TweenType.Slow;
-                    else
-                        _tweenType = Define.TweenType.Run;
-                }
+                    _tweenType = Define.TweenType.None;
             })
             .OnComplete(() =>
             {

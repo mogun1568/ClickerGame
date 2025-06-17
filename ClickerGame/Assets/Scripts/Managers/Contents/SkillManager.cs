@@ -34,7 +34,7 @@ public class SkillManager
         int idx = Random.Range(0, AllSkills.Count);
         string randomSkill = AllSkills[idx];
 
-        Debug.Log($"Drop {randomSkill}");
+        //Debug.Log($"Drop {randomSkill}");
 
         if (MyPlayerSkillDict.ContainsKey(randomSkill)) {
             MyPlayerSkillDict[randomSkill].skillLevel++;
