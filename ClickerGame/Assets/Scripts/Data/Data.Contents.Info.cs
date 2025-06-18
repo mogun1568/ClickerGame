@@ -9,6 +9,8 @@ namespace Data
         private int _reincarnation; // È¯»ý
         private int _coin;
         private int _round;
+        private string _class;
+        private string _skin;
         private float _hp;
         private long _lastTime;
         private int _offlineReward;
@@ -35,6 +37,18 @@ namespace Data
         {
             get => _round;
             set => SetValue(ref _round, value, nameof(Round));
+        }
+        
+        public string Class
+        {
+            get => _class;
+            set => SetValue(ref _class, value, nameof(Class));
+        }
+
+        public string Skin
+        {
+            get => _skin;
+            set => SetValue(ref _skin, value, nameof(Skin));
         }
 
         public float HP

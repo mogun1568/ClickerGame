@@ -6,16 +6,19 @@ public class ShopTapGroup : UI_Base
 {
     enum Buttons
     {
+        Button_Common,
+        Button_Skin,
         Button_Class,
-        Button_Common
     }
 
     enum GameObjects
     {
-        Button_Class,
         Button_Common,
+        Button_Skin,
+        Button_Class,
+        CommonShop,
+        SkinShop,
         ClassShop,
-        CommonShop
     }
 
     void Awake()
@@ -28,23 +31,34 @@ public class ShopTapGroup : UI_Base
         Bind<Button>(typeof(Buttons));
         Bind<GameObject>(typeof(GameObjects));
 
-        BindEvent(GetButton((int)Buttons.Button_Class).gameObject, (PointerEventData data) => { SelectTap("Class"); }, Define.UIEvent.Click);
         BindEvent(GetButton((int)Buttons.Button_Common).gameObject, (PointerEventData data) => { SelectTap("Common"); }, Define.UIEvent.Click);
+        BindEvent(GetButton((int)Buttons.Button_Skin).gameObject, (PointerEventData data) => { SelectTap("Skin"); }, Define.UIEvent.Click);
+        BindEvent(GetButton((int)Buttons.Button_Class).gameObject, (PointerEventData data) => { SelectTap("Class"); }, Define.UIEvent.Click);
 
+        GetObject((int)GameObjects.SkinShop).SetActive(false);
         GetObject((int)GameObjects.ClassShop).SetActive(false);
     }
 
     public void SelectTap(string TapName)
     {
-        if (TapName == "Class")
+        if (TapName == "Common")
+        {
+            GetObject((int)GameObjects.CommonShop).SetActive(true);
+            GetObject((int)GameObjects.SkinShop).SetActive(false);
+            GetObject((int)GameObjects.ClassShop).SetActive(false);
+
+        }
+        else if (TapName == "Skin")
         {
             GetObject((int)GameObjects.CommonShop).SetActive(false);
-            GetObject((int)GameObjects.ClassShop).SetActive(true);
+            GetObject((int)GameObjects.SkinShop).SetActive(true);
+            GetObject((int)GameObjects.ClassShop).SetActive(false);
         }
         else
         {
-            GetObject((int)GameObjects.ClassShop).SetActive(false);
-            GetObject((int)GameObjects.CommonShop).SetActive(true);
+            GetObject((int)GameObjects.CommonShop).SetActive(false);
+            GetObject((int)GameObjects.SkinShop).SetActive(false);
+            GetObject((int)GameObjects.ClassShop).SetActive(true);
         }
     }
 }

@@ -64,6 +64,8 @@ public class LocalDataManager
                 Reincarnation = 0,
                 Coin = 10000,
                 Round = 1,
+                Class = "Knight",
+                Skin = "HeroKnight",
                 HP = 100.0f,
                 LastTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
                 OfflineReward = 0

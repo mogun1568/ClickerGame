@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using UnityEngine;
 
@@ -9,16 +10,19 @@ public class Wave : MonoBehaviour
 
     void Start()
     {
-        Init();
+        InitAsync().Forget();
     }
 
-    private void Init()
+    private async UniTask InitAsync()
     {
         Managers.Game.Wave = this;
         _enemyCount = 0;
         _enemyWaveCount = 3;
         _bossWaveCount = 1;
-        Managers.Resource.Instantiate($"Player/HeroKnight", new Vector3(-2, 1.9f, -1));
+
+        await UniTask.WaitUntil(() => Managers.Data.GameDataReady);
+
+        Managers.Resource.Instantiate($"Player/{Managers.Data.MyPlayerInfo.Class}/{Managers.Data.MyPlayerInfo.Skin}", new Vector3(-2, 1.9f, -1));
     }
 
     private void Update()
