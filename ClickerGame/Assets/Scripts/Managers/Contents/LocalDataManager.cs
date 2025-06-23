@@ -65,7 +65,7 @@ public class LocalDataManager
                 Coin = 10000,
                 Round = 1,
                 Class = "Knight",
-                Skin = "HeroKnight",
+                Skin = "Knight",
                 HP = 100.0f,
                 LastTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
                 OfflineReward = 0
@@ -79,9 +79,8 @@ public class LocalDataManager
                 { "AttackSpeed", CreateDefaultStatData("AttackSpeed") },
                 { "Range", CreateDefaultStatData("Range") }
             },
-            skills = new Dictionary<string, Data.SkillInfo>
-            {
-            }
+            skills = new Dictionary<string, Data.SkillInfo> { },
+            skins = new List<string>()
         };
     }
 

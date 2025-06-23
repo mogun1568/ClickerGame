@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_ShopItem : UI_Base
+public class UI_CommonItem : UI_Base
 {
     enum Buttons
     {
@@ -49,24 +49,24 @@ public class UI_ShopItem : UI_Base
     // 상점 데이터도 ScriptableObject로 관리할까 고민 중
     private void DataInit()
     {
-        Dictionary<string, ShopItemData> shopItemDict = Managers.Resource.ShopItemDict;
+        Dictionary<string, ShopItemData> commonItemDict = Managers.Resource.CommonItemDict;
 
         Image icon = GetImage((int)Images.Icon_Item);
-        icon.sprite = Managers.Resource.Load<Sprite>($"Icon/{shopItemDict[_goName].shopItemIcon}");
-        GetText((int)Texts.Text_ItemName).text = shopItemDict[_goName].shopItemName;
+        icon.sprite = Managers.Resource.Load<Sprite>($"Icon/{commonItemDict[_goName].shopItemIcon}");
+        GetText((int)Texts.Text_ItemName).text = commonItemDict[_goName].shopItemName;
 
         switch (_goName)
         {
             case "AddCoin":
-                GetText((int)Texts.Text_ItemInfo).text = _addCoin.ToString() + shopItemDict[_goName].shopItemInfo;
+                GetText((int)Texts.Text_ItemInfo).text = _addCoin.ToString() + commonItemDict[_goName].shopItemInfo;
                 break;
             default:
-                GetText((int)Texts.Text_ItemInfo).text = shopItemDict[_goName].shopItemInfo;
+                GetText((int)Texts.Text_ItemInfo).text = commonItemDict[_goName].shopItemInfo;
                 break;
         }
 
-        if (shopItemDict[_goName].shopItemPrice != 0)
-            GetText((int)Texts.Text_ItemPrice).text = shopItemDict[_goName].shopItemPrice.ToString();
+        if (commonItemDict[_goName].shopItemPrice != 0)
+            GetText((int)Texts.Text_ItemPrice).text = commonItemDict[_goName].shopItemPrice.ToString();
     }
 
     private void PurchaseItem()

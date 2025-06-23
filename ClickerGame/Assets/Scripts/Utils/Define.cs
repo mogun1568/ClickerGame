@@ -43,6 +43,12 @@ public class Define
         Skill
     }
 
+    public enum ClassType
+    {
+        Knight,
+        Wizard
+    }
+
     public enum EnemyType
     {
         General,
@@ -51,8 +57,9 @@ public class Define
 
     public enum ShopItemType
     {
-        Class,
-        General
+        Common,
+        Skin,
+        Class
     }
 
     public enum Debuff

@@ -21,7 +21,7 @@ public class AbilityData : ScriptableObject
     [Header("# SKill Info")]
     public float skillCoolTime;
 
-    public AbilityData Copy(Define.AbilityType type)
+    public AbilityData Copy()
     {
         AbilityData copied = CreateInstance<AbilityData>();
         copied.creatureType = this.creatureType;
@@ -34,7 +34,7 @@ public class AbilityData : ScriptableObject
         copied.abilityValue = this.abilityValue;
         copied.abilityIncreaseValue = this.abilityIncreaseValue;
 
-        if (type == Define.AbilityType.Stat)
+        if (copied.creatureType == Define.AbilityType.Stat)
         {
             copied.statPrice = this.statPrice;
             copied.statIncreasePrice = this.statIncreasePrice;

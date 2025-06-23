@@ -3,12 +3,18 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ShopItem", menuName = "ScriptableObject/ShopItemData")]
 public class ShopItemData : ScriptableObject
 {
+    [Header("# Public Info")]
     public Define.ShopItemType shopItemType;
     public string shopItemKind;
     public string shopItemIcon;
     public string shopItemName;
     public string shopItemInfo;
     public int shopItemPrice;
+    public bool isAd;
+
+    [Header("# Skin Info")]
+    public Define.ClassType classType;
+    public float SpawnPosY;
 
     public ShopItemData Copy()
     {
@@ -19,6 +25,13 @@ public class ShopItemData : ScriptableObject
         copied.shopItemName = this.shopItemName;
         copied.shopItemInfo = this.shopItemInfo;
         copied.shopItemPrice = this.shopItemPrice;
+        copied.isAd = this.isAd;
+
+        if (copied.shopItemType == Define.ShopItemType.Skin)
+        {
+            copied.classType = this.classType;
+            copied.SpawnPosY = this.SpawnPosY;
+        }
 
         return copied;
     }

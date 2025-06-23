@@ -20,7 +20,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 3688e492878501d4882fffca4cb3bbff, type: 2}
+  m_Motion: {fileID: 7400000, guid: 7bc21036ac87f7844b6dcce7bd42b577, type: 2}
   m_Tag: 
   m_SpeedParameter: AttackSpeed
   m_MirrorParameter: 
@@ -66,7 +66,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MyPlayer_AnimController
+  m_Name: HeroKnight_AnimController
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: AttackSpeed
@@ -108,7 +108,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: e58542e6cdcad974284618515fe0cf15, type: 2}
+  m_Motion: {fileID: 7400000, guid: 317de8db6be09f241b66cf2244df02d7, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -134,7 +134,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: bc491eda18313944992f294a35d8f6d2, type: 2}
+  m_Motion: {fileID: 7400000, guid: 40b008a37d173a9499eda0d6ddeb8419, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -160,7 +160,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 58a4d227816c28f4a8c59266bf74969b, type: 2}
+  m_Motion: {fileID: 7400000, guid: 9938d1ad8a98b2d4c9930c5e29967203, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -186,7 +186,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 28a7dd162c70bb044953a047ddabf012, type: 2}
+  m_Motion: {fileID: 7400000, guid: 85f8598ee36d3484c993d55b828bb168, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

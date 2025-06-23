@@ -9,13 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27415e98fcd78a246a1d3c743639d817, type: 3}
+  m_Script: {fileID: 11500000, guid: f637273778b61cc498bdcce798a9afd3, type: 3}
   m_Name: Reincarnation
   m_EditorClassIdentifier: 
-  shopItemType: 1
+  shopItemType: 0
   shopItemKind: Reincarnation
   shopItemIcon: ReincarnationIcon
   shopItemName: "\uD658\uC0DD"
-  shopItemInfo: "\uAE30\uCD08 \uB2A5\uB825\uC774 \uC870\uAE08 \uC0C1\uD5A5\uB41C
+  shopItemInfo: "\uAE30\uCD08 \uB2A5\uB825\uC774 \uC870\uAE08 \uC0C1\uC2B9\uB41C 
     \uCC44\uB85C \\n\uB2E4\uC2DC \uD0DC\uC5B4\uB0A9\uB2C8\uB2E4."
   shopItemPrice: 0
+  isAd: 0
+  classType: 0
+  SpawnPosY: 0

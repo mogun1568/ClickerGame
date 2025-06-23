@@ -70,6 +70,7 @@ public class Managers : MonoBehaviour
             s_instance._sound.Init();
             s_instance._resource.Init();
             s_instance._googleAd.Init();
+            s_instance._scene.Init();
         }
     }
 
