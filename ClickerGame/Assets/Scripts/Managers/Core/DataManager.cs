@@ -202,7 +202,9 @@ public class DataManager
             Nickname = MyPlayerInfo.Nickname,
             Reincarnation = MyPlayerInfo.Reincarnation,
             Coin = 10000,
-            Round = 0,
+            Round = 1,
+            Class = MyPlayerInfo.Class,
+            Skin = MyPlayerInfo.Skin,
             HP = 100.0f,
             LastTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
             OfflineReward = 0

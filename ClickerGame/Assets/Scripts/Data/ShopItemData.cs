@@ -14,7 +14,8 @@ public class ShopItemData : ScriptableObject
 
     [Header("# Skin Info")]
     public Define.ClassType classType;
-    public float SpawnPosY;
+    public float spawnPosY;
+    public float attackAnimTime;
 
     public ShopItemData Copy()
     {
@@ -30,7 +31,8 @@ public class ShopItemData : ScriptableObject
         if (copied.shopItemType == Define.ShopItemType.Skin)
         {
             copied.classType = this.classType;
-            copied.SpawnPosY = this.SpawnPosY;
+            copied.spawnPosY = this.spawnPosY;
+            copied.attackAnimTime = this.attackAnimTime;
         }
 
         return copied;

@@ -22,7 +22,7 @@ public class Wave : MonoBehaviour
 
         await UniTask.WaitUntil(() => Managers.Data.GameDataReady);
 
-        float spawnPosY = Managers.Resource.SkinItemDict[Managers.Data.MyPlayerInfo.Skin].SpawnPosY;
+        float spawnPosY = Managers.Resource.SkinItemDict[Managers.Data.MyPlayerInfo.Skin].spawnPosY;
         Managers.Resource.Instantiate($"Player/{Managers.Data.MyPlayerInfo.Class}/{Managers.Data.MyPlayerInfo.Skin}", new Vector3(-2, spawnPosY, -1));
         
     }
@@ -51,7 +51,7 @@ public class Wave : MonoBehaviour
     protected IEnumerator Respawn(float delay)
     {
         yield return new WaitForSeconds(delay);
-        float spawnPosY = Managers.Resource.SkinItemDict[Managers.Data.MyPlayerInfo.Skin].SpawnPosY;
+        float spawnPosY = Managers.Resource.SkinItemDict[Managers.Data.MyPlayerInfo.Skin].spawnPosY;
         Managers.Resource.Instantiate($"Player/{Managers.Data.MyPlayerInfo.Class}/{Managers.Data.MyPlayerInfo.Skin}", new Vector3(-7, spawnPosY, -1));
         
     }

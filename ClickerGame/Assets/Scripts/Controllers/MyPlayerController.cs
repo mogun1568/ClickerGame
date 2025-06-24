@@ -73,7 +73,7 @@ public class MyPlayerController : CreatureController
     protected override void UpdateAttacking()
     {
         base.UpdateAttacking();
-        _AttackCoroutine = StartCoroutine(CheckAnimationTime(0.167f, StatInfo.ATK));
+        _AttackCoroutine = StartCoroutine(CheckAnimationTime(Managers.Resource.SkinItemDict[name].attackAnimTime, StatInfo.ATK));
     }
 
     protected override void Skill()

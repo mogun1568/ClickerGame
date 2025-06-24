@@ -24,6 +24,8 @@ public class UI_CommonItem : UI_Base
     }
 
     private string _goName;
+
+    private string _reincarnationText = "라운드 100 이상";
     private int _addCoin = 1000;
 
     // Start
@@ -87,9 +89,11 @@ public class UI_CommonItem : UI_Base
 
     private void Reincarnation()
     {
-        // 조건 추가 예정
         if (Managers.Data.MyPlayerInfo.Round < 100)
+        {
+            Managers.UI._toastMessage.Show(_reincarnationText);
             return;
+        }   
 
         Managers.Data.DoReincarnation(true);
     }

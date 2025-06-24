@@ -20,4 +20,5 @@ MonoBehaviour:
   shopItemPrice: 0
   isAd: 0
   classType: 0
-  SpawnPosY: 2.6
+  spawnPosY: 2.6
+  attackAnimTime: 0.5
