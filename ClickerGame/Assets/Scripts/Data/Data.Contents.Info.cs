@@ -9,6 +9,7 @@ namespace Data
         private int _reincarnation; // È¯»ý
         private int _coin;
         private int _round;
+        private string _map;
         private string _class;
         private string _skin;
         private float _hp;
@@ -37,6 +38,12 @@ namespace Data
         {
             get => _round;
             set => SetValue(ref _round, value, nameof(Round));
+        }
+
+        public string Map
+        {
+            get => _map;
+            set => SetValue(ref _map, value, nameof(Map));
         }
         
         public string Class

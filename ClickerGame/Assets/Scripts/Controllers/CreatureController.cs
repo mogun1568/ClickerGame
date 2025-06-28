@@ -147,7 +147,7 @@ public class CreatureController : MonoBehaviour
         _debuff = Define.Debuff.None;
         _tweenType = Define.TweenType.None;
         MoveTween.Kill();
-        _backgroundMoveSpeed = 2.5f;
+        _backgroundMoveSpeed = 2f;
         _curMoveSpeed = 0;
         _isUpdateTargetRunning = false;
 

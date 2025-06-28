@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Wave : MonoBehaviour
 {
+    private Data.Info _myPlayerInfo = null;
+
     public int _enemyCount;
     private int _enemyWaveCount;
     private int _bossWaveCount;
@@ -21,9 +23,12 @@ public class Wave : MonoBehaviour
         _bossWaveCount = 1;
 
         await UniTask.WaitUntil(() => Managers.Data.GameDataReady);
+        _myPlayerInfo = Managers.Data.MyPlayerInfo;
 
-        float spawnPosY = Managers.Resource.SkinItemDict[Managers.Data.MyPlayerInfo.Skin].spawnPosY;
-        Managers.Resource.Instantiate($"Player/{Managers.Data.MyPlayerInfo.Class}/{Managers.Data.MyPlayerInfo.Skin}", new Vector3(-2, spawnPosY, -1));
+        Managers.Game.Map = Managers.Resource.Instantiate($"Map/{_myPlayerInfo.Map}");
+
+        float spawnPosY = Managers.Resource.SkinItemDict[_myPlayerInfo.Skin].spawnPosY;
+        Managers.Resource.Instantiate($"Player/{_myPlayerInfo.Class}/{_myPlayerInfo.Skin}", new Vector3(-2, spawnPosY, -1));
         
     }
 
@@ -35,12 +40,57 @@ public class Wave : MonoBehaviour
         if (_enemyCount > 0)
             return;
 
-        Managers.Data.MyPlayerInfo.Round++;
+        if (_myPlayerInfo == null)
+            return;
 
-        if (Managers.Data.MyPlayerInfo.Round % 10 == 0)
+        _myPlayerInfo.Round++;
+
+        MapChange();
+
+        if (_myPlayerInfo.Round % 10 == 0)
             StartCoroutine(SpawnBossWave());
         else
             StartCoroutine(SpawnEnemyWave());
+    }
+
+    private void MapChange()
+    {
+        if (_myPlayerInfo.Round % 100 < 50)
+        {
+            if (_myPlayerInfo.Map == "Plain")
+                return;
+
+            _myPlayerInfo.Map = "Plain";
+        }
+        else
+        {
+            if (_myPlayerInfo.Map == "Forest")
+                return;
+
+            _myPlayerInfo.Map = "Forest";
+        }
+
+        GameObject newMap = Managers.Resource.Instantiate($"Map/{_myPlayerInfo.Map}");
+
+        // 이전 맵을 언제 제거할 지 정해야 함 (100라운드에 제거?)
+        Managers.Game.Map = newMap;
+
+        // 위치 변경은 스크립트 따로 만들어서 Bind 이용해서 할까 고민
+        Vector3 localPos1 = newMap.transform.GetChild(0).localPosition;
+        localPos1.x = 15;
+        newMap.transform.GetChild(0).localPosition = localPos1;
+
+        Vector3 localPos2 = newMap.transform.GetChild(1).localPosition;
+        localPos2.x = 30;
+        newMap.transform.GetChild(1).localPosition = localPos2;
+
+        Vector3 localPos3 = newMap.transform.GetChild(2).GetChild(0).localPosition;
+        localPos3.x = 15;
+        newMap.transform.GetChild(2).GetChild(0).localPosition = localPos3;
+
+        Vector3 localPos4 = newMap.transform.GetChild(2).GetChild(1).localPosition;
+        localPos4.x = 30;
+        newMap.transform.GetChild(2).GetChild(1).localPosition = localPos4;
     }
 
     public void RespawnPlayer()
@@ -51,8 +101,8 @@ public class Wave : MonoBehaviour
     protected IEnumerator Respawn(float delay)
     {
         yield return new WaitForSeconds(delay);
-        float spawnPosY = Managers.Resource.SkinItemDict[Managers.Data.MyPlayerInfo.Skin].spawnPosY;
-        Managers.Resource.Instantiate($"Player/{Managers.Data.MyPlayerInfo.Class}/{Managers.Data.MyPlayerInfo.Skin}", new Vector3(-7, spawnPosY, -1));
+        float spawnPosY = Managers.Resource.SkinItemDict[_myPlayerInfo.Skin].spawnPosY;
+        Managers.Resource.Instantiate($"Player/{_myPlayerInfo.Class}/{_myPlayerInfo.Skin}", new Vector3(-7, spawnPosY, -1));
         
     }
 
@@ -75,7 +125,7 @@ public class Wave : MonoBehaviour
 
     void SpawnEnemy()
     {
-        if (Managers.Data.MyPlayerInfo.Round < 50)
+        if (_myPlayerInfo.Round < 50)
             Managers.Resource.Instantiate($"Enemy/LightBandit", new Vector3(7, 1.9f, -1));
         else
             Managers.Resource.Instantiate($"Enemy/HeavyBandit", new Vector3(7, 1.9f, -1));

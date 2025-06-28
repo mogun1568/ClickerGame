@@ -64,6 +64,7 @@ public class LocalDataManager
                 Reincarnation = 0,
                 Coin = 10000,
                 Round = 1,
+                Map = "Plain",
                 Class = "Knight",
                 Skin = "Knight",
                 HP = 100.0f,

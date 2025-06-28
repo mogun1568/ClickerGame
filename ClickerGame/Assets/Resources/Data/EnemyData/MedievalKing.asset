@@ -20,5 +20,5 @@ MonoBehaviour:
   enemyAttackSpeed: 1
   enemyRange: 1.5
   enemyStaggerResistance: 1
-  enemyMoveSpeed: 2.5
+  enemyMoveSpeed: 2
   enemyCoin: 10

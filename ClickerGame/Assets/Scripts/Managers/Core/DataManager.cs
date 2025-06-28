@@ -203,6 +203,7 @@ public class DataManager
             Reincarnation = MyPlayerInfo.Reincarnation,
             Coin = 10000,
             Round = 1,
+            Map = "Plain",
             Class = MyPlayerInfo.Class,
             Skin = MyPlayerInfo.Skin,
             HP = 100.0f,
