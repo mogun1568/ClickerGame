@@ -81,7 +81,11 @@ public class LocalDataManager
                 { "Range", CreateDefaultStatData("Range") }
             },
             skills = new Dictionary<string, Data.SkillInfo> { },
-            skins = new List<string>()
+            skins = new Dictionary<Define.ClassType, List<string>>
+            {
+                { Define.ClassType.Knight, new List<string> { "Knight" } },
+                { Define.ClassType.Wizard, new List<string> { } }
+            }
         };
     }
 

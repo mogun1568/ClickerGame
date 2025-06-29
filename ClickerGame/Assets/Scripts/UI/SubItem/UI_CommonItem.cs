@@ -20,7 +20,7 @@ public class UI_CommonItem : UI_Base
     {
         Text_ItemName,
         Text_ItemInfo,
-        Text_ItemPrice
+        Text_Purchase
     }
 
     private string _goName;
@@ -68,7 +68,9 @@ public class UI_CommonItem : UI_Base
         }
 
         if (commonItemDict[_goName].shopItemPrice != 0)
-            GetText((int)Texts.Text_ItemPrice).text = commonItemDict[_goName].shopItemPrice.ToString();
+            GetText((int)Texts.Text_Purchase).text = $"구매\n{commonItemDict[_goName].shopItemPrice.ToString()}";
+        else
+            GetText((int)Texts.Text_Purchase).text = "구매";
     }
 
     private void PurchaseItem()

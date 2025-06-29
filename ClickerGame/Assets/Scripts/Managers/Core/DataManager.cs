@@ -13,6 +13,7 @@ public class DataManager
     public Data.Info MyPlayerInfo { get; private set; } = new Data.Info();
     public Dictionary<string, Data.StatInfo> MyPlayerStatDict { get; private set; } = new Dictionary<string, Data.StatInfo>();
     public Dictionary<string, Data.SkillInfo> MyPlayerSkillDict { get; private set; } = new Dictionary<string, Data.SkillInfo>();
+    public Dictionary<Define.ClassType, List<string>> MyPlayerSkinDict { get; private set; } = new Dictionary<Define.ClassType, List<string>>();
     
     public bool GameDataReady { get; private set; } = false;
     public bool CheckSaveDataDone { get; set; } = false;
@@ -25,6 +26,7 @@ public class DataManager
         MyPlayerInfo = gameData.info;
         MyPlayerStatDict = gameData.stats;
         MyPlayerSkillDict = gameData.skills;
+        MyPlayerSkinDict = gameData.skins;
         Managers.Skill.Init();
         //await Managers.Ranking.InitAsync();
         MyPlayerInfo.Round--;
@@ -160,13 +162,35 @@ public class DataManager
             SaveGameData();
     }
 
+    public bool HasSkin(Define.ClassType classType, string skinName)
+    {
+        return MyPlayerSkinDict.TryGetValue(classType, out var skinList) && skinList.Contains(skinName);
+    }
+
+    public void AddSkin(Define.ClassType classType, string skinName)
+    {
+        if (HasSkin(classType, skinName))
+            return;
+
+        if (Managers.Firebase.IsLogIn)
+            _firebaseData.AddSkin(classType.ToString(), skinName).Forget();
+        else
+        {
+            List<string> skinList = MyPlayerSkinDict[classType];
+            skinList.Add(skinName);
+            SaveGameData();
+        }
+            
+    }
+
     private Data.GameData ReturnGameData()
     {
         return new Data.GameData
         {
             info = MyPlayerInfo,
             stats = MyPlayerStatDict,
-            skills = MyPlayerSkillDict
+            skills = MyPlayerSkillDict,
+            skins = MyPlayerSkinDict
         };
     }
 

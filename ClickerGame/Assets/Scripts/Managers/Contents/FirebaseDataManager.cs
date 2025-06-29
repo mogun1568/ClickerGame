@@ -142,37 +142,44 @@ public class FirebaseDataManager
         }
     }
 
-    // 모든 적의 특정 스탯 업데이트
-    public async UniTask UpdateAllEnemiesStat(string statName, object newValue)
+    public async UniTask AddSkin(string classType, string skinName)
     {
         FirebaseUser user = auth.CurrentUser;
         if (user == null) return;
 
         string userId = user.UserId;
+        var classRef = dbReference.Child("users").Child(userId).Child("skins").Child(classType);
 
         try
         {
-            DatabaseReference enemiesRef = dbReference.Child("users").Child(userId).Child("enemys");
-            DataSnapshot snapshot = await enemiesRef.GetValueAsync().AsUniTask();
+            // 기존 리스트 불러오기
+            DataSnapshot snapshot = await classRef.GetValueAsync().AsUniTask();
+            List<string> skinList = new List<string>();
 
-            if (!snapshot.Exists)
+            if (snapshot.Exists)
             {
-                Debug.LogWarning("No enemies found to update.");
+                foreach (var child in snapshot.Children)
+                {
+                    if (child.Value != null)
+                        skinList.Add(child.Value.ToString());
+                }
+            }
+
+            // 이미 있으면 추가 안 함
+            if (skinList.Contains(skinName))
+            {
+                Debug.Log($"스킨 '{skinName}'은(는) 이미 보유 중입니다.");
                 return;
             }
 
-            Dictionary<string, object> enemyUpdates = new Dictionary<string, object>();
-            foreach (DataSnapshot enemy in snapshot.Children)
-            {
-                enemyUpdates[$"{enemy.Key}/{statName}"] = newValue;
-            }
+            skinList.Add(skinName);
+            await classRef.SetValueAsync(skinList).AsUniTask();
 
-            await enemiesRef.UpdateChildrenAsync(enemyUpdates).AsUniTask();
-            Debug.Log($"Updated '{statName}' for all enemies successfully.");
+            Debug.Log($"스킨 '{skinName}' 추가 완료");
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"Failed to update '{statName}' for all enemies: {e.Message}");
+            Debug.LogError($"스킨 추가 실패: {e.Message}");
         }
     }
 
