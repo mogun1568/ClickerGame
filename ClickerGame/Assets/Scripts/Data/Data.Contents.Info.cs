@@ -7,8 +7,8 @@ namespace Data
     {
         private string _nickname;
         private int _reincarnation; // È¯»ý
-        private int _coin;
         private int _round;
+        private int _coin;
         private string _map;
         private string _class;
         private string _skin;
@@ -28,16 +28,16 @@ namespace Data
             set => SetValue(ref _reincarnation, value, nameof(Reincarnation));
         }
 
-        public int Coin
-        {
-            get => _coin;
-            set => SetValue(ref _coin, value, nameof(Coin));
-        }
-
         public int Round
         {
             get => _round;
             set => SetValue(ref _round, value, nameof(Round));
+        }
+
+        public int Coin
+        {
+            get => _coin;
+            set => SetValue(ref _coin, value, nameof(Coin));
         }
 
         public string Map
