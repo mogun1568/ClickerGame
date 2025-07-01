@@ -80,7 +80,7 @@ public class UI_SkinItem : UI_Base
     {
         if (_goName == Managers.Data.MyPlayerInfo.Skin)
         {
-            Managers.UI._toastMessage.Show("이미 장착 중입니다.");
+            Managers.UI.ToastMessage.Show("이미 장착 중입니다.");
             return;
         }
 

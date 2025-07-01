@@ -10,7 +10,7 @@ public class GameScene : BaseScene
         SceneType = Define.Scene.GamePlay;
 
         Managers.UI.ShowSceneUI<UI_Main>("MainUI");
-        Managers.UI._toastMessage = Managers.Resource.Instantiate("UI/SubItem/ToastMessage").GetComponent<UI_ToastMessage>();
+        Managers.UI.ToastMessage = Managers.Resource.Instantiate("UI/SubItem/ToastMessage").GetComponent<UI_ToastMessage>();
 
         LoadingUIAsync().Forget();
     }

@@ -93,7 +93,7 @@ public class UI_CommonItem : UI_Base
     {
         if (Managers.Data.MyPlayerInfo.Round < 100)
         {
-            Managers.UI._toastMessage.Show(_reincarnationText);
+            Managers.UI.ToastMessage.Show(_reincarnationText);
             return;
         }   
 

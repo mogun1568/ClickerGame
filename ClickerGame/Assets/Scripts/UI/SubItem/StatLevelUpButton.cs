@@ -74,10 +74,10 @@ public class StatLevelUpButton : UI_Base
 
     private void StatUpdate()
     {
-        if (!CheckCoin())
+        if (!CheckLevel())
             return;
 
-        if (!CheckLevel())
+        if (!CheckCoin())
             return;
 
         DetailStatUpdate();
@@ -119,7 +119,10 @@ public class StatLevelUpButton : UI_Base
     private bool CheckCoin()
     {
         if (_myPlayerStatDict[_statName].statPrice > Managers.Game.MyPlayer.StatInfo.Coin)
+        {
+            Managers.UI.ToastMessage.Show("골드가 부족합니다.");
             return false;
+        }    
 
         Managers.Game.MyPlayer.StatInfo.Coin -= _myPlayerStatDict[_statName].statPrice;
 
@@ -129,7 +132,10 @@ public class StatLevelUpButton : UI_Base
     private bool CheckLevel()
     {
         if (_myPlayerStatDict[_statName].statLevel >= _statDict[_statName].abilityMaxLevel)
+        {
+            Managers.UI.ToastMessage.Show("최대 레벨입니다.");
             return false;
+        }
 
         return true;
     }

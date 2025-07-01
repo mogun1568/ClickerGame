@@ -7,7 +7,7 @@ public class UIManager
 
     Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
     UI_Scene _sceneUI = null;
-    public UI_ToastMessage _toastMessage = null;
+    public UI_ToastMessage ToastMessage = null;
 
     public GameObject Root
     {
@@ -139,6 +139,6 @@ public class UIManager
     {
         CloseAllPopupUI();
         _sceneUI = null;
-        _toastMessage = null;
+        ToastMessage = null;
     }
 }
