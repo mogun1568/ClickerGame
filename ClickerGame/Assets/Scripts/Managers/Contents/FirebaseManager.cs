@@ -29,14 +29,14 @@ public class FirebaseManager
     public DatabaseReference dbReference;
     private GoogleSignInConfiguration configuration;
 
-    public bool IsLogIn { get; private set; } = false;
+    public bool GoogleLogIn { get; private set; } = false;
     public bool CheckFirebaseDone { get; private set; } = false;
 
     // Defer the configuration creation until Awake so the web Client ID
     // Can be set via the property inspector in the Editor.
     public void Init()
     {
-        IsLogIn = false;
+        GoogleLogIn = false;
         CheckFirebaseDone = false;
 
         configuration = new GoogleSignInConfiguration { WebClientId = webClientId, RequestIdToken = true };
@@ -45,28 +45,59 @@ public class FirebaseManager
 
     private void CheckFirebaseDependencies()
     {
-        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
+        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(dependencyTask =>
         {
-            if (task.IsCanceled || task.IsFaulted)
+            if (dependencyTask.IsCanceled || dependencyTask.IsFaulted)
             {
-                Debug.LogError("Firebase Initialize Failed: " + task.Exception?.ToString());
+                Debug.LogError("Firebase Initialize Failed: " + dependencyTask.Exception);
                 return;
             }
 
-            if (task.Result == DependencyStatus.Available)
+            if (dependencyTask.Result != DependencyStatus.Available)
             {
-                auth = FirebaseAuth.DefaultInstance;
-                dbReference = FirebaseDatabase.DefaultInstance.RootReference;
-                Managers.Data.FirebaseDataInit();
-                if (auth.CurrentUser != null) IsLogIn = true;
-                CheckFirebaseDone = true;
+                Debug.LogError("Could not resolve all Firebase dependencies: " + dependencyTask.Result);
+                return;
+            }
 
-                Debug.Log("Firebase is initialized successfully.");
-            }
-            else
+            // Firebase 사용 가능
+            auth = FirebaseAuth.DefaultInstance;
+            dbReference = FirebaseDatabase.DefaultInstance.RootReference;
+            Managers.Data.FirebaseDataInit();
+
+            // 현재 로그인된 유저가 있는 경우만 확인
+            var user = auth.CurrentUser;
+            if (user == null)
             {
-                Debug.LogError("Could not resolve all Firebase dependencies: " + task.Result.ToString());
+                GoogleLogIn = false;
+                CheckFirebaseDone = true;
+                Debug.Log("No user is currently logged in.");
+                return;
             }
+
+            string uid = user.UserId;
+            dbReference.Child("users").Child(uid).GetValueAsync().ContinueWith(userTask =>
+            {
+                if (userTask.IsFaulted || !userTask.IsCompleted)
+                {
+                    Debug.LogError("Failed to check user data in database.");
+                    return;
+                }
+
+                if (userTask.Result.Exists)
+                {
+                    GoogleLogIn = true;
+                    Debug.Log("User data exists in database.");
+                }
+                else
+                {
+                    auth.SignOut();
+                    GoogleSignIn.DefaultInstance.SignOut();
+                    GoogleLogIn = false;
+                    Debug.LogWarning("User data not found. Logged out.");
+                }
+
+                CheckFirebaseDone = true;
+            });
         });
     }
 
@@ -107,7 +138,7 @@ public class FirebaseManager
 
         auth.SignOut();
         GoogleSignIn.DefaultInstance.SignOut();
-        IsLogIn = false;
+        GoogleLogIn = false;
         Managers.Scene.LoadScene(Define.Scene.GamePlay);
     }
 
@@ -175,7 +206,7 @@ public class FirebaseManager
             }
 
             Debug.Log("Sign In Successful.");
-            IsLogIn = true;
+            GoogleLogIn = true;
 
             // 인증 완료 후 CurrentUser 확인
             if (auth.CurrentUser != null)

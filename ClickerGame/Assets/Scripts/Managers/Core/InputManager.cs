@@ -5,15 +5,15 @@ using UnityEngine.EventSystems;
 public class InputManager
 {
     public Action BackButton = null;
-    public Action TouchAction = null;
+    //public Action TouchAction = null;
 
     public void Init()
     {
         BackButton -= OnBackButtonHandler;
         BackButton += OnBackButtonHandler;
 
-        TouchAction -= OnTouchHandler;
-        TouchAction += OnTouchHandler;
+        //TouchAction -= OnTouchHandler;
+        //TouchAction += OnTouchHandler;
     }
 
     public void OnUpdate()
@@ -26,15 +26,6 @@ public class InputManager
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             BackButton?.Invoke();
-        }
-
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-        {
-            if (Managers.Scene.CurrentScene.SceneType == Define.Scene.Login)
-            {
-                if (Managers.Firebase.IsLogIn || Managers.Data.HasLocalData())
-                    TouchAction?.Invoke();
-            }    
         }
     }
 
@@ -53,6 +44,5 @@ public class InputManager
     private void OnTouchHandler()
     {
         Debug.Log("È­¸é ÅÍÄ¡µÊ!");
-        Managers.Scene.LoadScene(Define.Scene.GamePlay);
     }
 }

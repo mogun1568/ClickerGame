@@ -42,7 +42,7 @@ public class DataManager
     {
         Data.GameData gameData = null;
 
-        if (Managers.Firebase.IsLogIn)
+        if (Managers.Firebase.GoogleLogIn)
         {
             gameData = await _firebaseData.LoadGameData();
             if (gameData == null)
@@ -95,7 +95,7 @@ public class DataManager
     {
         UpdateLastTime();
 
-        if (Managers.Firebase.IsLogIn)
+        if (Managers.Firebase.GoogleLogIn)
         {
             _firebaseData.SaveGameData(ReturnGameData()).Forget();  // UniTask º¯È¯
         }
@@ -107,7 +107,7 @@ public class DataManager
 
     public void UpdateInfo(string infoType, object infoValue = null)
     {
-        if (Managers.Firebase.IsLogIn)
+        if (Managers.Firebase.GoogleLogIn)
         {
             _firebaseData.UpdateInfo(infoType, infoValue).Forget();
         }
@@ -128,7 +128,7 @@ public class DataManager
 
     public void UpdateStat(string statType = "")
     {
-        if (Managers.Firebase.IsLogIn)
+        if (Managers.Firebase.GoogleLogIn)
         {
             if (statType == "")
                 SaveGameData();
@@ -151,7 +151,7 @@ public class DataManager
 
     public void UpdateSKill(string skillType = "")
     {
-        if (Managers.Firebase.IsLogIn)
+        if (Managers.Firebase.GoogleLogIn)
         {
             if (skillType == "")
                 SaveGameData();
@@ -172,7 +172,7 @@ public class DataManager
         if (HasSkin(classType, skinName))
             return;
 
-        if (Managers.Firebase.IsLogIn)
+        if (Managers.Firebase.GoogleLogIn)
             _firebaseData.AddSkin(classType.ToString(), skinName).Forget();
         else
         {
