@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: GiveUp
   m_EditorClassIdentifier: 
   shopItemType: 0
+  shopItemId: 2
   shopItemKind: GiveUp
   shopItemIcon: GiveUpIcon
   shopItemName: "\uD3EC\uAE30"
@@ -20,4 +21,5 @@ MonoBehaviour:
   shopItemPrice: 0
   isAd: 1
   classType: 0
-  SpawnPosY: 0
+  spawnPosY: 0
+  attackAnimTime: 0

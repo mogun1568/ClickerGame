@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: DEF
   m_EditorClassIdentifier: 
   creatureType: 0
+  abilityId: 4
   abilityKind: DEF
   abilityIcon: DEFIcon
   abilityName: "\uBC29\uC5B4\uB825"

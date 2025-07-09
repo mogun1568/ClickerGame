@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Range
   m_EditorClassIdentifier: 
   creatureType: 0
+  abilityId: 6
   abilityKind: Range
   abilityIcon: RangeIcon
   abilityName: "\uACF5\uACA9 \uBC94\uC704"

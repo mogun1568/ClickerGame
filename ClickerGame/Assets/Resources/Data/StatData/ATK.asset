@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ATK
   m_EditorClassIdentifier: 
   creatureType: 0
+  abilityId: 3
   abilityKind: ATK
   abilityIcon: ATKIcon
   abilityName: "\uACF5\uACA9\uB825"

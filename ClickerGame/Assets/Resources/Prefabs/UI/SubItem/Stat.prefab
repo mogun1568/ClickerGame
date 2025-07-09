@@ -222,7 +222,7 @@ GameObject:
   - component: {fileID: 5530346744117397989}
   - component: {fileID: 1505651004507954087}
   - component: {fileID: 5624571968051069538}
-  - component: {fileID: -8307024941663035534}
+  - component: {fileID: 4618680069394129142}
   m_Layer: 5
   m_Name: Stat
   m_TagString: Untagged
@@ -291,7 +291,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &-8307024941663035534
+--- !u!114 &4618680069394129142
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

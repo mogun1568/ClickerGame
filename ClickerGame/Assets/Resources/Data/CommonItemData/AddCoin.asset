@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: AddCoin
   m_EditorClassIdentifier: 
   shopItemType: 0
+  shopItemId: 3
   shopItemKind: AddCoin
   shopItemIcon: AddCoinIcon
   shopItemName: "\uCF54\uC778 \uAD6C\uB9E4"
@@ -20,4 +21,5 @@ MonoBehaviour:
   shopItemPrice: 0
   isAd: 1
   classType: 0
-  SpawnPosY: 0
+  spawnPosY: 0
+  attackAnimTime: 0

@@ -31,11 +31,10 @@ public class UI_Skill : UI_Base
     private int _skillMaxlevel;
     private Color _blue, _glay;
 
-    void Awake()
-    {
-        Init();
-        DataInitAsync().Forget();
-    }
+    //void Awake()
+    //{
+    //    Init();
+    //}
 
     public override void Init()
     {
@@ -60,6 +59,7 @@ public class UI_Skill : UI_Base
         GetText((int)Texts.Text_SkillValue).text = "0";
         GetText((int)Texts.Text_SkillMaxLevel).text = "최대 레벨\n" + _skillMaxlevel.ToString();
 
+        DataInitAsync().Forget();
     }
 
     private async UniTask DataInitAsync()

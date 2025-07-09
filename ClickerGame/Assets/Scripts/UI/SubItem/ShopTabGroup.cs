@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ShopTapGroup : UI_Base
+public class ShopTabGroup : UI_Base
 {
     enum Buttons
     {
@@ -31,9 +31,9 @@ public class ShopTapGroup : UI_Base
         Bind<Button>(typeof(Buttons));
         Bind<GameObject>(typeof(GameObjects));
 
-        BindEvent(GetButton((int)Buttons.Button_Common).gameObject, (PointerEventData data) => { SelectTap("Common"); }, Define.UIEvent.Click);
-        BindEvent(GetButton((int)Buttons.Button_Skin).gameObject, (PointerEventData data) => { SelectTap("Skin"); }, Define.UIEvent.Click);
-        BindEvent(GetButton((int)Buttons.Button_Class).gameObject, (PointerEventData data) => { SelectTap("Class"); }, Define.UIEvent.Click);
+        BindEvent(GetButton((int)Buttons.Button_Common).gameObject, (PointerEventData data) => { SelectTab("Common"); }, Define.UIEvent.Click);
+        BindEvent(GetButton((int)Buttons.Button_Skin).gameObject, (PointerEventData data) => { SelectTab("Skin"); }, Define.UIEvent.Click);
+        BindEvent(GetButton((int)Buttons.Button_Class).gameObject, (PointerEventData data) => { SelectTab("Class"); }, Define.UIEvent.Click);
 
         ItemInit();
 
@@ -44,36 +44,36 @@ public class ShopTapGroup : UI_Base
     private void ItemInit()
     {
         string purchaseType;
-        foreach (var pair in Managers.Resource.CommonItemDict)
+        foreach (var pair in Managers.Resource.CommonItemList)
         {
-            if (pair.Value.isAd) purchaseType = "AdShopItem";
+            if (pair.isAd) purchaseType = "AdShopItem";
             else purchaseType = "ShopItem";
 
             GameObject item = Managers.Resource.Instantiate($"UI/SubItem/{purchaseType}", default, GetObject((int)GameObjects.CommonShop).transform.GetChild(0));
-            item.name = pair.Key;
+            item.name = pair.shopItemKind;
             item.GetOrAddComponent<UI_CommonItem>();
         }
-        foreach (var pair in Managers.Resource.SkinItemDict)
+        foreach (var pair in Managers.Resource.SkinItemList)
         {
-            if (pair.Value.isAd) purchaseType = "AdShopItem";
+            if (pair.isAd) purchaseType = "AdShopItem";
             else purchaseType = "ShopItem";
 
             GameObject item = Managers.Resource.Instantiate($"UI/SubItem/{purchaseType}", default, GetObject((int)GameObjects.SkinShop).transform.GetChild(0));
-            item.name = pair.Key;
+            item.name = pair.shopItemKind;
             item.GetOrAddComponent<UI_SkinItem>();
         }
     }
 
-    public void SelectTap(string TapName)
+    public void SelectTab(string TabName)
     {
-        if (TapName == "Common")
+        if (TabName == "Common")
         {
             GetObject((int)GameObjects.CommonShop).SetActive(true);
             GetObject((int)GameObjects.SkinShop).SetActive(false);
             GetObject((int)GameObjects.ClassShop).SetActive(false);
 
         }
-        else if (TapName == "Skin")
+        else if (TabName == "Skin")
         {
             GetObject((int)GameObjects.CommonShop).SetActive(false);
             GetObject((int)GameObjects.SkinShop).SetActive(true);

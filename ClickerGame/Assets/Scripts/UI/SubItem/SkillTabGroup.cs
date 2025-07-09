@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SkillTapGroup : UI_Base
+public class SkillTabGroup : UI_Base
 {
     enum Buttons
     {
@@ -42,16 +42,28 @@ public class SkillTapGroup : UI_Base
         _classAlert = GetObject((int)GameObjects.Button_Class).transform.GetChild(1).gameObject;
         _commomAlert = GetObject((int)GameObjects.Button_Common).transform.GetChild(1).gameObject;
 
-        BindEvent(GetButton((int)Buttons.Button_Class).gameObject, (PointerEventData data) => { SelectTap("Class"); }, Define.UIEvent.Click);
-        BindEvent(GetButton((int)Buttons.Button_Common).gameObject, (PointerEventData data) => { SelectTap("Common"); }, Define.UIEvent.Click);
+        BindEvent(GetButton((int)Buttons.Button_Class).gameObject, (PointerEventData data) => { SelectTab("Class"); }, Define.UIEvent.Click);
+        BindEvent(GetButton((int)Buttons.Button_Common).gameObject, (PointerEventData data) => { SelectTab("Common"); }, Define.UIEvent.Click);
 
         _classAlert.SetActive(false);
-        _commomAlert.SetActive(false); 
+        _commomAlert.SetActive(false);
+
+        SkillInit();
     }
 
-    public void SelectTap(string TapName)
+    private void SkillInit()
     {
-        if (TapName == "Class")
+        foreach (var pair in Managers.Resource.SkillList)
+        {
+            GameObject stat = Managers.Resource.Instantiate("UI/SubItem/Skill", default, GetObject((int)GameObjects.CommonSkill).transform.GetChild(0));
+            stat.name = pair.abilityKind;
+            stat.GetComponent<UI_Skill>().Init();
+        }
+    }
+
+    public void SelectTab(string TabName)
+    {
+        if (TabName == "Class")
         {
             if (_classAlert.activeSelf) _isClass = true;
 

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Knockback
   m_EditorClassIdentifier: 
   creatureType: 1
+  abilityId: 21
   abilityKind: Knockback
   abilityIcon: KnockbackIcon
   abilityName: "\uB109\uBC31"

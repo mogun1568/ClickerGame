@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Regeneration
   m_EditorClassIdentifier: 
   creatureType: 0
+  abilityId: 2
   abilityKind: Regeneration
   abilityIcon: RegenerationIcon
   abilityName: "\uC790\uC5F0 \uD68C\uBCF5"

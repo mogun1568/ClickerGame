@@ -5,6 +5,7 @@ public class ShopItemData : ScriptableObject
 {
     [Header("# Public Info")]
     public Define.ShopItemType shopItemType;
+    public int shopItemId;
     public string shopItemKind;
     public string shopItemIcon;
     public string shopItemName;
@@ -21,6 +22,7 @@ public class ShopItemData : ScriptableObject
     {
         ShopItemData copied = CreateInstance<ShopItemData>();
         copied.shopItemType = this.shopItemType;
+        copied.shopItemId = this.shopItemId;
         copied.shopItemKind = this.shopItemKind;
         copied.shopItemIcon = this.shopItemIcon;
         copied.shopItemName = this.shopItemName;

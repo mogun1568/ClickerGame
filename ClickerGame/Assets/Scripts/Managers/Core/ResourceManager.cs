@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ResourceManager
@@ -8,6 +9,11 @@ public class ResourceManager
     public Dictionary<string, EnemyData> EnemyDict = new Dictionary<string, EnemyData>();
     public Dictionary<string, ShopItemData> CommonItemDict = new Dictionary<string, ShopItemData>();
     public Dictionary<string, ShopItemData> SkinItemDict = new Dictionary<string, ShopItemData>();
+
+    public List<AbilityData> StatList = new List<AbilityData>();
+    public List<AbilityData> SkillList = new List<AbilityData>();
+    public List<ShopItemData> CommonItemList = new List<ShopItemData>();
+    public List<ShopItemData> SkinItemList = new List<ShopItemData>();
 
     public void Init()
     {
@@ -21,11 +27,13 @@ public class ResourceManager
         {
             AbilityData copy = data.Copy();
             StatDict[copy.abilityKind] = copy;
+            StatList.Add(copy);
         }
         foreach (AbilityData data in SkillDataAssets)
         {
             AbilityData copy = data.Copy();
             SkillDict[copy.abilityKind] = copy;
+            SkillList.Add(copy);
         }
         foreach (EnemyData data in EnemyDataAssets)
         {
@@ -36,12 +44,19 @@ public class ResourceManager
         {
             ShopItemData copy = data.Copy();
             CommonItemDict[copy.shopItemKind] = copy;
+            CommonItemList.Add(copy);
         }
         foreach (ShopItemData data in SkinItemDataAssets)
         {
             ShopItemData copy = data.Copy();
             SkinItemDict[copy.shopItemKind] = copy;
+            SkinItemList.Add(copy);
         }
+
+        StatList = StatList.OrderBy(x => x.abilityId).ToList();
+        SkillList = SkillList.OrderBy(x => x.abilityId).ToList();
+        CommonItemList = CommonItemList.OrderBy(x => x.shopItemId).ToList();
+        SkinItemList = SkinItemList.OrderBy(x => x.shopItemId).ToList();
     }
 
     public T Load<T>(string path) where T : Object

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: MaxHP
   m_EditorClassIdentifier: 
   creatureType: 0
+  abilityId: 1
   abilityKind: MaxHP
   abilityIcon: MaxHPIcon
   abilityName: "\uCD5C\uB300 \uCCB4\uB825"

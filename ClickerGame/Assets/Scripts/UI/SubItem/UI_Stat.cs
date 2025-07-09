@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class StatLevelUpButton : UI_Base
+public class UI_Stat : UI_Base
 {
     enum Buttons
     {
@@ -35,12 +35,10 @@ public class StatLevelUpButton : UI_Base
     private int _statIncreasePrice;
     private int _statMaxLevel;
 
-    // Start
-    void Awake()
-    {
-        Init();
-        DataInitAsync().Forget();
-    }
+    //void Awake()
+    //{
+    //    Init();
+    //}
 
     public override void Init()
     {
@@ -63,6 +61,8 @@ public class StatLevelUpButton : UI_Base
         GetText((int)Texts.Text_StatName).text = _statDict[_statName].abilityName.ToString();
         GetText((int)Texts.Text_StatIncreaseValue).text = "+" + _statIncreaseValue.ToString();
         GetText((int)Texts.Text_StatMaxLevel).text = "최대 레벨\n" + _statMaxLevel.ToString();
+
+        DataInitAsync().Forget();
     }
 
     private async UniTask DataInitAsync()

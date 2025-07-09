@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: HeroKnight
   m_EditorClassIdentifier: 
   shopItemType: 1
+  shopItemId: 102
   shopItemKind: HeroKnight
   shopItemIcon: HeroKnightIcon
   shopItemName: "\uC601\uC6C5 \uAE30\uC0AC"

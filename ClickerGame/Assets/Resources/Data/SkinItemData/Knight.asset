@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Knight
   m_EditorClassIdentifier: 
   shopItemType: 1
+  shopItemId: 101
   shopItemKind: Knight
   shopItemIcon: KnightIcon
   shopItemName: "\uAE30\uC0AC"

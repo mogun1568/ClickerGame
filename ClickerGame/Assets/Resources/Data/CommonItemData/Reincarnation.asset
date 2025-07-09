@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Reincarnation
   m_EditorClassIdentifier: 
   shopItemType: 0
+  shopItemId: 1
   shopItemKind: Reincarnation
   shopItemIcon: ReincarnationIcon
   shopItemName: "\uD658\uC0DD"
@@ -21,4 +22,5 @@ MonoBehaviour:
   shopItemPrice: 0
   isAd: 0
   classType: 0
-  SpawnPosY: 0
+  spawnPosY: 0
+  attackAnimTime: 0
