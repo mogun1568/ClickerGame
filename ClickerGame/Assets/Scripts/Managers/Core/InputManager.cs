@@ -33,6 +33,15 @@ public class InputManager
     {
         if (Managers.UI.IsPopupActive())
         {
+            GameObject go = Managers.UI.getPopStackTop();
+            if (go == null)
+                return;
+
+            if (go.GetComponent<UI_Offline>() != null)
+                return;
+            if (go.GetComponent<UI_Resurrection>() != null)
+                return;
+
             Managers.UI.ClosePopupUI();
         }
         else

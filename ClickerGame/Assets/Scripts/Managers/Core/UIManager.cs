@@ -135,6 +135,18 @@ public class UIManager
             return false;
     }
 
+    public GameObject getPopStackTop()
+    {
+        if (_popupStack.Count > 0)
+        {
+            return _popupStack.Peek().gameObject;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     public void Clear()
     {
         CloseAllPopupUI();
