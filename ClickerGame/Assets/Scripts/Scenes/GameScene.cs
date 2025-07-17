@@ -25,7 +25,7 @@ public class GameScene : BaseScene
         if (Managers.Scene.loading.isShow)
             Managers.Scene.loading.Hide();
 
-        Managers.Sound.Play("bgm1", Define.Sound.BGM);
+        //Managers.Sound.Play("bgm1", Define.Sound.BGM);
 
         Managers.Data.OfflineReward();
 

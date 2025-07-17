@@ -39,6 +39,8 @@ public class LocalDataManager
         string jsonString = JsonConvert.SerializeObject(data, Formatting.Indented);
         File.WriteAllText(_filePath, jsonString);
 
+        Debug.Log("로컬 데이터 저장 완료");
+
         //_filePath = Path.Combine(Application.dataPath, $"Resources/Data/{_TestFileName}.json");
         //// 지금은 알아보기 쉽기 위해 Indented지만 빌드때는 None로 해야 크기 줄일 수 있음
         //string jsonString = JsonConvert.SerializeObject(data, Formatting.Indented);
@@ -55,6 +57,8 @@ public class LocalDataManager
     public Data.GameData CreateDefaultGameData()
     {
         _statDict = Managers.Resource.StatDict;
+
+        Debug.Log("로컬 데이터 생성");
 
         return new Data.GameData
         {

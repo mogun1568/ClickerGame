@@ -55,14 +55,13 @@ public class DataManager
                     CheckSaveDataDone = false;
                     SaveGameData();
                     await UniTask.WaitUntil(() => CheckSaveDataDone);
+                    _localData.DeleteData();
                 }
                 else
                 {
                     Debug.LogError("로컬 데이터를 생성하지 못했습니다.");
                 }
             }
-
-            _localData.DeleteData();
 
             return gameData;
         }

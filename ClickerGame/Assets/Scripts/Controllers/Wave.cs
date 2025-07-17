@@ -25,7 +25,11 @@ public class Wave : MonoBehaviour
         await UniTask.WaitUntil(() => Managers.Data.GameDataReady);
         _myPlayerInfo = Managers.Data.MyPlayerInfo;
 
-        Managers.Game.Map = Managers.Resource.Instantiate($"Map/{_myPlayerInfo.Map}");
+        Managers.Game.CurMap = Managers.Resource.Instantiate($"Map/{_myPlayerInfo.Map}");
+        if (_myPlayerInfo.Map == "Plain")
+            Managers.Sound.Play("A Great Journey - Overworld", Define.Sound.BGM);
+        else
+            Managers.Sound.Play("Magic Elderwood Forest - Overworld", Define.Sound.BGM);
 
         float spawnPosY = Managers.Resource.SkinItemDict[_myPlayerInfo.Skin].spawnPosY;
         Managers.Resource.Instantiate($"Player/{_myPlayerInfo.Class}/{_myPlayerInfo.Skin}", new Vector3(-2, spawnPosY, -1));
@@ -55,12 +59,13 @@ public class Wave : MonoBehaviour
 
     private void MapChange()
     {
-        if (_myPlayerInfo.Round % 100 < 50)
+        if (_myPlayerInfo.Round % 100 > 0 && _myPlayerInfo.Round % 100 <= 50)
         {
             if (_myPlayerInfo.Map == "Plain")
                 return;
 
             _myPlayerInfo.Map = "Plain";
+            Managers.Sound.Play("A Great Journey - Overworld", Define.Sound.BGM);
         }
         else
         {
@@ -68,12 +73,16 @@ public class Wave : MonoBehaviour
                 return;
 
             _myPlayerInfo.Map = "Forest";
+            Managers.Sound.Play("Magic Elderwood Forest - Overworld", Define.Sound.BGM);
         }
 
         GameObject newMap = Managers.Resource.Instantiate($"Map/{_myPlayerInfo.Map}");
 
         // 이전 맵을 언제 제거할 지 정해야 함 (100라운드에 제거?)
-        Managers.Game.Map = newMap;
+        if (Managers.Game.PreMap != null)
+            Managers.Resource.Destroy(Managers.Game.PreMap);
+        Managers.Game.PreMap = Managers.Game.CurMap;
+        Managers.Game.CurMap = newMap;
 
         // 위치 변경은 스크립트 따로 만들어서 Bind 이용해서 할까 고민
         Vector3 localPos1 = newMap.transform.GetChild(0).localPosition;
@@ -125,7 +134,7 @@ public class Wave : MonoBehaviour
 
     void SpawnEnemy()
     {
-        if (_myPlayerInfo.Round < 50)
+        if (_myPlayerInfo.Round % 100 > 0 && _myPlayerInfo.Round % 100 <= 50)
             Managers.Resource.Instantiate($"Enemy/LightBandit", new Vector3(7, 1.9f, -1));
         else
             Managers.Resource.Instantiate($"Enemy/HeavyBandit", new Vector3(7, 1.9f, -1));

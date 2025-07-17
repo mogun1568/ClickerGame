@@ -11,6 +11,8 @@ public class LoginScene : BaseScene
         Managers.UI.ShowSceneUI<UI_Start>("LoginUI");
 
         CreateRandomBackground();
+
+        Managers.Sound.Play("Adventure's Spirit - Title Theme", Define.Sound.BGM);
     }
 
     private void CreateRandomBackground()
