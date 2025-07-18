@@ -17,11 +17,9 @@ public class GameScene : BaseScene
 
     private async UniTask LoadingUIAsync()
     {
-        //Managers.UI.ShowPopupUI<UI_Popup>("Popup_Loading");
-
         await Managers.Data.InitAsync();
+        await UniTask.WaitUntil(() => Managers.Game.GameStartReady);
 
-        //Managers.UI.ClosePopupUI();
         if (Managers.Scene.loading.isShow)
             Managers.Scene.loading.Hide();
 

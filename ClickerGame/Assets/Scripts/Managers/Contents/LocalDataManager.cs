@@ -7,7 +7,6 @@ using UnityEngine;
 public class LocalDataManager
 {
     private string _fileName = "GameData";
-    private string _TestFileName = "GameDataTest";
     private string _filePath;
 
     private Dictionary<string, AbilityData> _statDict;
@@ -66,7 +65,7 @@ public class LocalDataManager
             {
                 Nickname = "Guest",
                 Reincarnation = 0,
-                Coin = 10000,
+                Coin = 100,
                 Round = 1,
                 Map = "Plain",
                 Class = "Knight",

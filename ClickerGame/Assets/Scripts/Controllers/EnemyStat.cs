@@ -19,10 +19,12 @@ public class EnemyStat : Stat
         {
             reincarnationScale = Managers.Data.MyPlayerInfo.Reincarnation * 0.1f;
             roundScale = (Managers.Data.MyPlayerInfo.Round - 1) * 0.05f;
+
+            Coin = enemyInfo.enemyCoin * Mathf.Max(Managers.Data.MyPlayerInfo.Round / 10, 1);
         }
         else
         {
-
+            Coin = enemyInfo.enemyCoin * Mathf.Max(Managers.Data.MyPlayerInfo.Round / 50, 1);
         }
 
         float scale = 1f + reincarnationScale + roundScale;
@@ -35,7 +37,6 @@ public class EnemyStat : Stat
         Range = enemyInfo.enemyRange;
         StaggerResistance = enemyInfo.enemyStaggerResistance * scale;
         MoveSpeed = enemyInfo.enemyMoveSpeed;
-        Coin = enemyInfo.enemyCoin * Mathf.Max(Managers.Data.MyPlayerInfo.Round / 10, 1);
 
         //Debug.Log($"[EnemyStat: {enemyName}]" +
         //      $"\nHP: {HP} / MaxHP: {MaxHP}" +

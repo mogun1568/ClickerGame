@@ -18,7 +18,7 @@ MonoBehaviour:
   shopItemIcon: HeroKnightIcon
   shopItemName: "\uC601\uC6C5 \uAE30\uC0AC"
   shopItemInfo: 
-  shopItemPrice: 0
+  shopItemPrice: 1000
   isAd: 0
   classType: 0
   spawnPosY: 2.6

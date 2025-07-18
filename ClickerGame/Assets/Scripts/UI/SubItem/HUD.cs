@@ -50,5 +50,8 @@ public class HUD : UI_Base
                 _slider.value = curHP / maxHP;
                 break;
         }
+
+        if (!Managers.Game.GameStartReady)
+            Managers.Game.GameStartReady = true;
     }
 }

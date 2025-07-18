@@ -208,6 +208,8 @@ public class DataManager
         if (diffTime < 60 && MyPlayerInfo.OfflineReward <= 0)
             return;
 
+        // 보상을 제한하기 위해 diffTime의 최대값을 정할까 고민
+
         MyPlayerInfo.OfflineReward += (diffTime / 60 * 1);
         Managers.UI.ShowPopupUI<UI_Offline>("Popup_Offline").StatInit();
     }
@@ -224,7 +226,7 @@ public class DataManager
         {
             Nickname = MyPlayerInfo.Nickname,
             Reincarnation = MyPlayerInfo.Reincarnation,
-            Coin = 10000,
+            Coin = 100,
             Round = 1,
             Map = "Plain",
             Class = MyPlayerInfo.Class,

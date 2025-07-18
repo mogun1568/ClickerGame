@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Data
 {
@@ -37,7 +38,11 @@ namespace Data
         public int Coin
         {
             get => _coin;
-            set => SetValue(ref _coin, value, nameof(Coin));
+            set
+            {
+                value = Mathf.Max(value, 0);
+                SetValue(ref _coin, value, nameof(Coin));
+            }
         }
 
         public string Map

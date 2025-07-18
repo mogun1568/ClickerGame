@@ -21,4 +21,4 @@ MonoBehaviour:
   enemyRange: 1.5
   enemyStaggerResistance: 1
   enemyMoveSpeed: 2
-  enemyCoin: 10
+  enemyCoin: 100

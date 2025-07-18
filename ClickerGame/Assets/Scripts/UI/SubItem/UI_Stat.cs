@@ -152,7 +152,7 @@ public class UI_Stat : UI_Base
         GetText((int)Texts.Text_StatValue).text = _myPlayerStatDict[_statName].statValue.ToString();
 
         if (_myPlayerStatDict[_statName].statLevel < _statDict[_statName].abilityMaxLevel)
-            GetText((int)Texts.Text_StatPrice).text = _myPlayerStatDict[_statName].statPrice.ToString();
+            GetText((int)Texts.Text_StatPrice).text = _myPlayerStatDict[_statName].statPrice.ToString("N0");
         else
             GetText((int)Texts.Text_StatPrice).text = "최대 레벨";
     }
