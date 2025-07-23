@@ -47,7 +47,7 @@ public class DataManager
             gameData = await _firebaseData.LoadGameData();
             if (gameData == null)
             {
-                Debug.LogError("Firebase 데이터가 없습니다.");
+                Logging.LogError("Firebase 데이터가 없습니다.");
 
                 gameData = LoadLocalData();
                 if (gameData != null)
@@ -59,7 +59,7 @@ public class DataManager
                 }
                 else
                 {
-                    Debug.LogError("로컬 데이터를 생성하지 못했습니다.");
+                    Logging.LogError("로컬 데이터를 생성하지 못했습니다.");
                 }
             }
 
@@ -81,12 +81,12 @@ public class DataManager
         if (gameData != null)
             return gameData;
 
-        Debug.Log("저장된 데이터가 없습니다. 기본 데이터를 생성합니다.");
+        Logging.Log("저장된 데이터가 없습니다. 기본 데이터를 생성합니다.");
         gameData = _localData.CreateDefaultGameData();
         if (gameData != null)
             return gameData;
 
-        Debug.LogWarning("기본 데이터 생성을 실패했습니다.");
+        Logging.LogWarning("기본 데이터 생성을 실패했습니다.");
         return null;
     }
 

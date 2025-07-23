@@ -58,19 +58,19 @@ public class UI_Start : UI_Scene
 
         if (Managers.Firebase.GoogleLogIn)
         {
-            Debug.Log("구글 로그인 상태");
+            Logging.Log("구글 로그인 상태");
             GetObject((int)GameObjects.Welcome).SetActive(true);
         }    
         else
         {
             if (Managers.Data.HasLocalData())
             {
-                Debug.Log("로컬 데이터 있는 상태");
+                Logging.Log("로컬 데이터 있는 상태");
                 GetObject((int)GameObjects.Welcome).SetActive(true);
             }    
             else
             {
-                Debug.Log("둘 다 아닌 상태");
+                Logging.Log("둘 다 아닌 상태");
                 GetObject((int)GameObjects.Group_Login).SetActive(true);
             }   
         }

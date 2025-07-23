@@ -30,7 +30,7 @@ public class UI_GameQuit : UI_Popup
         if (Managers.Scene.CurrentScene.SceneType == Define.Scene.GamePlay)
             Managers.Data.SaveGameData();
 
-        Debug.Log("Game Quit");
+        Logging.Log("Game Quit");
         Application.Quit();
     }
 }

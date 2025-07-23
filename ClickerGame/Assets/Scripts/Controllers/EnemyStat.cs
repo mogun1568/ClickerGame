@@ -38,7 +38,7 @@ public class EnemyStat : Stat
         StaggerResistance = enemyInfo.enemyStaggerResistance * scale;
         MoveSpeed = enemyInfo.enemyMoveSpeed;
 
-        //Debug.Log($"[EnemyStat: {enemyName}]" +
+        //Logging.Log($"[EnemyStat: {enemyName}]" +
         //      $"\nHP: {HP} / MaxHP: {MaxHP}" +
         //      $"\nATK: {ATK}" +
         //      $"\nDEF: {DEF}" +

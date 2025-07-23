@@ -86,28 +86,28 @@ public class UI_Stat : UI_Base
         {
             case "MaxHP":
                 Managers.Game.MyPlayer.MaxHP += _statIncreaseValue;
-                //Debug.Log($"MaxHP -> {Managers.Game.MyPlayer.MaxHP}");
-                //Debug.Log($"HP -> {Managers.Game.MyPlayer.HP}");
+                //Logging.Log($"MaxHP -> {Managers.Game.MyPlayer.MaxHP}");
+                //Logging.Log($"HP -> {Managers.Game.MyPlayer.HP}");
                 break;
             case "Regeneration":
                 Managers.Game.MyPlayer.Regeneration += _statIncreaseValue;
-                //Debug.Log($"Regeneration -> {Managers.Game.MyPlayer.Regeneration}");
+                //Logging.Log($"Regeneration -> {Managers.Game.MyPlayer.Regeneration}");
                 break;
             case "ATK":
                 Managers.Game.MyPlayer.StatInfo.ATK += _statIncreaseValue;
-                //Debug.Log($"ATK -> {Managers.Game.MyPlayer.StatInfo.ATK}");
+                //Logging.Log($"ATK -> {Managers.Game.MyPlayer.StatInfo.ATK}");
                 break;
             case "DEF":
                 Managers.Game.MyPlayer.StatInfo.DEF += _statIncreaseValue;
-                //Debug.Log($"DEF -> {Managers.Game.MyPlayer.StatInfo.DEF}");
+                //Logging.Log($"DEF -> {Managers.Game.MyPlayer.StatInfo.DEF}");
                 break;
             case "AttackSpeed":
                 Managers.Game.MyPlayer.AttackSpeed += _statIncreaseValue;
-                //Debug.Log($"AttackSpeed -> {Managers.Game.MyPlayer.AttackSpeed}");
+                //Logging.Log($"AttackSpeed -> {Managers.Game.MyPlayer.AttackSpeed}");
                 break;
             case "Range":
                 Managers.Game.MyPlayer.StatInfo.Range += _statIncreaseValue;
-                //Debug.Log($"Range -> {Managers.Game.MyPlayer.StatInfo.Range}");
+                //Logging.Log($"Range -> {Managers.Game.MyPlayer.StatInfo.Range}");
                 break;
         }
 

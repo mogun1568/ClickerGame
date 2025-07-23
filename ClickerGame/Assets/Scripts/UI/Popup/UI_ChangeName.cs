@@ -49,7 +49,7 @@ public class UI_ChangeName : UI_Popup
 
         if (string.IsNullOrEmpty(newName))
         {
-            Debug.Log("이름을 입력해주세요!");
+            Logging.Log("이름을 입력해주세요!");
             return;
         }
 

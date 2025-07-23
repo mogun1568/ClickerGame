@@ -52,6 +52,6 @@ public class InputManager
 
     private void OnTouchHandler()
     {
-        Debug.Log("화면 터치됨!");
+        Logging.Log("화면 터치됨!");
     }
 }

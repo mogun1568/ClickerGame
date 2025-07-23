@@ -97,7 +97,7 @@ public class UIManager
         // _popupStack.Peek()은 스택의 가장 위에 있는 것을 말함
         if (_popupStack.Peek() != popup)
         {
-            Debug.Log("Close Popup Failed!");
+            Logging.Log("Close Popup Failed!");
             return;
         }
 

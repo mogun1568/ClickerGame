@@ -119,7 +119,7 @@ public class Wave : MonoBehaviour
     IEnumerator SpawnEnemyWave()
     {
         _enemyCount += _enemyWaveCount;
-        //Debug.Log(_enemyCount);
+        //Logging.Log(_enemyCount);
 
         yield return new WaitForSeconds(1f);
 

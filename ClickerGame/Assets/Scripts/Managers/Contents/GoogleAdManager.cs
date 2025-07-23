@@ -40,7 +40,7 @@ public class GoogleAdManager
             _rewardedAd = null;
         }
 
-        Debug.Log("Loading the rewarded ad.");
+        Logging.Log("Loading the rewarded ad.");
 
         // create our request used to load the ad.
         var adRequest = new AdRequest();
@@ -52,12 +52,12 @@ public class GoogleAdManager
                 // if error is not null, the load request failed.
                 if (error != null || ad == null)
                 {
-                    Debug.LogError("Rewarded ad failed to load an ad " +
+                    Logging.LogError("Rewarded ad failed to load an ad " +
                                    "with error : " + error);
                     return;
                 }
 
-                Debug.Log("Rewarded ad loaded with response : "
+                Logging.Log("Rewarded ad loaded with response : "
                           + ad.GetResponseInfo());
 
                 _rewardedAd = ad;
@@ -79,7 +79,7 @@ public class GoogleAdManager
             _rewardedAd.Show((Reward reward) =>
             {
                 // TODO: Reward the user.
-                Debug.Log(String.Format(rewardMsg, reward.Type, reward.Amount));
+                Logging.Log(String.Format(rewardMsg, reward.Type, reward.Amount));
                 _isRewardEarned = true;
 
                 // 보상 콜백 실행
@@ -97,29 +97,29 @@ public class GoogleAdManager
         // Raised when the ad is estimated to have earned money.
         ad.OnAdPaid += (AdValue adValue) =>
         {
-            Debug.Log(String.Format("Rewarded ad paid {0} {1}.",
+            Logging.Log(String.Format("Rewarded ad paid {0} {1}.",
                 adValue.Value,
                 adValue.CurrencyCode));
         };
         // Raised when an impression is recorded for an ad.
         ad.OnAdImpressionRecorded += () =>
         {
-            Debug.Log("Rewarded ad recorded an impression.");
+            Logging.Log("Rewarded ad recorded an impression.");
         };
         // Raised when a click is recorded for an ad.
         ad.OnAdClicked += () =>
         {
-            Debug.Log("Rewarded ad was clicked.");
+            Logging.Log("Rewarded ad was clicked.");
         };
         // Raised when an ad opened full screen content.
         ad.OnAdFullScreenContentOpened += () =>
         {
-            Debug.Log("Rewarded ad full screen content opened.");
+            Logging.Log("Rewarded ad full screen content opened.");
         };
         // Raised when the ad closed full screen content.
         ad.OnAdFullScreenContentClosed += () =>
         {
-            Debug.Log("Rewarded Ad full screen content closed.");
+            Logging.Log("Rewarded Ad full screen content closed.");
 
             // Reload the ad so that we can show another as soon as possible.
             LoadRewardedAd();
@@ -133,7 +133,7 @@ public class GoogleAdManager
         // Raised when the ad failed to open full screen content.
         ad.OnAdFullScreenContentFailed += (AdError error) =>
         {
-            Debug.LogError("Rewarded ad failed to open full screen content " +
+            Logging.LogError("Rewarded ad failed to open full screen content " +
                            "with error : " + error);
 
             // Reload the ad so that we can show another as soon as possible.

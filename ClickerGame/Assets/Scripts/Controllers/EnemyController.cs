@@ -139,7 +139,7 @@ public class EnemyController : CreatureController
 
         Managers.Game.MyPlayer.StatInfo.Coin += StatInfo.Coin;
         Managers.Game.Wave._enemyCount--;
-        //Debug.Log(Managers.Game.Wave._enemyCount);
+        //Logging.Log(Managers.Game.Wave._enemyCount);
         Managers.Skill.RandomAddSkill();
 
         DeadMove(-7f, _backgroundMoveSpeed);

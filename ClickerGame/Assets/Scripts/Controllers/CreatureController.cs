@@ -22,7 +22,7 @@ public class CreatureController : MonoBehaviour
 
             _state = value;
             //if (gameObject.tag != "Player")
-            //    Debug.Log($"{_state}");
+            //    Logging.Log($"{_state}");
 
             UpdateAnimation();
             UpdateController();
@@ -35,7 +35,7 @@ public class CreatureController : MonoBehaviour
             return true;
 
         //if (gameObject.tag != "Player")
-        //    Debug.Log($"{_state} || {state}");
+        //    Logging.Log($"{_state} || {state}");
 
         if (state == _state)
         {
@@ -56,7 +56,7 @@ public class CreatureController : MonoBehaviour
 
         if (_state == Define.State.Attack || _state == Define.State.Stagger)
         {
-            //Debug.Log($"{_curAnimInfo.IsName("Stagger")}, {_curAnimInfo.normalizedTime}");
+            //Logging.Log($"{_curAnimInfo.IsName("Stagger")}, {_curAnimInfo.normalizedTime}");
             if (!CheckAnim())
                 return false;
         }
@@ -66,7 +66,7 @@ public class CreatureController : MonoBehaviour
 
     private bool CheckAnim()
     {
-        //Debug.Log($"{gameObject.tag}, {_curAnimInfo.normalizedTime}");
+        //Logging.Log($"{gameObject.tag}, {_curAnimInfo.normalizedTime}");
         if (!_curAnimInfo.IsName(_state.ToString()))
             return false;
         if (_curAnimInfo.normalizedTime < 1.0f) // 루프가 아닌 경우에만
@@ -181,7 +181,7 @@ public class CreatureController : MonoBehaviour
         _tweenType = tweenType;
 
         //if (gameObject.tag != "Player")
-        //    Debug.Log($"{gameObject.GetInstanceID()}, {moveSpeed}, {tweenType}");
+        //    Logging.Log($"{gameObject.GetInstanceID()}, {moveSpeed}, {tweenType}");
 
         if (MoveTween != null)
             MoveTween.Kill();
@@ -380,7 +380,7 @@ public class CreatureController : MonoBehaviour
 
     protected virtual void UpdateAttacking()
     {
-        //Debug.Log("Attack!");
+        //Logging.Log("Attack!");
     }
 
     protected virtual void UpdateStagger()
@@ -409,7 +409,7 @@ public class CreatureController : MonoBehaviour
 
         if (_target != null)
         {
-            //Debug.Log($"{gameObject.tag}, {_curAnimInfo.normalizedTime % 1}");
+            //Logging.Log($"{gameObject.tag}, {_curAnimInfo.normalizedTime % 1}");
             _target.GetComponent<CreatureController>().Hurt(amount);
 
             Skill();
@@ -428,7 +428,7 @@ public class CreatureController : MonoBehaviour
     protected virtual void Hurt(float damage)
     {
         HP -= CalculateDamage(damage);
-        //Debug.Log($"{gameObject.tag}, {HP}");
+        //Logging.Log($"{gameObject.tag}, {HP}");
 
         if (HP <= 0)
             State = Define.State.Death;
