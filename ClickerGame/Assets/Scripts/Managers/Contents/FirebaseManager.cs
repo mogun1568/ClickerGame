@@ -183,6 +183,13 @@ public class FirebaseManager
         else
         {
             Logging.Log("Welcome: " + task.Result.DisplayName + "!");
+
+            if (string.IsNullOrEmpty(task.Result.IdToken))
+            {
+                Logging.LogError("ID Token is null or empty! WebClientId/SHA-1 확인 필요");
+                return;
+            }
+
             SignInWithGoogleOnFirebase(task.Result.IdToken);
         }
     }
@@ -212,6 +219,7 @@ public class FirebaseManager
             if (auth.CurrentUser != null)
             {
                 Logging.Log("User is signed in: " + auth.CurrentUser.DisplayName);
+                Logging.Log("UserId: " + auth.CurrentUser.UserId);
                 Managers.Scene.LoadScene(Define.Scene.GamePlay);
             }
             else
