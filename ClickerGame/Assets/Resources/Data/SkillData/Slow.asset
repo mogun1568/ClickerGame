@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Slow
   m_EditorClassIdentifier: 
   creatureType: 1
+  abilityId: 22
   abilityKind: Slow
   abilityIcon: SlowIcon
   abilityName: "\uC2AC\uB85C\uC6B0"
-  abilityInfo: 
+  abilityInfo: "\uC758 \uC18D\uB3C4\uB85C \uC801\uC774 \uB290\uB824\uC9D1\uB2C8\uB2E4."
   abilityLevel: 1
   abilityMaxLevel: 50
   abilityValue: 0.8

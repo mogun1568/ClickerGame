@@ -23,6 +23,18 @@ public class RankingUIController : UI_Base
         InitAsync().Forget();
     }
 
+    void OnEnable()
+    {
+        ResetPosition();
+    }
+
+    private void ResetPosition()
+    {
+        Vector2 pos = GetObject((int)GameObjects.Content).GetComponent<RectTransform>().anchoredPosition;
+        pos.y = 0;
+        GetObject((int)GameObjects.Content).GetComponent<RectTransform>().anchoredPosition = pos;
+    }
+
     public override void Init()
     {
         Bind<GameObject>(typeof(GameObjects));
@@ -42,6 +54,7 @@ public class RankingUIController : UI_Base
     {
         await Managers.Ranking.InitAsync();
         RankObjectManagement();
+        ResetPosition();
     }
 
     private void RankObjectManagement()

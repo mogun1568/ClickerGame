@@ -7,7 +7,6 @@ using UnityEngine;
 public class LocalDataManager
 {
     private string _fileName = "GameData";
-    private string _TestFileName = "GameDataTest";
     private string _filePath;
 
     private Dictionary<string, AbilityData> _statDict;
@@ -39,6 +38,8 @@ public class LocalDataManager
         string jsonString = JsonConvert.SerializeObject(data, Formatting.Indented);
         File.WriteAllText(_filePath, jsonString);
 
+        Logging.Log("로컬 데이터 저장 완료");
+
         //_filePath = Path.Combine(Application.dataPath, $"Resources/Data/{_TestFileName}.json");
         //// 지금은 알아보기 쉽기 위해 Indented지만 빌드때는 None로 해야 크기 줄일 수 있음
         //string jsonString = JsonConvert.SerializeObject(data, Formatting.Indented);
@@ -56,14 +57,19 @@ public class LocalDataManager
     {
         _statDict = Managers.Resource.StatDict;
 
+        Logging.Log("로컬 데이터 생성");
+
         return new Data.GameData
         {
             info = new Data.Info
             {
                 Nickname = "Guest",
                 Reincarnation = 0,
-                Coin = 10000,
+                Coin = 100,
                 Round = 1,
+                Map = "Plain",
+                Class = "Knight",
+                Skin = "Knight",
                 HP = 100.0f,
                 LastTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
                 OfflineReward = 0
@@ -77,8 +83,11 @@ public class LocalDataManager
                 { "AttackSpeed", CreateDefaultStatData("AttackSpeed") },
                 { "Range", CreateDefaultStatData("Range") }
             },
-            skills = new Dictionary<string, Data.SkillInfo>
+            skills = new Dictionary<string, Data.SkillInfo> { },
+            skins = new Dictionary<Define.ClassType, List<string>>
             {
+                { Define.ClassType.Knight, new List<string> { "Knight" } },
+                { Define.ClassType.Wizard, new List<string> { } }
             }
         };
     }
@@ -102,11 +111,11 @@ public class LocalDataManager
         if (File.Exists(_filePath))
         {
             File.Delete(_filePath);
-            Debug.Log("Local data has been deleted.");
+            Logging.Log("Local data has been deleted.");
         }
         else
         {
-            Debug.LogWarning("No local data found to delete.");
+            Logging.LogWarning("No local data found to delete.");
         }
     }
 }

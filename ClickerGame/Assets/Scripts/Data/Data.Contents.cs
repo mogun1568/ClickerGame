@@ -34,6 +34,7 @@ namespace Data
         public Info info = new Info();
         public Dictionary<string, StatInfo> stats = new Dictionary<string, StatInfo>();
         public Dictionary<string, SkillInfo> skills = new Dictionary<string, SkillInfo>();
+        public Dictionary<Define.ClassType, List<string>> skins = new Dictionary<Define.ClassType, List<string>>();
     }
     #endregion
 

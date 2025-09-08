@@ -31,18 +31,18 @@ public class FirebaseDataManager
             {
                 string json = snapshot.GetRawJsonValue();
                 Data.GameData gameData = JsonConvert.DeserializeObject<Data.GameData>(json);
-                Debug.Log("Game data loaded successfully.");
+                Logging.Log("Game data loaded successfully.");
                 return gameData;
             }
             else
             {
-                Debug.LogWarning("No game data found.");
+                Logging.LogWarning("No game data found.");
                 return null;
             }
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"Failed to load game data: {e.Message}");
+            Logging.LogError($"Failed to load game data: {e.Message}");
             return null;
         }
     }
@@ -59,12 +59,12 @@ public class FirebaseDataManager
         try
         {
             await dbReference.Child("users").Child(userId).SetRawJsonValueAsync(jsonData).AsUniTask();
-            Debug.Log("Game data saved successfully.");
+            Logging.Log("Game data saved successfully.");
             Managers.Data.CheckSaveDataDone = true;
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"Failed to save game data: {e.Message}");
+            Logging.LogError($"Failed to save game data: {e.Message}");
         }
     }
 
@@ -81,11 +81,11 @@ public class FirebaseDataManager
             await dbReference.Child("users").Child(userId).Child("info").Child(fieldName)
                 .SetValueAsync(fieldValue).AsUniTask();
 
-            Debug.Log($"Info field '{fieldName}' updated successfully.");
+            Logging.Log($"Info field '{fieldName}' updated successfully.");
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"Failed to update info field '{fieldName}': {e.Message}");
+            Logging.LogError($"Failed to update info field '{fieldName}': {e.Message}");
         }
     }
 
@@ -108,11 +108,11 @@ public class FirebaseDataManager
             await dbReference.Child("users").Child(userId).Child("stats").Child(statType)
                 .UpdateChildrenAsync(statValues).AsUniTask();
 
-            Debug.Log($"Stat '{statType}' updated successfully.");
+            Logging.Log($"Stat '{statType}' updated successfully.");
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"Failed to update stat '{statType}': {e.Message}");
+            Logging.LogError($"Failed to update stat '{statType}': {e.Message}");
         }
     }
 
@@ -134,45 +134,52 @@ public class FirebaseDataManager
             await dbReference.Child("users").Child(userId).Child("skills").Child(skillType)
                 .UpdateChildrenAsync(skillValues).AsUniTask();
 
-            Debug.Log($"Skill '{skillType}' updated successfully.");
+            Logging.Log($"Skill '{skillType}' updated successfully.");
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"Failed to update skill '{skillType}': {e.Message}");
+            Logging.LogError($"Failed to update skill '{skillType}': {e.Message}");
         }
     }
 
-    // 모든 적의 특정 스탯 업데이트
-    public async UniTask UpdateAllEnemiesStat(string statName, object newValue)
+    public async UniTask AddSkin(string classType, string skinName)
     {
         FirebaseUser user = auth.CurrentUser;
         if (user == null) return;
 
         string userId = user.UserId;
+        var classRef = dbReference.Child("users").Child(userId).Child("skins").Child(classType);
 
         try
         {
-            DatabaseReference enemiesRef = dbReference.Child("users").Child(userId).Child("enemys");
-            DataSnapshot snapshot = await enemiesRef.GetValueAsync().AsUniTask();
+            // 기존 리스트 불러오기
+            DataSnapshot snapshot = await classRef.GetValueAsync().AsUniTask();
+            List<string> skinList = new List<string>();
 
-            if (!snapshot.Exists)
+            if (snapshot.Exists)
             {
-                Debug.LogWarning("No enemies found to update.");
+                foreach (var child in snapshot.Children)
+                {
+                    if (child.Value != null)
+                        skinList.Add(child.Value.ToString());
+                }
+            }
+
+            // 이미 있으면 추가 안 함
+            if (skinList.Contains(skinName))
+            {
+                Logging.Log($"스킨 '{skinName}'은(는) 이미 보유 중입니다.");
                 return;
             }
 
-            Dictionary<string, object> enemyUpdates = new Dictionary<string, object>();
-            foreach (DataSnapshot enemy in snapshot.Children)
-            {
-                enemyUpdates[$"{enemy.Key}/{statName}"] = newValue;
-            }
+            skinList.Add(skinName);
+            await classRef.SetValueAsync(skinList).AsUniTask();
 
-            await enemiesRef.UpdateChildrenAsync(enemyUpdates).AsUniTask();
-            Debug.Log($"Updated '{statName}' for all enemies successfully.");
+            Logging.Log($"스킨 '{skinName}' 추가 완료");
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"Failed to update '{statName}' for all enemies: {e.Message}");
+            Logging.LogError($"스킨 추가 실패: {e.Message}");
         }
     }
 
@@ -194,14 +201,14 @@ public class FirebaseDataManager
                 var infoSnapshot = userSnapshot.Child("info");
                 if (!infoSnapshot.Exists)
                 {
-                    Debug.LogWarning($"User '{userId}'에 'info' 노드가 없습니다.");
+                    Logging.LogWarning($"User '{userId}'에 'info' 노드가 없습니다.");
                     continue;
                 }
 
                 if (!(infoSnapshot.HasChild("Nickname") && infoSnapshot.HasChild("Reincarnation")
                     && infoSnapshot.HasChild("Round")))
                 {
-                    Debug.LogWarning($"User '{userId}'에 'info' 노드에 키가 없습니다.");
+                    Logging.LogWarning($"User '{userId}'에 'info' 노드에 키가 없습니다.");
                     continue;
                 }
 
@@ -217,12 +224,12 @@ public class FirebaseDataManager
                     round = round
                 });
 
-                Debug.Log("Successfully fetched ranking data.");
+                Logging.Log("Successfully fetched ranking data.");
             }
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"Failed to fetch ranking data: {e.Message}");
+            Logging.LogError($"Failed to fetch ranking data: {e.Message}");
         }
 
         return rankingList;

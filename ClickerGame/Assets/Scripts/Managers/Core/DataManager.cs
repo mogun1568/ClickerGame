@@ -13,6 +13,7 @@ public class DataManager
     public Data.Info MyPlayerInfo { get; private set; } = new Data.Info();
     public Dictionary<string, Data.StatInfo> MyPlayerStatDict { get; private set; } = new Dictionary<string, Data.StatInfo>();
     public Dictionary<string, Data.SkillInfo> MyPlayerSkillDict { get; private set; } = new Dictionary<string, Data.SkillInfo>();
+    public Dictionary<Define.ClassType, List<string>> MyPlayerSkinDict { get; private set; } = new Dictionary<Define.ClassType, List<string>>();
     
     public bool GameDataReady { get; private set; } = false;
     public bool CheckSaveDataDone { get; set; } = false;
@@ -25,6 +26,7 @@ public class DataManager
         MyPlayerInfo = gameData.info;
         MyPlayerStatDict = gameData.stats;
         MyPlayerSkillDict = gameData.skills;
+        MyPlayerSkinDict = gameData.skins;
         Managers.Skill.Init();
         //await Managers.Ranking.InitAsync();
         MyPlayerInfo.Round--;
@@ -40,12 +42,12 @@ public class DataManager
     {
         Data.GameData gameData = null;
 
-        if (Managers.Firebase.IsLogIn)
+        if (Managers.Firebase.GoogleLogIn)
         {
             gameData = await _firebaseData.LoadGameData();
             if (gameData == null)
             {
-                Debug.LogError("Firebase 데이터가 없습니다.");
+                Logging.LogError("Firebase 데이터가 없습니다.");
 
                 gameData = LoadLocalData();
                 if (gameData != null)
@@ -53,14 +55,13 @@ public class DataManager
                     CheckSaveDataDone = false;
                     SaveGameData();
                     await UniTask.WaitUntil(() => CheckSaveDataDone);
+                    _localData.DeleteData();
                 }
                 else
                 {
-                    Debug.LogError("로컬 데이터를 생성하지 못했습니다.");
+                    Logging.LogError("로컬 데이터를 생성하지 못했습니다.");
                 }
             }
-
-            _localData.DeleteData();
 
             return gameData;
         }
@@ -80,12 +81,12 @@ public class DataManager
         if (gameData != null)
             return gameData;
 
-        Debug.Log("저장된 데이터가 없습니다. 기본 데이터를 생성합니다.");
+        Logging.Log("저장된 데이터가 없습니다. 기본 데이터를 생성합니다.");
         gameData = _localData.CreateDefaultGameData();
         if (gameData != null)
             return gameData;
 
-        Debug.LogWarning("기본 데이터 생성을 실패했습니다.");
+        Logging.LogWarning("기본 데이터 생성을 실패했습니다.");
         return null;
     }
 
@@ -93,7 +94,7 @@ public class DataManager
     {
         UpdateLastTime();
 
-        if (Managers.Firebase.IsLogIn)
+        if (Managers.Firebase.GoogleLogIn)
         {
             _firebaseData.SaveGameData(ReturnGameData()).Forget();  // UniTask 변환
         }
@@ -105,7 +106,7 @@ public class DataManager
 
     public void UpdateInfo(string infoType, object infoValue = null)
     {
-        if (Managers.Firebase.IsLogIn)
+        if (Managers.Firebase.GoogleLogIn)
         {
             _firebaseData.UpdateInfo(infoType, infoValue).Forget();
         }
@@ -126,7 +127,7 @@ public class DataManager
 
     public void UpdateStat(string statType = "")
     {
-        if (Managers.Firebase.IsLogIn)
+        if (Managers.Firebase.GoogleLogIn)
         {
             if (statType == "")
                 SaveGameData();
@@ -149,7 +150,7 @@ public class DataManager
 
     public void UpdateSKill(string skillType = "")
     {
-        if (Managers.Firebase.IsLogIn)
+        if (Managers.Firebase.GoogleLogIn)
         {
             if (skillType == "")
                 SaveGameData();
@@ -160,13 +161,35 @@ public class DataManager
             SaveGameData();
     }
 
+    public bool HasSkin(Define.ClassType classType, string skinName)
+    {
+        return MyPlayerSkinDict.TryGetValue(classType, out var skinList) && skinList.Contains(skinName);
+    }
+
+    public void AddSkin(Define.ClassType classType, string skinName)
+    {
+        if (HasSkin(classType, skinName))
+            return;
+
+        if (Managers.Firebase.GoogleLogIn)
+            _firebaseData.AddSkin(classType.ToString(), skinName).Forget();
+        else
+        {
+            List<string> skinList = MyPlayerSkinDict[classType];
+            skinList.Add(skinName);
+            SaveGameData();
+        }
+            
+    }
+
     private Data.GameData ReturnGameData()
     {
         return new Data.GameData
         {
             info = MyPlayerInfo,
             stats = MyPlayerStatDict,
-            skills = MyPlayerSkillDict
+            skills = MyPlayerSkillDict,
+            skins = MyPlayerSkinDict
         };
     }
 
@@ -185,6 +208,8 @@ public class DataManager
         if (diffTime < 60 && MyPlayerInfo.OfflineReward <= 0)
             return;
 
+        // 보상을 제한하기 위해 diffTime의 최대값을 정할까 고민
+
         MyPlayerInfo.OfflineReward += (diffTime / 60 * 1);
         Managers.UI.ShowPopupUI<UI_Offline>("Popup_Offline").StatInit();
     }
@@ -201,8 +226,11 @@ public class DataManager
         {
             Nickname = MyPlayerInfo.Nickname,
             Reincarnation = MyPlayerInfo.Reincarnation,
-            Coin = 10000,
-            Round = 0,
+            Coin = 100,
+            Round = 1,
+            Map = "Plain",
+            Class = MyPlayerInfo.Class,
+            Skin = MyPlayerInfo.Skin,
             HP = 100.0f,
             LastTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
             OfflineReward = 0

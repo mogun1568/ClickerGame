@@ -27,8 +27,7 @@ public class UI_Resurrection : UI_Popup
     private void Advertising()
     {
         // ±¤°í
-
-        Resurrection();
+        Managers.GoogleAd.ShowRewardedAd(Define.RewardAdType.Respawn, () => { Resurrection(); });
     }
 
     private void NoAdvertising()
@@ -39,8 +38,7 @@ public class UI_Resurrection : UI_Popup
 
     private void Resurrection()
     {
-        
         Managers.Game.Wave.RespawnPlayer();
-        Managers.UI.ClosePopupUI();
+        ClosePopupUI();
     }
 }

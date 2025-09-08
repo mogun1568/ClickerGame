@@ -14,10 +14,10 @@ public class UIRaycastDebugger : MonoBehaviour
         eventSystem = EventSystem.current; // 현재 활성화된 EventSystem 가져오기
 
         if (raycaster == null)
-            Debug.LogWarning("GraphicRaycaster not found in parent!");
+            Logging.LogWarning("GraphicRaycaster not found in parent!");
 
         if (eventSystem == null)
-            Debug.LogWarning("EventSystem not found in scene!");
+            Logging.LogWarning("EventSystem not found in scene!");
     }
 
     void Update()
@@ -32,10 +32,10 @@ public class UIRaycastDebugger : MonoBehaviour
             List<RaycastResult> results = new List<RaycastResult>();
             raycaster.Raycast(pointerEventData, results);
 
-            Debug.Log("---- Raycast UI Results ----");
+            Logging.Log("---- Raycast UI Results ----");
             foreach (RaycastResult result in results)
             {
-                Debug.Log($"Hit: {result.gameObject.name}");
+                Logging.Log($"Hit: {result.gameObject.name}");
             }
         }
     }

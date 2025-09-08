@@ -7,6 +7,7 @@ public class UIManager
 
     Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
     UI_Scene _sceneUI = null;
+    public UI_ToastMessage ToastMessage = null;
 
     public GameObject Root
     {
@@ -96,7 +97,7 @@ public class UIManager
         // _popupStack.Peek()은 스택의 가장 위에 있는 것을 말함
         if (_popupStack.Peek() != popup)
         {
-            Debug.Log("Close Popup Failed!");
+            Logging.Log("Close Popup Failed!");
             return;
         }
 
@@ -134,9 +135,22 @@ public class UIManager
             return false;
     }
 
+    public GameObject getPopStackTop()
+    {
+        if (_popupStack.Count > 0)
+        {
+            return _popupStack.Peek().gameObject;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     public void Clear()
     {
         CloseAllPopupUI();
         _sceneUI = null;
+        ToastMessage = null;
     }
 }

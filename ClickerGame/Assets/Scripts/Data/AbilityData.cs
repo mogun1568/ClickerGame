@@ -5,6 +5,7 @@ public class AbilityData : ScriptableObject
 {
     [Header("# Public Info")]
     public Define.AbilityType creatureType;
+    public int abilityId;
     public string abilityKind;
     public string abilityIcon;
     public string abilityName;
@@ -21,10 +22,11 @@ public class AbilityData : ScriptableObject
     [Header("# SKill Info")]
     public float skillCoolTime;
 
-    public AbilityData Copy(Define.AbilityType type)
+    public AbilityData Copy()
     {
         AbilityData copied = CreateInstance<AbilityData>();
         copied.creatureType = this.creatureType;
+        copied.abilityId = this.abilityId;
         copied.abilityKind = this.abilityKind;
         copied.abilityIcon = this.abilityIcon;
         copied.abilityName = this.abilityName;
@@ -34,7 +36,7 @@ public class AbilityData : ScriptableObject
         copied.abilityValue = this.abilityValue;
         copied.abilityIncreaseValue = this.abilityIncreaseValue;
 
-        if (type == Define.AbilityType.Stat)
+        if (copied.creatureType == Define.AbilityType.Stat)
         {
             copied.statPrice = this.statPrice;
             copied.statIncreasePrice = this.statIncreasePrice;

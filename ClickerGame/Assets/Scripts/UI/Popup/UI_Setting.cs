@@ -29,7 +29,7 @@ public class UI_Setting : UI_Popup
 
     private void PopupAccount()
     {
-        Managers.UI.ShowPopupUI<UI_Login>("Popup_Login").TextInitAsync().Forget();
+        Managers.UI.ShowPopupUI<UI_Login>("Popup_Login");
     }
 
     private void PopupSound()

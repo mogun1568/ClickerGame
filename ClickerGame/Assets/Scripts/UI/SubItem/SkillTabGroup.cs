@@ -1,0 +1,113 @@
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+
+public class SkillTabGroup : UI_Base
+{
+    enum Buttons
+    {
+        Button_Class,
+        Button_Common
+    }
+
+    enum GameObjects
+    {
+        Button_Class,
+        Button_Common,
+        ClassSkill,
+        CommonSkill
+    }
+
+    private GameObject _classAlert, _commomAlert;
+    bool _isClass, _isCommon;
+
+    void Awake()
+    {
+        Init();
+    }
+
+    void Start()
+    {
+        GetObject((int)GameObjects.ClassSkill).SetActive(false);
+    }
+
+    public override void Init()
+    {
+        Managers.Alert.OnAlertAcquired -= OnSkillAcquired;
+        Managers.Alert.OnAlertAcquired += OnSkillAcquired;
+
+        Bind<Button>(typeof(Buttons));
+        Bind<GameObject>(typeof(GameObjects));
+
+        _classAlert = GetObject((int)GameObjects.Button_Class).transform.GetChild(1).gameObject;
+        _commomAlert = GetObject((int)GameObjects.Button_Common).transform.GetChild(1).gameObject;
+
+        BindEvent(GetButton((int)Buttons.Button_Class).gameObject, (PointerEventData data) => { SelectTab("Class"); }, Define.UIEvent.Click);
+        BindEvent(GetButton((int)Buttons.Button_Common).gameObject, (PointerEventData data) => { SelectTab("Common"); }, Define.UIEvent.Click);
+
+        _classAlert.SetActive(false);
+        _commomAlert.SetActive(false);
+
+        SkillInit();
+    }
+
+    private void SkillInit()
+    {
+        foreach (var pair in Managers.Resource.SkillList)
+        {
+            GameObject stat = Managers.Resource.Instantiate("UI/SubItem/Skill", default, GetObject((int)GameObjects.CommonSkill).transform.GetChild(0));
+            stat.name = pair.abilityKind;
+            stat.GetComponent<UI_Skill>().Init();
+        }
+    }
+
+    public void SelectTab(string TabName)
+    {
+        if (TabName == "Class")
+        {
+            if (_classAlert.activeSelf) _isClass = true;
+
+            GetObject((int)GameObjects.CommonSkill).SetActive(false);
+            GetObject((int)GameObjects.ClassSkill).SetActive(true);
+        }
+        else
+        {
+            if (_commomAlert.activeSelf) _isCommon = true;
+
+            GetObject((int)GameObjects.ClassSkill).SetActive(false);
+            GetObject((int)GameObjects.CommonSkill).SetActive(true);
+        }
+
+        if (_isClass)
+        {
+            _isClass = false;
+            _classAlert.SetActive(false);
+        }
+        if (_isCommon)
+        {
+            _isCommon = false;
+            _commomAlert.SetActive(false);
+        }
+    }
+
+    private void OnSkillAcquired(string skillKind)
+    {
+        // Init에서 다 SetActive(false) 시켜서 처음 킬 때는 안 뜸
+        // 임시
+        if (GetObject((int)GameObjects.ClassSkill).activeSelf)
+            _isClass = true;
+        else
+            _isCommon = false;
+
+        if (skillKind == "Class")
+            _classAlert.SetActive(true);
+        else
+            _commomAlert.SetActive(true);
+    }
+
+    private void OnDisable()
+    {
+        _classAlert.SetActive(false);
+        _commomAlert.SetActive(false);
+    }
+}

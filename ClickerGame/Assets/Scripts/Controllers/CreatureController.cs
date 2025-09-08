@@ -22,7 +22,7 @@ public class CreatureController : MonoBehaviour
 
             _state = value;
             //if (gameObject.tag != "Player")
-            //    Debug.Log($"{_state}");
+            //    Logging.Log($"{_state}");
 
             UpdateAnimation();
             UpdateController();
@@ -35,7 +35,7 @@ public class CreatureController : MonoBehaviour
             return true;
 
         //if (gameObject.tag != "Player")
-        //    Debug.Log($"{_state} || {state}");
+        //    Logging.Log($"{_state} || {state}");
 
         if (state == _state)
         {
@@ -56,7 +56,7 @@ public class CreatureController : MonoBehaviour
 
         if (_state == Define.State.Attack || _state == Define.State.Stagger)
         {
-            //Debug.Log($"{_curAnimInfo.IsName("Stagger")}, {_curAnimInfo.normalizedTime}");
+            //Logging.Log($"{_curAnimInfo.IsName("Stagger")}, {_curAnimInfo.normalizedTime}");
             if (!CheckAnim())
                 return false;
         }
@@ -66,7 +66,7 @@ public class CreatureController : MonoBehaviour
 
     private bool CheckAnim()
     {
-        //Debug.Log($"{gameObject.tag}, {_curAnimInfo.normalizedTime}");
+        //Logging.Log($"{gameObject.tag}, {_curAnimInfo.normalizedTime}");
         if (!_curAnimInfo.IsName(_state.ToString()))
             return false;
         if (_curAnimInfo.normalizedTime < 1.0f) // 루프가 아닌 경우에만
@@ -121,14 +121,14 @@ public class CreatureController : MonoBehaviour
     private bool DeadFlag;
 
     // 디버프 종류가 늘어나면 클래스 같은걸로 관리할 수도
-    public Define.Debuff _debuff;
-    public Define.TweenType _tweenType;
+    [HideInInspector] public Define.Debuff _debuff;
+    [HideInInspector] public Define.TweenType _tweenType;
 
-    public Tween MoveTween;
-    public float _endPosX;
-    public float _backgroundMoveSpeed;
-    public float _moveSpeed;
-    public float _curMoveSpeed;
+    [HideInInspector] public Tween MoveTween;
+    [HideInInspector] public float _endPosX;
+    [HideInInspector] public float _backgroundMoveSpeed;
+    [HideInInspector] public float _moveSpeed;
+    [HideInInspector] public float _curMoveSpeed;
     private bool _isUpdateTargetRunning;
 
     private void OnEnable()
@@ -145,9 +145,9 @@ public class CreatureController : MonoBehaviour
         UpdateAnimation();
 
         _debuff = Define.Debuff.None;
-        _tweenType = Define.TweenType.Idle;
+        _tweenType = Define.TweenType.None;
         MoveTween.Kill();
-        _backgroundMoveSpeed = 2.5f;
+        _backgroundMoveSpeed = 2f;
         _curMoveSpeed = 0;
         _isUpdateTargetRunning = false;
 
@@ -158,10 +158,10 @@ public class CreatureController : MonoBehaviour
     {
         return type switch
         {
-            //Define.TweenType.Idle => 0,
-            Define.TweenType.Run => 1,
-            Define.TweenType.Slow => 2,
-            Define.TweenType.Knockback => 3,
+            Define.TweenType.Idle => 1,
+            Define.TweenType.Run => 2,
+            Define.TweenType.Slow => 3,
+            Define.TweenType.Knockback => 4,
             _ => 0
         };
     }
@@ -181,7 +181,7 @@ public class CreatureController : MonoBehaviour
         _tweenType = tweenType;
 
         //if (gameObject.tag != "Player")
-        //    Debug.Log($"{moveSpeed}, {tweenType}");
+        //    Logging.Log($"{gameObject.GetInstanceID()}, {moveSpeed}, {tweenType}");
 
         if (MoveTween != null)
             MoveTween.Kill();
@@ -197,14 +197,9 @@ public class CreatureController : MonoBehaviour
                 if (MoveTween == newTween)
                     MoveTween = null;
 
-                // Knockback 끝났으면 Slow 재적용
+                // Knockback 끝났으면 Knockback 제거
                 if (tweenType == Define.TweenType.Knockback)
-                {
-                    if (_debuff == Define.Debuff.Slow)
-                        _tweenType = Define.TweenType.Slow;
-                    else
-                        _tweenType = Define.TweenType.Run;
-                }
+                    _tweenType = Define.TweenType.None;
             })
             .OnComplete(() =>
             {
@@ -345,32 +340,20 @@ public class CreatureController : MonoBehaviour
         {
             case Define.State.Idle:
                 _animator.Play("Idle");
-                //_animator.SetBool("IsIdle", true);
-                //_animator.SetBool("IsAttack", false);
                 break;
             case Define.State.Run:
                 _animator.Play("Run");
-                //_animator.SetBool("IsIdle", false);
                 break;
             case Define.State.Attack:
                 _animator.Play("Attack");
-                //_animator.SetBool("IsAttack", true);
                 break;
             case Define.State.Stagger:
-                // 임시
-                //if (gameObject.tag == "Player")
-                //    return;
-
                 _animator.Play("Stagger");
-                //_animator.SetTrigger("HurtTrigger");
                 break;
             case Define.State.Death:
                 _animator.Play("Death");
-                //_animator.SetTrigger("DeathTrigger");
                 break;
         }
-
-        //_curAnimInfo = _animator.GetCurrentAnimatorStateInfo(0);
     }
 
     protected virtual void UpdateIdle()
@@ -385,7 +368,7 @@ public class CreatureController : MonoBehaviour
 
     protected virtual void UpdateAttacking()
     {
-        //Debug.Log("Attack!");
+        //Logging.Log("Attack!");
     }
 
     protected virtual void UpdateStagger()
@@ -414,7 +397,7 @@ public class CreatureController : MonoBehaviour
 
         if (_target != null)
         {
-            //Debug.Log($"{gameObject.tag}, {_curAnimInfo.normalizedTime % 1}");
+            //Logging.Log($"{gameObject.tag}, {_curAnimInfo.normalizedTime % 1}");
             _target.GetComponent<CreatureController>().Hurt(amount);
 
             Skill();
@@ -433,7 +416,7 @@ public class CreatureController : MonoBehaviour
     protected virtual void Hurt(float damage)
     {
         HP -= CalculateDamage(damage);
-        //Debug.Log($"{gameObject.tag}, {HP}");
+        //Logging.Log($"{gameObject.tag}, {HP}");
 
         if (HP <= 0)
             State = Define.State.Death;

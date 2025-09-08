@@ -43,9 +43,23 @@ public class Define
         Skill
     }
 
+    public enum ClassType
+    {
+        Knight,
+        Wizard
+    }
+
     public enum EnemyType
     {
-        General
+        General,
+        Boss
+    }
+
+    public enum ShopItemType
+    {
+        Common,
+        Skin,
+        Class
     }
 
     public enum Debuff
@@ -56,9 +70,18 @@ public class Define
 
     public enum TweenType
     {
+        None,
         Idle,
         Run,
         Knockback,
         Slow
+    }
+
+    public enum RewardAdType
+    {
+        Respawn,
+        Offline,
+        GiveUp,
+        AddCoin
     }
 }

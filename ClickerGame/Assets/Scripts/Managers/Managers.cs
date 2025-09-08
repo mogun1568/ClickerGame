@@ -12,12 +12,14 @@ public class Managers : MonoBehaviour
     SkillManager _skill = new SkillManager();
     RankingManager _ranking = new RankingManager();
     AlertManager _alert = new AlertManager();
+    GoogleAdManager _googleAd = new GoogleAdManager();
 
     public static GameManager Game { get { return Instance._game; } }
     public static FirebaseManager Firebase { get { return Instance._firebase; } }
     public static SkillManager Skill { get { return Instance._skill; } }
     public static RankingManager Ranking { get { return Instance._ranking; } }
     public static AlertManager Alert { get { return Instance._alert; } }
+    public static GoogleAdManager GoogleAd { get { return Instance._googleAd; } }
     #endregion
 
     #region Core
@@ -67,6 +69,8 @@ public class Managers : MonoBehaviour
             s_instance._pool.Init();
             s_instance._sound.Init();
             s_instance._resource.Init();
+            s_instance._googleAd.Init();
+            s_instance._scene.Init();
         }
     }
 

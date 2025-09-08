@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Data
 {
@@ -7,8 +8,11 @@ namespace Data
     {
         private string _nickname;
         private int _reincarnation; // È¯»ý
-        private int _coin;
         private int _round;
+        private int _coin;
+        private string _map;
+        private string _class;
+        private string _skin;
         private float _hp;
         private long _lastTime;
         private int _offlineReward;
@@ -25,16 +29,38 @@ namespace Data
             set => SetValue(ref _reincarnation, value, nameof(Reincarnation));
         }
 
-        public int Coin
-        {
-            get => _coin;
-            set => SetValue(ref _coin, value, nameof(Coin));
-        }
-
         public int Round
         {
             get => _round;
             set => SetValue(ref _round, value, nameof(Round));
+        }
+
+        public int Coin
+        {
+            get => _coin;
+            set
+            {
+                value = Mathf.Max(value, 0);
+                SetValue(ref _coin, value, nameof(Coin));
+            }
+        }
+
+        public string Map
+        {
+            get => _map;
+            set => SetValue(ref _map, value, nameof(Map));
+        }
+        
+        public string Class
+        {
+            get => _class;
+            set => SetValue(ref _class, value, nameof(Class));
+        }
+
+        public string Skin
+        {
+            get => _skin;
+            set => SetValue(ref _skin, value, nameof(Skin));
         }
 
         public float HP

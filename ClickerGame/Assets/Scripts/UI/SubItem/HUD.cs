@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class HUD : UI_Base
 {
-    public enum InfoType { Coin, Round, HP }
+    public enum InfoType { Coin, Reincarnation, Round, HP }
     [SerializeField]
     InfoType _type;
 
@@ -36,9 +36,13 @@ public class HUD : UI_Base
                 int MyPlayerCoin = Managers.Data.MyPlayerInfo.Coin;
                 _Text.text = MyPlayerCoin.ToString("N0");
                 break;
+            case InfoType.Reincarnation:
+                int MyPlayerReincarnation = Managers.Data.MyPlayerInfo.Reincarnation;
+                _Text.text = $"환생: {MyPlayerReincarnation}";
+                break;
             case InfoType.Round:
                 int MyPlayerRound = Managers.Data.MyPlayerInfo.Round;
-                _Text.text = $"{MyPlayerRound} 라운드";
+                _Text.text = $"라운드: {MyPlayerRound}";
                 break;
             case InfoType.HP:
                 float curHP = Managers.Game.MyPlayer.HP;
@@ -46,5 +50,8 @@ public class HUD : UI_Base
                 _slider.value = curHP / maxHP;
                 break;
         }
+
+        if (!Managers.Game.GameStartReady)
+            Managers.Game.GameStartReady = true;
     }
 }

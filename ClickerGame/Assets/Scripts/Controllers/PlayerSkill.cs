@@ -7,11 +7,11 @@ public class PlayerSkill : Skill
         string skillName = Managers.Skill.ChooseSkill();
         if (skillName == null)
         {
-            //Debug.Log("You don't have Skill");
+            //Logging.Log("You don't have Skill");
             return;
         }
 
-        Debug.Log(skillName);
+        Logging.Log(skillName);
 
         switch (skillName)
         {

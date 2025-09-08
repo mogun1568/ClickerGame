@@ -90,7 +90,10 @@ public class SoundManager
     {
         if (path.Contains("Sounds/") == false)
         {
-            path = $"Sounds/{path}";
+            if (type == Define.Sound.BGM)
+                path = $"Sounds/BGMs/{path}";
+            else
+                path = $"Sounds/SFXs/{path}";
         }
 
         AudioClip audioClip = null;
@@ -110,7 +113,7 @@ public class SoundManager
 
         if (audioClip == null)
         {
-            Debug.Log($"AudioClip Missing ! {path}");
+            Logging.Log($"AudioClip Missing ! {path}");
         }
 
         return audioClip;

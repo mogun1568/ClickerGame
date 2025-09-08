@@ -25,6 +25,7 @@ public class SkillManager
         if (Random.value > _skillDropChance)
             return;
 
+        Managers.Sound.Play("SFX_Chest_Open_1", Define.Sound.SFX);
         AddSkill();
     }
     
@@ -33,7 +34,8 @@ public class SkillManager
         int idx = Random.Range(0, AllSkills.Count);
         string randomSkill = AllSkills[idx];
 
-        Debug.Log($"Drop {randomSkill}");
+        //Logging.Log($"Drop {randomSkill}");
+        Managers.UI.ToastMessage.Show($"'{Managers.Resource.SkillDict[randomSkill].abilityName}' È¹µæ");
 
         if (MyPlayerSkillDict.ContainsKey(randomSkill)) {
             MyPlayerSkillDict[randomSkill].skillLevel++;
@@ -84,7 +86,7 @@ public class SkillManager
 
         if (availableSkills.Count == 0)
         {
-            //Debug.Log("All Skills CoolTime.");
+            //Logging.Log("All Skills CoolTime.");
             return null;
         }
             

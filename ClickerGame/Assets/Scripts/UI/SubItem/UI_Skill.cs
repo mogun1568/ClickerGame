@@ -31,11 +31,10 @@ public class UI_Skill : UI_Base
     private int _skillMaxlevel;
     private Color _blue, _glay;
 
-    void Awake()
-    {
-        Init();
-        DataInitAsync().Forget();
-    }
+    //void Awake()
+    //{
+    //    Init();
+    //}
 
     public override void Init()
     {
@@ -53,13 +52,14 @@ public class UI_Skill : UI_Base
         _blue = GetComponent<Image>().color;
         _glay = Color.gray;
 
-        //Image icon = GetImage((int)Images.Icon_Skill);
-        //icon.sprite = Managers.Resource.Load<Sprite>($"Icon/{}");
+        Image icon = GetImage((int)Images.Icon_Skill);
+        icon.sprite = Managers.Resource.Load<Sprite>($"Icon/{_skillDict[_skillName].abilityIcon}");
         GetText((int)Texts.Text_SkillName).text = _skillDict[_skillName].abilityName;
         GetText((int)Texts.Text_SkillLevel).text = "0";
         GetText((int)Texts.Text_SkillValue).text = "0";
         GetText((int)Texts.Text_SkillMaxLevel).text = "최대 레벨\n" + _skillMaxlevel.ToString();
 
+        DataInitAsync().Forget();
     }
 
     private async UniTask DataInitAsync()
@@ -86,7 +86,8 @@ public class UI_Skill : UI_Base
     public void HUDUpdate()
     {
         GetText((int)Texts.Text_SkillLevel).text = _myPlayerSkillDict[_skillName].skillLevel.ToString();
-        GetText((int)Texts.Text_SkillValue).text = _myPlayerSkillDict[_skillName].skillValue.ToString();
+        GetText((int)Texts.Text_SkillValue).text = _myPlayerSkillDict[_skillName].skillValue.ToString()
+            + _skillDict[_skillName].abilityInfo;
         GetObject((int)GameObjects.Alert_s_Red).SetActive(true);
 
         if (GetText((int)Texts.Text_SkillLevel).text == "1")

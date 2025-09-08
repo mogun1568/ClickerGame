@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 6621818340246777494}
   - component: {fileID: 8024516655034802319}
   - component: {fileID: 2704071193255106420}
-  - component: {fileID: 1848206550792608876}
   - component: {fileID: 1317679964670032752}
+  - component: {fileID: 1848206550792608876}
   m_Layer: 0
   m_Name: HeavyBandit
   m_TagString: Enemy
@@ -128,8 +128,21 @@ MonoBehaviour:
   _debuff: 0
   _tweenType: 0
   _endPosX: -0.5
-  _defaultMoveSpeed: 0
+  _backgroundMoveSpeed: 0
   _moveSpeed: 0
+  _curMoveSpeed: 0
+--- !u!114 &1317679964670032752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 983527722302381357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 444cfdca6d262e745a64aa477a795bb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1848206550792608876
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,15 +156,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsUsing: 0
---- !u!114 &1317679964670032752
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 983527722302381357}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 444cfdca6d262e745a64aa477a795bb5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
