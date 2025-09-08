@@ -340,32 +340,20 @@ public class CreatureController : MonoBehaviour
         {
             case Define.State.Idle:
                 _animator.Play("Idle");
-                //_animator.SetBool("IsIdle", true);
-                //_animator.SetBool("IsAttack", false);
                 break;
             case Define.State.Run:
                 _animator.Play("Run");
-                //_animator.SetBool("IsIdle", false);
                 break;
             case Define.State.Attack:
                 _animator.Play("Attack");
-                //_animator.SetBool("IsAttack", true);
                 break;
             case Define.State.Stagger:
-                // юс╫ц
-                //if (gameObject.tag == "Player")
-                //    return;
-
                 _animator.Play("Stagger");
-                //_animator.SetTrigger("HurtTrigger");
                 break;
             case Define.State.Death:
                 _animator.Play("Death");
-                //_animator.SetTrigger("DeathTrigger");
                 break;
         }
-
-        //_curAnimInfo = _animator.GetCurrentAnimatorStateInfo(0);
     }
 
     protected virtual void UpdateIdle()
